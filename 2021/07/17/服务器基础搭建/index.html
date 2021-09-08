@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>服务器基础搭建 - 藏得好</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Zang - Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Zang - Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="服务器三大件（JDK，Tomcat，MySQL）以及本人项目需求中的其他软件（Nginx，PostgreSQL等）的安装与配置"><meta property="og:type" content="blog"><meta property="og:title" content="服务器基础搭建"><meta property="og:url" content="http://example.com/2021/07/17/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA/"><meta property="og:site_name" content="藏得好"><meta property="og:description" content="服务器三大件（JDK，Tomcat，MySQL）以及本人项目需求中的其他软件（Nginx，PostgreSQL等）的安装与配置"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png"><meta property="article:published_time" content="2021-07-17T04:50:08.000Z"><meta property="article:modified_time" content="2021-07-21T11:50:07.991Z"><meta property="article:author" content="Zang"><meta property="article:tag" content="JDK"><meta property="article:tag" content="Tomcat"><meta property="article:tag" content="MySQL"><meta property="article:tag" content="Nginx"><meta property="article:tag" content="PostgreSQL"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/07/17/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA/"},"headline":"服务器基础搭建","image":["https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png"],"datePublished":"2021-07-17T04:50:08.000Z","dateModified":"2021-07-21T11:50:07.991Z","author":{"@type":"Person","name":"Zang"},"publisher":{"@type":"Organization","name":"藏得好","logo":{"@type":"ImageObject","url":{"text":"藏得好"}}},"description":"服务器三大件（JDK，Tomcat，MySQL）以及本人项目需求中的其他软件（Nginx，PostgreSQL等）的安装与配置"}</script><link rel="canonical" href="http://example.com/2021/07/17/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">藏得好</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/angzhijin"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png" alt="服务器基础搭建"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-07-17T04:50:08.000Z" title="2021/7/17 下午12:50:08">2021-07-17</time>发表</span><span class="level-item"><time dateTime="2021-07-21T11:50:07.991Z" title="2021/7/21 下午7:50:07">2021-07-21</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">服务器基础搭建</h1><div class="content"><p>服务器三大件（JDK，Tomcat，MySQL）以及本人项目需求中的其他软件（Nginx，PostgreSQL等）的安装与配置</p>
+<span id="more"></span>
+<h2 id="服务器基础"><a class="header-anchor" href="#服务器基础"></a>服务器基础</h2>
+<p>本人的服务器基于腾讯云轻量级应用服务器进行搭建，相比于云服务CVM，在一些功能上有了限制，不过对于本菜狗来说完全够用了</p>
+<p>服务器系统为Ubuntu 18.04 1 LTS。</p>
+<ol>
+<li>
+<p>远程连接</p>
+<ol>
+<li>
+<p>ssh</p>
+<p><code>ssh {用户名}@{服务器ip地址}</code></p>
+<p>如系统重置，因密钥改变，需要删除 C:\Users\用户/.ssh/known_hosts 中对应的密钥重新建立连接</p>
+</li>
+<li>
+<p>winSCP （<a target="_blank" rel="noopener" href="https://winscp.net/eng/download.php">下载链接</a>）</p>
+</li>
+</ol>
+</li>
+<li>
+<p>安装工具</p>
+<ol>
+<li>
+<p>apt-get</p>
+<p>apt-get是一款适用于Unix和Linux系统的应用程序管理器。</p>
+<ul>
+<li>
+<p>系统安装软件一般在 /usr/share，可执行的文件在 /usr/bin，配置文件可能安装到了/etc下等。</p>
+</li>
+<li>
+<p>文档一般在 /usr/share</p>
+</li>
+<li>
+<p>可执行文件 /usr/bin 或 /usr/sbin</p>
+</li>
+<li>
+<p>配置文件 /etc</p>
+</li>
+<li>
+<p>lib文件 /usr/lib</p>
+</li>
+</ul>
+</li>
+<li>
+<p>apt</p>
+<p>apt流行于Ubuntu 16.04banbenhou，与apt-get的使用在大部分情况下基本相同，官方也鼓励使用apt</p>
+</li>
+</ol>
+</li>
+<li>
+<p>防火墙（这里直接用腾讯云终端自带的即可，再使用相当于墙中墙）</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看开放的端口</span></span><br><span class="line">firewall-cmd --list-all</span><br><span class="line"><span class="comment"># 设置开放的端口</span></span><br><span class="line">firewall-cmd -add-service=http -permanent</span><br><span class="line">firewall-cmd -add-port=80/tcp -permanent</span><br><span class="line"><span class="comment"># 重启防火墙</span></span><br><span class="line">firewall-cmd -reload</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+<h2 id="JDK"><a class="header-anchor" href="#JDK"></a>JDK</h2>
+<p>安装包方式安装</p>
+<ol>
+<li>
+<p>下载jdk并上传到服务器（<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">下载链接</a>）</p>
+</li>
+<li>
+<p>解压  <code>tar -zxvf jdk-8u271-linux-x64.tar.gz</code></p>
+</li>
+<li>
+<p>移到指定目录  <code>sudo mv jdk1.8.0_271 /usr/lib/jdk1.8</code></p>
+</li>
+<li>
+<p>设置环境变量  <code>sudo vim /etc/profile</code></p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件末尾加入</span></span><br><span class="line"><span class="comment"># 具体位置视你的位置而定，主要的就是JAVA_HOME的位置，其他位置可直接如下</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jdk1.8</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">${JAVA_HOME}</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">${JAVA_HOME}</span>/lib:<span class="variable">${JRE_HOME}</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=.:<span class="variable">${JAVA_HOME}</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>使配置环境生效并检查  <code>source /etc/profile</code> ;  <code>java -version</code></p>
+</li>
+</ol>
+<h2 id="Tomcat"><a class="header-anchor" href="#Tomcat"></a>Tomcat</h2>
+<p>安装包方式安装</p>
+<ol>
+<li>
+<p>下载(<a target="_blank" rel="noopener" href="https://tomcat.apache.org/download-80.cgi">下载链接</a>)</p>
+</li>
+<li>
+<p>解压  <code>tar -zxvf apache-tomcat-8.5.61.tar.gz</code></p>
+</li>
+<li>
+<p>移到指定目录  <code>sudo mv apache-tomcat-8.5.61 /opt/tomcat8</code></p>
+</li>
+<li>
+<p>配置环境变量  <code>sudo vim /opt/tomcat8/bin/startup.sh</code>  ;</p>
+<p>​						<code>sudo vim /opt/tomcat8/bin/shutdown.sh</code></p>
+</li>
+</ol>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##在最后一行exec "$PRGDIR"/"$EXECUTABLE" start "$@"，前添加以下内容即可</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jdk1.8</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">${JAVA_HOME}</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">${JAVA_HOME}</span>/lib:<span class="variable">${JRE_HOME}</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=.:<span class="variable">${JAVA_HOME}</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> TOMCAT_HOME=/opt/tomcat8</span><br></pre></td></tr></tbody></table></figure>
+<ol start="5">
+<li>
+<p>启动tomcat服务器<code>/opt/tomcat/bin/startup.sh</code></p>
+</li>
+<li>
+<p>浏览器输入 {IP地址}:8080</p>
+</li>
+<li>
+<p>关闭tomcat  <code>/opt/tomcat/bin/shutdown.sh</code></p>
+</li>
+</ol>
+<h2 id="MySQL"><a class="header-anchor" href="#MySQL"></a>MySQL</h2>
+<p>apt-get方式安装</p>
+<ol>
+<li>
+<p>更新apt-get    <code>apt-get upgrade</code></p>
+</li>
+<li>
+<p>安装 mysql-client-core-5.7    <code>apt-get install MySQL-client-core-5.7</code></p>
+</li>
+<li>
+<p>安装mysql-client-5.7    <code>apt-get install mysql-client-5.7</code></p>
+</li>
+<li>
+<p>安装 mysql-server-5.7    <code>apt-get install mysql-server-5.7</code></p>
+</li>
+<li>
+<p>检查mysql是否启动   <code>service mysql restart</code></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jaray/article/details/88999305">ubuntu下，ERROR 1045 (28000): Access denied for user ‘root’@‘localhost’ (using password: YES)的解决方案</a></p>
+<ol>
+<li>
+<p>命令行输入：<code>sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf</code></p>
+<p>在[mysqld]后面任意一行添加<code>skip-grant-tables</code>用来跳过密码验证的过程保存文档并退出</p>
+</li>
+<li>
+<p>接下来我们需要重启MySQL：<code>/etc/init.d/mysql restart</code></p>
+<p>显示如下：</p>
+<p>[…] Restarting mysql (via systemctl): mysql.serviceFailed to add /run/systemd/ask-password to directory watch: No space left on device</p>
+<p>. ok</p>
+</li>
+<li>
+<p>重启之后输入<code>mysql</code>即可进入mysql。</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>修改密码</p>
+<blockquote>
+<ol>
+<li>
+<p>使用cat命令查看默认密码   <code>sudo cat /etc/mysql/debian.cnf</code></p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Automatically generated for Debian scripts. DO NOT TOUCH!</span><br><span class="line">[client]</span><br><span class="line">host     = localhost</span><br><span class="line">user     = debian-sys-maint</span><br><span class="line">password = 6b76NDnr65gNCcia</span><br><span class="line">socket   = /var/run/mysqld/mysqld.sock</span><br><span class="line">[mysql_upgrade]</span><br><span class="line">host     = localhost</span><br><span class="line">user     = debian-sys-maint</span><br><span class="line">password = 6b76NDnr65gNCcia</span><br><span class="line">socket   = /var/run/mysqld/mysqld.sock</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>使用默认密码登录</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mysql -udebian-sys-maint -p</span><br><span class="line">Enter password: </span><br><span class="line">...</span><br><span class="line">mysql&gt;</span><br></pre></td></tr></tbody></table></figure>
+<ol start="3">
+<li>修改密码      <code>UPDATE mysql.user SET authentication_string=PASSWORD('${pasword}'), PLUGIN='mysql_native_password' WHERE USER='root';</code></li>
+<li>重启服务      <code>/etc/init.d/mysql restart</code></li>
+<li>退出重新登录      <code>mysql -u root -p</code></li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>修改远程登录</p>
+<ol>
+<li>进入超级用户，修改 /etc/mysql/my.cnf   ，添加</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind-address=0.0.0.0</span><br></pre></td></tr></tbody></table></figure>
+<p>或  /etc/mysql/mysql.conf.d/mysqld.cnf  ，注释掉 bind-address</p>
+<ol start="2">
+<li>赋予用户远程连接权限，并刷新</li>
+</ol>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">to</span> <span class="string">'user'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'password'</span> <span class="keyword">with</span> <span class="keyword">grant</span> option;</span><br><span class="line"># eg.</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> privileges <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">to</span> <span class="string">'zang'</span>@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'000000'</span> <span class="keyword">with</span> <span class="keyword">grant</span> option;# 所有权限</span><br><span class="line"></span><br><span class="line">FLUSH PRIVILEGES; # 刷新权限</span><br></pre></td></tr></tbody></table></figure>
+<ol start="3">
+<li>重启<code> /etc/init.d/mysql restart</code></li>
+</ol>
+</li>
+</ol>
+<p><strong>注意：</strong></p>
+<ol>
+<li>
+<p>MySQL要支持中文字符</p>
+<ol>
+<li>
+<p>登录mysql，<code>STATUS</code>  查看</p>
+<img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210720134606-mysql%E9%85%8D%E7%BD%AE.png" alt="image-20210203224701072" style="zoom: 67%;">
+</li>
+<li>
+<p>进入超级用户，修改/etc/mysql/my.cnf，添加</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set=utf8</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">character-set-server=utf8</span><br><span class="line">collation-server=utf8_general_ci</span><br><span class="line">port=3306	</span><br></pre></td></tr></tbody></table></figure>
+<ol start="3">
+<li>
+<p>重启mysql，查看STATUS</p>
+<img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210720134606-mysql%E9%85%8D%E7%BD%AE.png" alt="image-20210203224623697" style="zoom: 67%;">
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="Nginx"><a class="header-anchor" href="#Nginx"></a>Nginx</h2>
+<ol>
+<li>
+<p>apt 安装</p>
+<p>参考官网文档（<a target="_blank" rel="noopener" href="http://nginx.org/en/linux_packages.html#Ubuntu">官网：nginx: Linux packages</a>）</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可执行文件路径  /usr/sbin/nginx</span></span><br><span class="line"><span class="comment"># 配置文件路径   /etc/nginx/nginx.conf  /etc/nginx/conf.d/default.conf</span></span><br><span class="line"></span><br><span class="line">sudo /usr/sbin/nginx -c /etc/nginx/nginx.conf  <span class="comment"># 以配置文件nginx.conf启动</span></span><br><span class="line">sudo /usr/sbin/nginx -s stop 	<span class="comment"># 停止</span></span><br><span class="line">sudo /usr/sbin/nginx -s reload 	<span class="comment"># 重启</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>apt-get安装</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install nginx</span><br><span class="line">sudo apt-get remove nginx  <span class="comment">#卸载</span></span><br><span class="line"></span><br><span class="line">sudo nginx -c /etc/nginx/nginx.conf  <span class="comment">#启动</span></span><br><span class="line">sudo nginx -s stop  <span class="comment">#停止 quit/reload/reopen</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+<h2 id="postgreSQL"><a class="header-anchor" href="#postgreSQL"></a>postgreSQL</h2>
+<p>常用命令</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop postgresql.service</span><br><span class="line">sudo systemctl start postgresql.service</span><br><span class="line"><span class="comment"># 相同效果</span></span><br><span class="line">sudo /etc/init.d/postgresql start   <span class="comment"># 开启</span></span><br><span class="line">sudo /etc/init.d/postgresql stop    <span class="comment"># 关闭</span></span><br><span class="line">sudo /etc/init.d/postgresql restart <span class="comment"># 重启</span></span><br><span class="line"></span><br><span class="line">sudo systemctl is-active postgresql  <span class="comment"># 是否处于活动状态</span></span><br><span class="line">sudo systemctl is-enabled postgresql <span class="comment"># 是否在systemd下已启用</span></span><br><span class="line">sudo systemctl status postgresql <span class="comment"># 是否正在运行</span></span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li>
+<p>下载安装</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install postgresql postgresql-client</span><br><span class="line"><span class="comment">## 安装完毕后，系统会创建一个数据库超级用户 postgres，密码为空。</span></span><br><span class="line">sudo -i -u postgres</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>登录</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 1. 切换至postgres账户</span></span><br><span class="line">su postgres</span><br><span class="line"><span class="comment">## 2. 登录数据库</span></span><br><span class="line">psql</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>修改密码</p>
+<ol>
+<li>
+<p>修改PostgreSQL数据库默认用户postgres的密码</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 1. 登录Postgres</span></span><br><span class="line">sudo -u postgres psql</span><br><span class="line"><span class="comment">## 2. 修改登录Postgres的密码</span></span><br><span class="line">ALTER　USER　postgres WITH PASSWORD ‘{password}’</span><br><span class="line"><span class="comment">## 3. 退出Postgres客户端</span></span><br><span class="line">\q</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>修改linux系统postgres用户的密码</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 1. 删除用户postgres的密码</span></span><br><span class="line">sudo passwd -d postgres</span><br><span class="line"><span class="comment">## 2. 设置用户postgres的密码</span></span><br><span class="line">sudo -u postgres passwd</span><br><span class="line"><span class="comment">## 3. 提示输入新密码</span></span><br><span class="line">Enter new UNIX password:</span><br><span class="line">Retype new UNIX password:</span><br><span class="line">passwd: password updated successfully</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p>远程登录配置</p>
+<p>windows下路径不同，但文件名还是一样的</p>
+<ol>
+<li>
+<p>修改 /etc/postgresql/10/main/pg_hba.config</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IPv4 local connections:</span></span><br><span class="line">host    all             all             127.0.0.1/32            md5</span><br><span class="line">host    all             all             0.0.0.0/0               md5  <span class="comment"># 添加该行</span></span><br><span class="line"><span class="comment"># IPv6 local connections:</span></span><br><span class="line">host    all             all             ::1/128                 md5</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>修改postgresql.config</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到并取消注释，改为 ‘*’</span></span><br><span class="line">listen_addresses = <span class="string">'*'</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>重启</p>
+<p>可以使用常用命令进行重启</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 或</span></span><br><span class="line">su - postgres</span><br><span class="line">pg_ctl restsrt  <span class="comment"># ??? ubuntu下没成功，windows在安装路径/bin 目录下</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p>安装PostGIS扩展</p>
+<p>PostGIS 的使用可以参考（<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35732147/article/details/85256640?spm=1001.2014.3001.5502"> PostGIS官方教程汇总目录</a>）</p>
+<ol>
+<li>
+<p>下载PostGIS</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install postgis</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>数据库加载</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EXTENSION postgis; # 加载postgis空间扩展</span><br><span class="line"><span class="keyword">SELECT</span> postgis_full_version();# 确认安装</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p>pgAdmin</p>
+<ol>
+<li>pgAdmin是专为PostgreSQL设计的数据库管理软件（使用navicat等其他管理软件也可以，但效果不是很好）</li>
+<li>导出功能实现：需要在 ”文件 - 配置 - “中对调用软件的路径进行配置</li>
+</ol>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>服务器基础搭建</p><p><a href="http://example.com/2021/07/17/服务器基础搭建/">http://example.com/2021/07/17/服务器基础搭建/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Zang</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2021-07-17</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2021-07-21</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/JDK/">JDK</a><a class="link-muted mr-2" rel="tag" href="/tags/Tomcat/">Tomcat</a><a class="link-muted mr-2" rel="tag" href="/tags/MySQL/">MySQL</a><a class="link-muted mr-2" rel="tag" href="/tags/Nginx/">Nginx</a><a class="link-muted mr-2" rel="tag" href="/tags/PostgreSQL/">PostgreSQL</a></div><div class="sharethis-inline-share-buttons"></div><script src="https://platform-api.sharethis.com/js/sharethis.js#property=60f6760f76fa40001968a22b&amp;product=inline-share-buttons" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2021/07/17/%E7%BB%93%E5%90%88ArcGIS%E5%AF%B9CAD%E5%9C%B0%E5%9B%BE%E8%BF%9B%E8%A1%8C%E5%85%A5%E5%BA%93%E5%A4%84%E7%90%86/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">结合 ArcGIS 对 CAD 地图入库处理</span></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "1e8bf348a35030713022aed6e8b345b4",
+            repo: "hexo-comments",
+            owner: "angzhijin",
+            clientID: "fe5b45655cc6e79560d1",
+            clientSecret: "93fae236031676637a010026d4e0a1702ef49007",
+            admin: ["angzhijin"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#服务器基础"><span class="level-left"><span class="level-item">1</span><span class="level-item">服务器基础</span></span></a></li><li><a class="level is-mobile" href="#JDK"><span class="level-left"><span class="level-item">2</span><span class="level-item">JDK</span></span></a></li><li><a class="level is-mobile" href="#Tomcat"><span class="level-left"><span class="level-item">3</span><span class="level-item">Tomcat</span></span></a></li><li><a class="level is-mobile" href="#MySQL"><span class="level-left"><span class="level-item">4</span><span class="level-item">MySQL</span></span></a></li><li><a class="level is-mobile" href="#Nginx"><span class="level-left"><span class="level-item">5</span><span class="level-item">Nginx</span></span></a></li><li><a class="level is-mobile" href="#postgreSQL"><span class="level-left"><span class="level-item">6</span><span class="level-item">postgreSQL</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" alt="Zang"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Zang</p><p class="is-size-6 is-block">被迫学习</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>杭州西湖</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">4</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">14</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://gitee.com/angzhijin" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ppoffice"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Wechat" href="https://gitee.com/angzhijin/pic-bed/raw/master/img/WeChat-QRCode.png"><i class="fab fa-weixin"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Weibo" href="https://www.weibo.com/6217773471"><i class="fab fa-weibo"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://szx.life/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">巷子深的生活</span></span><span class="level-right"><span class="level-item tag">szx.life</span></span></a></li><li><a class="level is-mobile" href="https://euler7.cn/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">欧拉不吃鱼</span></span><span class="level-right"><span class="level-item tag">euler7.cn</span></span></a></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"><span class="level-start"><span class="level-item">工具使用</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="level-start"><span class="level-item">开发学习笔记</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="level-start"><span class="level-item">数据库</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"><span class="level-start"><span class="level-item">服务器</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-09-08T14:58:58.598Z">2021-09-08</time></p><p class="title"><a href="/2021/09/08/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">Hexo博客搭建</a></p><p class="categories"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2021/08/24/pic-go%E4%BD%BF%E7%94%A8/"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261433224-picgo.png" alt="pic-go使用"></a></figure><div class="media-content"><p class="date"><time dateTime="2021-08-24T12:46:36.000Z">2021-08-24</time></p><p class="title"><a href="/2021/08/24/pic-go%E4%BD%BF%E7%94%A8/">pic-go使用</a></p><p class="categories"><a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2021/08/24/Wireshrk%E6%8A%93%E5%8C%85%E4%BD%BF%E7%94%A8/"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202109032029194-WIRESHARK.png" alt="Wireshark使用"></a></figure><div class="media-content"><p class="date"><time dateTime="2021-08-24T06:41:03.000Z">2021-08-24</time></p><p class="title"><a href="/2021/08/24/Wireshrk%E6%8A%93%E5%8C%85%E4%BD%BF%E7%94%A8/">Wireshark使用</a></p><p class="categories"><a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2021/07/22/Java%E4%B9%8Bstream()/"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210722211308-JavaLogo.png" alt="Java之stream()"></a></figure><div class="media-content"><p class="date"><time dateTime="2021-07-22T07:49:18.721Z">2021-07-22</time></p><p class="title"><a href="/2021/07/22/Java%E4%B9%8Bstream()/">Java之stream()</a></p><p class="categories"><a href="/categories/%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">开发学习笔记</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2021/07/21/TweenMax-js/"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261504972-Tweenmax.png" alt="TweenMax.to()的使用"></a></figure><div class="media-content"><p class="date"><time dateTime="2021-07-21T07:01:58.000Z">2021-07-21</time></p><p class="title"><a href="/2021/07/21/TweenMax-js/">TweenMax.to()的使用</a></p><p class="categories"><a href="/categories/%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">开发学习笔记</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CAD/"><span class="tag">CAD</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hexo/"><span class="tag">Hexo</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JDK/"><span class="tag">JDK</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MySQL/"><span class="tag">MySQL</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Network/"><span class="tag">Network</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Nginx/"><span class="tag">Nginx</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/PostGIS/"><span class="tag">PostGIS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/PostgreSQL/"><span class="tag">PostgreSQL</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Tomcat/"><span class="tag">Tomcat</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/wireshark/"><span class="tag">wireshark</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%89%8D%E7%AB%AF/"><span class="tag">前端</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%8D%9A%E5%AE%A2/"><span class="tag">博客</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E5%BA%8A/"><span class="tag">图床</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2021/09/"><span class="level-start"><span class="level-item">九月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2021/08/"><span class="level-start"><span class="level-item">八月 2021</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2021/07/"><span class="level-start"><span class="level-item">七月 2021</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><p class="is-size-7"><a href="http://beian.miit.gov.cn" target="_blank" rel="noopener">浙ICP备2021023703号-1</a></p><p class="is-size-7"><span>&copy; 2021 Zang</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/angzhijin"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
