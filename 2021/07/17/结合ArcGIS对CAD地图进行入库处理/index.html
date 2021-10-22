@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>结合 ArcGIS 对 CAD 地图入库处理 | 藏得好</title><meta name="keywords" content="PostgreSQL,PostGIS,CAD"><meta name="author" content="Zang"><meta name="copyright" content="Zang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="为了避免手动输2w6平的地图，也不想自己写系统来处理，终于摸索出一条曲线救国大法。 环境  数据库  PostgreSQL（需添加 PostGIS 插件）   软件  ArcGIS AutoCAD（可选）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="结合 ArcGIS 对 CAD 地图入库处理">
+<meta property="og:url" content="http://example.com/2021/07/17/%E7%BB%93%E5%90%88ArcGIS%E5%AF%B9CAD%E5%9C%B0%E5%9B%BE%E8%BF%9B%E8%A1%8C%E5%85%A5%E5%BA%93%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="藏得好">
+<meta property="og:description" content="为了避免手动输2w6平的地图，也不想自己写系统来处理，终于摸索出一条曲线救国大法。 环境  数据库  PostgreSQL（需添加 PostGIS 插件）   软件  ArcGIS AutoCAD（可选）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261458818-earth.png">
+<meta property="article:published_time" content="2021-07-17T14:23:58.000Z">
+<meta property="article:modified_time" content="2021-10-22T14:53:54.670Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="PostGIS">
+<meta property="article:tag" content="CAD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261458818-earth.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/07/17/%E7%BB%93%E5%90%88ArcGIS%E5%AF%B9CAD%E5%9C%B0%E5%9B%BE%E8%BF%9B%E8%A1%8C%E5%85%A5%E5%BA%93%E5%A4%84%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '结合 ArcGIS 对 CAD 地图入库处理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-10-22 22:53:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261458818-earth.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">藏得好</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">结合 ArcGIS 对 CAD 地图入库处理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-17T14:23:58.000Z" title="发表于 2021-07-17 22:23:58">2021-07-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-22T14:53:54.670Z" title="更新于 2021-10-22 22:53:54">2021-10-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="结合 ArcGIS 对 CAD 地图入库处理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>为了避免手动输2w6平的地图，也不想自己写系统来处理，终于摸索出一条曲线救国大法。</p>
+<h2 id="环境"><a class="header-anchor" href="#环境"></a>环境</h2>
+<ul>
+<li>数据库
+<ul>
+<li>PostgreSQL（需添加 PostGIS 插件）</li>
+</ul>
+</li>
+<li>软件
+<ul>
+<li>ArcGIS</li>
+<li>AutoCAD（可选）</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+<h2 id="步骤"><a class="header-anchor" href="#步骤"></a>步骤</h2>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/cad%E5%9C%B0%E5%9B%BE%E5%A4%84%E7%90%86.png" alt="步骤流程"></p>
+<p><br><br></p>
+<h2 id="ArcGIS-常用工具"><a class="header-anchor" href="#ArcGIS-常用工具"></a>ArcGIS 常用工具</h2>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210711203729ArcGIS%E5%B7%A5%E5%85%B7%E6%A0%8F.png" alt="常用工具"></p>
+<hr>
+<h2 id="一、导入-CAD"><a class="header-anchor" href="#一、导入-CAD"></a>一、导入 CAD</h2>
+<p>❗️ ArcGIS 支持 CAD 数据的查看、导入、导出，但不支持编辑</p>
+<p>❗️ 本人使用的ArcGIS版本为10.2，最高只支持2010版的CAD文件，高版本需要将其降为2010以下版本（大坑！）</p>
+<ol>
+<li>
+<p><strong>添加 CAD 数据</strong></p>
+<p>也可从目录窗口中直接拖入CAD文件</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214455-%E5%AF%BC%E5%85%A5CAD.png" alt="添加CAD数据"></p>
+</li>
+</ol>
+<hr>
+<h2 id="二、绘制自己的-shp"><a class="header-anchor" href="#二、绘制自己的-shp"></a>二、绘制自己的 shp</h2>
+<ol>
+<li>
+<p><strong>新建 shp 图层</strong></p>
+<p>目录  — 新建 — Shapefile — 命名 — 选择需要的要素类型 — 确定</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214553-%E5%88%9B%E5%BB%BAshp.png" alt="新建shp图层"></p>
+</li>
+</ol>
+<hr>
+<ol start="2">
+<li>
+<p><strong>打开属性表，添加字段</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214640-%E5%B1%9E%E6%80%A7%E8%A1%A8%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5.png" alt="打开属性表，添加字段"></p>
+</li>
+</ol>
+<hr>
+<ol start="3">
+<li>
+<p><strong>选中新图层，进入编辑模式</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214718-%20%E5%BC%80%E5%A7%8B%E7%BC%96%E8%BE%91.png" alt="进入编辑模式"></p>
+</li>
+</ol>
+<hr>
+<ol start="4">
+<li>
+<p><strong>创建第一个要素，作为框架</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214740-%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%A6%81%E7%B4%A0.png" alt="创建要素"></p>
+</li>
+</ol>
+<hr>
+<ol start="5">
+<li>
+<p><strong>选中外围要素</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214820-%E9%80%89%E6%8B%A9%E8%A6%81%E7%B4%A0.png" alt="外围框架"></p>
+</li>
+</ol>
+<hr>
+<ol start="6">
+<li>
+<p><strong>使用裁剪面对选中要素划分</strong></p>
+<p>点要素按照步骤4方法直接添加</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214857-%E8%A3%81%E5%89%AA%E8%A6%81%E7%B4%A0.png" alt="要素划分"></p>
+</li>
+</ol>
+<hr>
+<ol start="7">
+<li>
+<p><strong>添加属性</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719214914-%E7%BC%96%E8%BE%91%E5%B1%9E%E6%80%A7.png" alt="添加属性"></p>
+</li>
+</ol>
+<hr>
+<h2 id="三、导入-shp-到-postgreSQL"><a class="header-anchor" href="#三、导入-shp-到-postgreSQL"></a>三、导入 shp 到 postgreSQL</h2>
+<p><strong>工具：</strong> PostGIS PostGIS Bundle 3 for PostgreSQL x64 12 Shapefile and DBF Loader Exporter</p>
+<br>
+<p><strong>准备工作</strong><br>
+在PostgreSQL数据库中加载PostGIS扩展</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EXTENSION postgis; <span class="comment">-- 加载postgis空间扩展</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> postgis_full_version();  <span class="comment">-- 确认是否加载成功</span></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/postGIS%E7%95%8C%E9%9D%A2.png" alt="postGIS导入工具界面"></p>
+<hr>
+<ol>
+<li>
+<p><strong>连接 postgreSQL</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/postGIS%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93.png" alt="连接postgreSQL数据库"></p>
+</li>
+</ol>
+<hr>
+<ol start="2">
+<li>
+<p><strong>选择要导入的 shapefile 文件</strong></p>
+<p>导入参数：</p>
+<ul>
+<li>Table：要导入的目标表名称</li>
+<li>Geo Column：geom属性字段名</li>
+<li>SRID：空间参考标识符（超纲了，有点难懂，目前还用不到它，感兴趣的可以参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35732147/article/details/85228444">PostGIS教程四：加载空间数据</a>）</li>
+<li>Mode：操作模式
+<ul>
+<li>Create：新建表，表名为{ Table }的值</li>
+<li>Append：附加到表名为 {Table} 的表后面</li>
+<li>Delete：清空表名为 {Table} 的表内容</li>
+<li>Prepare：我也不是很清楚</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719220047-%E9%80%89%E6%8B%A9shp%E5%AF%BC%E5%85%A5.png" alt="选择shapfile文件"></p>
+</li>
+</ol>
+<hr>
+<ol start="3">
+<li>
+<p><strong>导入</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719220119-%E5%AF%BC%E5%85%A5shp.png" alt="导入"></p>
+</li>
+</ol>
+<hr>
+<ol start="4">
+<li>
+<p><strong>数据库中查看</strong></p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719220450-%E5%AF%BC%E5%85%A5%E7%BB%93%E6%9E%9C.png" alt="导入结果"></p>
+</li>
+</ol>
+<hr>
+<h2 id="四、空间坐标系问题"><a class="header-anchor" href="#四、空间坐标系问题"></a>四、空间坐标系问题</h2>
+<p>CAD 提供两种坐标系</p>
+<ul>
+<li>WCS（世界坐标系）</li>
+<li>UCS（用户坐标系）</li>
+</ul>
+<p><br><br></p>
+<p><strong>导入到 ArcGIS 时会提示警告</strong><br>
+⚠️  未知的空间参考</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719220550-%E6%9C%AA%E7%9F%A5%E7%9A%84%E7%A9%BA%E9%97%B4%E5%8F%82%E8%80%83%E7%B3%BBwarnning.png" alt="warning：未知的空间参考"></p>
+<hr>
+<p><strong>导入结果</strong></p>
+<p>坐标系显示未定义，坐标值为 CAD 中 WCS 下的坐标值</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210719220704-%E5%9B%BE%E5%B1%82%E5%B1%9E%E6%80%A7.png" alt="导入后的数据源信息"></p>
+<p>对要素第一次进行投影，添加了坐标系，但坐标值保持不变</p>
+<p>对要素第二次进行投影，坐标系变换，同时坐标值也会换算过去</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Zang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/07/17/%E7%BB%93%E5%90%88ArcGIS%E5%AF%B9CAD%E5%9C%B0%E5%9B%BE%E8%BF%9B%E8%A1%8C%E5%85%A5%E5%BA%93%E5%A4%84%E7%90%86/">http://example.com/2021/07/17/%E7%BB%93%E5%90%88ArcGIS%E5%AF%B9CAD%E5%9C%B0%E5%9B%BE%E8%BF%9B%E8%A1%8C%E5%85%A5%E5%BA%93%E5%A4%84%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">藏得好</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PostgreSQL/">PostgreSQL</a><a class="post-meta__tags" href="/tags/PostGIS/">PostGIS</a><a class="post-meta__tags" href="/tags/CAD/">CAD</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261458818-earth.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/21/TweenMax-js/"><img class="prev-cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210721195330-TweenMax.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">TweenMax.to()的使用</div></div></a></div><div class="next-post pull-right"><a href="/2021/07/17/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA/"><img class="next-cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">服务器基础搭建</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/07/17/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA/" title="服务器基础搭建"><img class="cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-17</div><div class="title">服务器基础搭建</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zang</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/angzhijin"><i></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/angzhijin" target="_blank" title=""><i class="fab fa-github"></i></a><a class="social-icon" href="https://gitee.com/angzhijin/pic-bed/raw/master/img/WeChat-QRCode.png" target="_blank" title=""><i class="fab fa-weixin"></i></a><a class="social-icon" href="https://www.weibo.com/6217773471" target="_blank" title=""><i class="fab fa-weibo"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArcGIS-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">3.</span> <span class="toc-text">ArcGIS 常用工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AF%BC%E5%85%A5-CAD"><span class="toc-number">4.</span> <span class="toc-text">一、导入 CAD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%BB%98%E5%88%B6%E8%87%AA%E5%B7%B1%E7%9A%84-shp"><span class="toc-number">5.</span> <span class="toc-text">二、绘制自己的 shp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AF%BC%E5%85%A5-shp-%E5%88%B0-postgreSQL"><span class="toc-number">6.</span> <span class="toc-text">三、导入 shp 到 postgreSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%A9%BA%E9%97%B4%E5%9D%90%E6%A0%87%E7%B3%BB%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">四、空间坐标系问题</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/10/22/%E8%A5%BF%E5%8C%97%E9%9D%92%E7%94%98%E5%A4%A7%E7%8E%AF%E7%BA%BF/" title="青甘大环线"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202110222227117-%E9%9D%92%E7%94%98%E5%A4%A7%E7%8E%AF%E7%BA%BF.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="青甘大环线"/></a><div class="content"><a class="title" href="/2021/10/22/%E8%A5%BF%E5%8C%97%E9%9D%92%E7%94%98%E5%A4%A7%E7%8E%AF%E7%BA%BF/" title="青甘大环线">青甘大环线</a><time datetime="2021-10-22T04:23:58.000Z" title="发表于 2021-10-22 12:23:58">2021-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/20/SpringBoot%E4%B8%8BWebSocket%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="SpringBoot集成WebSocket"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SpringBoot集成WebSocket"/></a><div class="content"><a class="title" href="/2021/10/20/SpringBoot%E4%B8%8BWebSocket%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="SpringBoot集成WebSocket">SpringBoot集成WebSocket</a><time datetime="2021-10-20T09:51:14.000Z" title="发表于 2021-10-20 17:51:14">2021-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/11/Java%E7%9F%A9%E9%98%B5%E5%BA%93Jama/" title="Java矩阵库Jama"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210722211308-JavaLogo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java矩阵库Jama"/></a><div class="content"><a class="title" href="/2021/09/11/Java%E7%9F%A9%E9%98%B5%E5%BA%93Jama/" title="Java矩阵库Jama">Java矩阵库Jama</a><time datetime="2021-09-11T08:33:31.000Z" title="发表于 2021-09-11 16:33:31">2021-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/08/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="Hexo博客搭建"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210310190511.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo博客搭建"/></a><div class="content"><a class="title" href="/2021/09/08/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="Hexo博客搭建">Hexo博客搭建</a><time datetime="2021-09-08T08:33:31.000Z" title="发表于 2021-09-08 16:33:31">2021-09-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/08/24/pic-go%E4%BD%BF%E7%94%A8/" title="pic-go使用"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202108261410337-picgo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pic-go使用"/></a><div class="content"><a class="title" href="/2021/08/24/pic-go%E4%BD%BF%E7%94%A8/" title="pic-go使用">pic-go使用</a><time datetime="2021-08-24T12:46:36.000Z" title="发表于 2021-08-24 20:46:36">2021-08-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Zang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn"><span>浙ICP备2021023703号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fe5b45655cc6e79560d1',
+      clientSecret: '93fae236031676637a010026d4e0a1702ef49007',
+      repo: 'hexo-comments',
+      owner: 'angzhijin',
+      admin: ['angzhijin'],
+      id: 'ba095bfd16e18e0a4681e152a5821e02',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
