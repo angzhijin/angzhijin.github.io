@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gradle | 藏得好</title><meta name="keywords" content="Gradle,Android"><meta name="author" content="Zang"><meta name="copyright" content="Zang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="重新捡起Android，老老实实先看一手Gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle">
+<meta property="og:url" content="http://example.com/posts/29828/index.html">
+<meta property="og:site_name" content="藏得好">
+<meta property="og:description" content="重新捡起Android，老老实实先看一手Gradle">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071554149-wallpaper.jpeg">
+<meta property="article:published_time" content="2022-01-13T02:51:21.000Z">
+<meta property="article:modified_time" content="2022-01-13T03:00:35.000Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Gradle">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071554149-wallpaper.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/29828/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "97n5zig8ri");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Zang","link":"链接: ","source":"来源: 藏得好","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Gradle',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-13 11:00:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2920808_2s4r4japsaf.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/angzhijin/pic-bed/raw/master/img/202201131055488-gradle.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">藏得好</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Gradle</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-13T02:51:21.000Z" title="发表于 2022-01-13 10:51:21">2022-01-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-13T03:00:35.000Z" title="更新于 2022-01-13 11:00:35">2022-01-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Gradle"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>为了学业以及毕设内容，重新捡起了Android开发。</p>
+<p>安装AndroidStudio与SDKTools倒是没啥问题，只要网络顺畅一切ok。</p>
+<p>但最麻烦的问题来了，就是每次都会遇上的Gradle Sync问题，迫不得已学了一遍Gradle（虽然说之前搞的时候也没正儿八经学过）。</p>
+</blockquote>
+<p>Gradle是基于<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Apache_Ant">Apache Ant</a>（2000年）、<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Apache_Maven">Apache Maven</a>（2004年）产生的一款高效易用的项目管理工具，弥补了Ant和Maven的不足。其使用一种基于Groovy的特定领域语言（DSL）来声明项目设置，抛弃了基于XML的各种繁琐配置（但个人感觉过于简化了反而有些地方理不清楚），以面向Java为主，还支持Kotlin、Scala、Groovy、C/C++、JavaScript语言。</p>
+<h1 id="Gradle文件分析"><a class="header-anchor" href="#Gradle文件分析"></a>Gradle文件分析</h1>
+<p>这里通过IDEA构建一个Gradle+Java结构的项目来分析</p>
+<p>在<code>Preference- Build,Execution,Deployment - Gradle</code>可以查看项目的Gradle配置</p>
+<p>项目结构中的<code>build.gradle</code>文件就是项目中的gradle配置文件，可能会有些出入，但大致结构是一样的。</p>
+<figure class="highlight groovy"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">plugins {</span><br><span class="line">    id <span class="string">'java'</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 项目路径</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">group <span class="string">'org.example'</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 项目版本</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">version <span class="string">'1.0-SNAPSHOT'</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 指定所使用的仓库，默认的mavenCentral()表示使用中央仓库，此刻项目中的所有jar包都会从中央仓库下载到本地指定目录</span></span><br><span class="line"><span class="comment"> * mavenLocal()表示使用本地仓库</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">repositories {</span><br><span class="line">    <span class="comment">//Maven本地仓库</span></span><br><span class="line">    MavenLocal()</span><br><span class="line">    <span class="comment">// Maven中央仓库</span></span><br><span class="line">    mavenCentral()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每个jar包的坐标都位于dependencies属性内</span></span><br><span class="line"><span class="comment"> * 每个jar包包含三个属性</span></span><br><span class="line"><span class="comment"> * group:name:version</span></span><br><span class="line"><span class="comment"> * 长格式：group:'',name:'',version:''</span></span><br><span class="line"><span class="comment"> * 短格式: 'group:name:version'</span></span><br><span class="line"><span class="comment"> * 可以从Maven中央仓库找到所需包的写法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">dependencies {</span><br><span class="line">    testImplementation <span class="string">'org.junit.jupiter:junit-jupiter-api:5.7.0'</span></span><br><span class="line">    testRuntimeOnly <span class="string">'org.junit.jupiter:junit-jupiter-engine:5.7.0'</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">test {</span><br><span class="line">    useJUnitPlatform()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>Maven中央仓库：<a target="_blank" rel="noopener" href="https://mvnrepository.com/">Maven Repository: Search/Browse/Explore</a></p>
+</blockquote>
+<h1 id="父子工程依赖"><a class="header-anchor" href="#父子工程依赖"></a>父子工程依赖</h1>
+<p>在父工程中，存在一个<code>setting.gradle</code>文件，其中写有各个子工程的项目名</p>
+<figure class="highlight groovy"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rootProject.name = <span class="string">'GradleDemo'</span></span><br><span class="line">include <span class="string">'GradleChild1'</span></span><br><span class="line">include <span class="string">'GradleChild2'</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若要由父工程的gradle给子工程提供依赖，需要在父工程的<code>build.gradle</code>中使用<code>allprojects{}</code>将所有内容包起来</p>
+<figure class="highlight groovy"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">allprojects {</span><br><span class="line">    apply <span class="attr">plugin:</span> <span class="string">'java'</span> <span class="comment">// 这里写法不太一样</span></span><br><span class="line">    group <span class="string">'org.example'</span></span><br><span class="line">    version <span class="string">'1.0-SNAPSHOT'</span></span><br><span class="line">    repositories {</span><br><span class="line">        mavenCentral()</span><br><span class="line">    }</span><br><span class="line">    dependencies {</span><br><span class="line">        testImplementation <span class="string">'org.junit.jupiter:junit-jupiter-api:5.7.0'</span></span><br><span class="line">        testRuntimeOnly <span class="string">'org.junit.jupiter:junit-jupiter-engine:5.7.0'</span></span><br><span class="line">    }</span><br><span class="line">    test {</span><br><span class="line">        useJUnitPlatform()</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>若子工程A还需要引入子工程B，需要在子工程的<code>build.gradle</code>中配置好<code>dependencies()</code></p>
+<figure class="highlight groovy"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//子工程Child2引入Child1</span></span><br><span class="line">dependencies {</span><br><span class="line">    implementation project(<span class="string">":GradleChild1"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="Gradle-Maven本地仓库"><a class="header-anchor" href="#Gradle-Maven本地仓库"></a>Gradle+Maven本地仓库</h1>
+<p>一般Gradle有一个自己的本地仓库，但大概率自己本地也会有一个Maven仓库。在一些情况下我们不希望Gradle再下一遍</p>
+<p>在<code>Preference- Build,Execution,Deployment - Gradle</code>中，修改<code>Use Gradle from</code>为<code>Specified location</code>，并指定本地的Maven仓库，一般为Maven下的<code>repository</code>文件夹。</p>
+<p>同时添加<code>mavenLocal()</code>先从本地寻找依赖。</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201121551187-gradle.png" alt="gradle仓库结构"></p>
+<p>但我测试完有点后悔，因为Gradle和Maven的仓库结构是不太一样的，两个混在一起后，会在当前使用的仓库中补充上以上文件，对于有强迫症的我来说就好像想吃白米饭但老爸总喜欢在里面加些红枣红薯balabala的一起煮。</p>
+<h1 id="Android-Gradle问题"><a class="header-anchor" href="#Android-Gradle问题"></a>Android+Gradle问题</h1>
+<h2 id="Could-not-find-method-google-for-arguments-on-repository-container"><a class="header-anchor" href="#Could-not-find-method-google-for-arguments-on-repository-container"></a>Could not find method google() for arguments [] on repository container.</h2>
+<blockquote>
+<p>重新捡起Android是为了跑起师兄的祖传代码，虽说在工程的readme中已经说明了可以先断网，将<code>gradle-3.3</code>版本导入本地，重新启动后以本地方式启动，最后就可以连上网了。</p>
+<p>但由于gradle早期（2019年3月份前）没有在国内设置cdn，所以当时下载贼慢，受网络环境影响贼大。</p>
+<p>虽说我刚开始学Android是在19年，但当时还是觉得很慢，而且实验室网络环境一直不行，每次同步都得在回寝室才能完成</p>
+</blockquote>
+<figure class="highlight groovy"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// building.gradle</span></span><br><span class="line"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span></span><br><span class="line"></span><br><span class="line">buildscript {</span><br><span class="line">    repositories {</span><br><span class="line">        jcenter()</span><br><span class="line">        google() <span class="comment">//出问题所在</span></span><br><span class="line">    }</span><br><span class="line">    dependencies {</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:3.3.1'</span></span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">allprojects {</span><br><span class="line">    repositories {</span><br><span class="line">        jcenter()</span><br><span class="line">        maven { url <span class="string">"https://jitpack.io"</span> }</span><br><span class="line">        google()</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line">task clean(<span class="attr">type:</span> Delete) {</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>出现这种原因一种可能性是使用的Gradle版本过低，可以通过两种方法修改</p>
+<ol>
+<li>方法一：在项目文件<code>gradle-wapper.properties</code>中将<code>distributionUrl</code>一项改为更高版本</li>
+<li>方法二：在<code>File - Project Structure - Project</code>中将<code>Gradle Version</code>修改为更高版本</li>
+</ol>
+<p>修改完成后进行同步，有可能会提示如<code>Minimum supported Gradle version is 4.10.1. Current version is 4.10.</code>，继续修改更高的就可以了。</p>
+<blockquote>
+<p>到2022年重新捡起Android，还是能明显感受到Gradle同步的速度快得多了</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Zang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/posts/29828/">http://example.com/posts/29828/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">藏得好</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Gradle/">Gradle</a><a class="post-meta__tags" href="/tags/Android/">Android</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071554149-wallpaper.jpeg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/37435/"><img class="next-cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071555529-pa.per.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">大明山滑雪一日游</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Waline</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zang</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/angzhijin"><i></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://gitee.com/angzhijin" target="_blank" title=""><i class="iconfont icon-gitee2"></i></a><a class="social-icon" href="https://github.com/angzhijin" target="_blank" title=""><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/qq_41526540?spm=1010.2135.3001.5421" target="_blank" title=""><i class="iconfont icon-csdn1-copy"></i></a><a class="social-icon" href="https://gitee.com/angzhijin/pic-bed/raw/master/img/WeChat-QRCode.png" target="_blank" title=""><i class="fab fa-weixin"></i></a><a class="social-icon" href="https://www.weibo.com/6217773471" target="_blank" title=""><i class="fab fa-weibo"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Welcome to Zang's Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gradle%E6%96%87%E4%BB%B6%E5%88%86%E6%9E%90"><span class="toc-text">Gradle文件分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%B6%E5%AD%90%E5%B7%A5%E7%A8%8B%E4%BE%9D%E8%B5%96"><span class="toc-text">父子工程依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gradle-Maven%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93"><span class="toc-text">Gradle+Maven本地仓库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Android-Gradle%E9%97%AE%E9%A2%98"><span class="toc-text">Android+Gradle问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Could-not-find-method-google-for-arguments-on-repository-container"><span class="toc-text">Could not find method google() for arguments [] on repository container.</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/29828/" title="Gradle"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071554149-wallpaper.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Gradle"/></a><div class="content"><a class="title" href="/posts/29828/" title="Gradle">Gradle</a><time datetime="2022-01-13T02:51:21.000Z" title="发表于 2022-01-13 10:51:21">2022-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/37435/" title="大明山滑雪一日游"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071555529-pa.per.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大明山滑雪一日游"/></a><div class="content"><a class="title" href="/posts/37435/" title="大明山滑雪一日游">大明山滑雪一日游</a><time datetime="2022-01-09T07:46:59.000Z" title="发表于 2022-01-09 15:46:59">2022-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/28317/" title="LeetCode笔记III｜数与位篇"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071555235-pa.per.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LeetCode笔记III｜数与位篇"/></a><div class="content"><a class="title" href="/posts/28317/" title="LeetCode笔记III｜数与位篇">LeetCode笔记III｜数与位篇</a><time datetime="2022-01-07T04:59:05.000Z" title="发表于 2022-01-07 12:59:05">2022-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/37490/" title="GeoServer初体验"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071555529-pa.per.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GeoServer初体验"/></a><div class="content"><a class="title" href="/posts/37490/" title="GeoServer初体验">GeoServer初体验</a><time datetime="2022-01-06T09:25:20.000Z" title="发表于 2022-01-06 17:25:20">2022-01-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/32553/" title="动态时间规整DTW"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071555529-pa.per.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="动态时间规整DTW"/></a><div class="content"><a class="title" href="/posts/32553/" title="动态时间规整DTW">动态时间规整DTW</a><time datetime="2022-01-05T06:30:46.000Z" title="发表于 2022-01-05 14:30:46">2022-01-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Zang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn"><span>浙ICP备2021023703号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://waline-comments-two.vercel.app',
+      avatar: 'monsterid',
+      avatarCDN: 'https://sdn.geekzu.org/avatar/',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline() 
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fe5b45655cc6e79560d1',
+      clientSecret: '93fae236031676637a010026d4e0a1702ef49007',
+      repo: 'hexo-comments',
+      owner: 'angzhijin',
+      admin: ['angzhijin'],
+      id: '6514e1dfa0e9baaa641709f5ad79e754',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Waline' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>
