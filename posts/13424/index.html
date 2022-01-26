@@ -1,0 +1,424 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MATLAB 程序编译为 Java Package | 藏得好</title><meta name="keywords" content="Java,MATLAB"><meta name="author" content="Zang"><meta name="copyright" content="Zang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="将MATLAB函数脚本转为Java Package 供Java编程调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MATLAB 程序编译为 Java Package">
+<meta property="og:url" content="http://example.com/posts/13424/index.html">
+<meta property="og:site_name" content="藏得好">
+<meta property="og:description" content="将MATLAB函数脚本转为Java Package 供Java编程调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111052124311-wallpaper.jpeg">
+<meta property="article:published_time" content="2022-01-26T15:42:50.000Z">
+<meta property="article:modified_time" content="2022-01-26T16:40:54.493Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="MATLAB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111052124311-wallpaper.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/13424/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "97n5zig8ri");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Zang","link":"链接: ","source":"来源: 藏得好","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MATLAB 程序编译为 Java Package',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-27 00:40:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2920808_2s4r4japsaf.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/angzhijin/pic-bed/raw/master/img/202111052124311-wallpaper.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">藏得好</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MATLAB 程序编译为 Java Package</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-26T15:42:50.000Z" title="发表于 2022-01-26 23:42:50">2022-01-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-26T16:40:54.493Z" title="更新于 2022-01-27 00:40:54">2022-01-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MATLAB 程序编译为 Java Package"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>相比java等语言，MATLAB在矩阵计算等方面可太强大了。要是java能直接调MATLAB就好了。</p>
+<p>确实可以！机缘巧合之下，发现了这个思路，折腾了好几天。</p>
+<p>（有些不足的就是其调用开销比较大，目前还不知道如何合理的调用，）</p>
+<h1 id="MATLAB-编译"><a class="header-anchor" href="#MATLAB-编译"></a>MATLAB 编译</h1>
+<h2 id="脚本编写"><a class="header-anchor" href="#脚本编写"></a>脚本编写</h2>
+<p>编写一个MATLAB函数脚本，这里我以绘图函数为例。</p>
+<figure class="highlight matlab"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 自定义画图函数drawplot.m</span></span><br><span class="line"><span class="comment">% 以两个1*n的矩阵为x，y坐标绘制一段线</span></span><br><span class="line"><span class="comment">% 参数 x y  </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawplot</span><span class="params">(x, y)</span>    </span></span><br><span class="line"><span class="built_in">plot</span>(x, y, <span class="string">'r'</span>); <span class="comment">%%使用matlab函数plot()作图      </span></span><br><span class="line">xlabel(<span class="string">'X轴'</span>)  </span><br><span class="line">ylabel(<span class="string">'Y轴'</span>) </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></tbody></table></figure>
+<p>另外还有一个<code>drawplot2Line.m</code>用于输出两条线（红+蓝）</p>
+<h2 id="打包"><a class="header-anchor" href="#打包"></a>打包</h2>
+<ol>
+<li>在MATLAB命令行窗口输入<code>deploytool</code>，打开部署工具</li>
+</ol>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201251636094-matlab.png" alt="MATLAB Compiler窗口1"></p>
+<ol start="2">
+<li>
+<p>选择 <code>Library Compiler</code></p>
+</li>
+<li>
+<p>添加脚本并配置</p>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201251709743-matlab.png" alt="MATLAB Compiler 窗口2"></p>
+<ol>
+<li>选择导出类型（我选择Java Package）</li>
+<li>选择要转换的脚本文件（可导入多个）</li>
+<li>导出的包名</li>
+<li>在jar包中要生成的类以及类内方法（类名可自定义）</li>
+<li>是否一起打包MATLAB运行环境MCR（默认不打包，自行从网上下载）</li>
+<li>打包</li>
+</ol>
+</li>
+<li>
+<p>等待打包完成</p>
+</li>
+<li>
+<p>生成的共有三个文件夹，其中包含导出的jar包和javadoc文档</p>
+<ul>
+<li>for_redistribution</li>
+<li>for_redistribution_files_only</li>
+<li>for_testing</li>
+</ul>
+<p>（三者有什么区别我也没有理解透，只知道取出其中的包导入到java工程中就好）</p>
+</li>
+</ol>
+<h1 id="Java调用"><a class="header-anchor" href="#Java调用"></a>Java调用</h1>
+<p>需要将上述方法导出的jar包以及MATLAB安装目录下的<code>\toolbox\javabuilder\jar\javabuilder.jar</code>包一同导入到Java工程中。Java导入本地jar包我这里就不讲了。</p>
+<p>对于矩阵数据，需要使用<code>javabuilder.jar</code>中提供的<code>MWNumericArray</code>进行传参。</p>
+<h2 id="输入"><a class="header-anchor" href="#输入"></a>输入</h2>
+<p>传递给MATLAB函数时，基本类型可以直接带入，矩阵需要使用<code>MWNumericArray</code></p>
+<p>常规的矩阵输入方式：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MWNumericArray input = <span class="keyword">null</span>; <span class="comment">// 用于保存输入矩阵</span></span><br><span class="line"><span class="comment">//方式一：</span></span><br><span class="line">input = MWNumbericArray.newInstance(<span class="keyword">int</span>, <span class="keyword">int</span>[], MWClassID.DOUBLE, MWComplexity.REAL);</span><br><span class="line"><span class="comment">//参数1表示矩阵的维数，参数2表示各维的大小即几行几列，参数三表示数据类型，参数四表示实数或复数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//方式二：</span></span><br><span class="line"><span class="keyword">double</span> array[] = { <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span> };<span class="comment">//要计算的数</span></span><br><span class="line"><span class="comment">//int array[]={3,2,4,5};也是可以的。</span></span><br><span class="line">input = <span class="keyword">new</span> MWNumericArray(array, MWClassID.DOUBLE);</span><br><span class="line">result = c1.myFunction(<span class="number">1</span>, intput);</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="调用"><a class="header-anchor" href="#调用"></a>调用</h2>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Class1 c1=<span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span>{</span><br><span class="line">    <span class="comment">//输入参数配置</span></span><br><span class="line">    c1 = <span class="keyword">new</span> Class1();</span><br><span class="line">    c1.draw.plot(x,y); <span class="comment">//无返回</span></span><br><span class="line">    output = c1.myFunction(<span class="number">1</span>, intput); <span class="comment">//有返回（返回一个参数Object[1]）</span></span><br><span class="line">    output2 = c1.myFunction2(<span class="number">3</span>, intput); <span class="comment">//有返回（返回三个参数Object[3]）</span></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>对于导出的函数，其结构有两种：</p>
+<ol>
+<li>对于无数据输出的，为<code>function(Onject... obj)</code>，直接输入参数即可；</li>
+<li>对于有数据输出的，为<code>function(int i, Object... obj)</code>，<code>i</code>表示返回的参数个数，<code>Object... obj</code>为对应MATLAB函数所输入的参数。</li>
+</ol>
+<h2 id="输出"><a class="header-anchor" href="#输出"></a>输出</h2>
+<p>对于有数据返回的函数，返回值为<code>Objecct[]</code>数组。</p>
+<p>处理方式：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MWNumericArray output = <span class="keyword">null</span>;  <span class="comment">//用于保存输出矩阵</span></span><br><span class="line">output=(MWNumericArray) result[<span class="number">0</span>]; <span class="comment">//将结果Object[]转换成MWNumericArray</span></span><br><span class="line"><span class="keyword">double</span> res = output.getDouble(<span class="number">1</span>); <span class="comment">//从MWNumericArray对象中读取数据</span></span><br></pre></td></tr></tbody></table></figure>
+<p>其他的读取数据方式见【4. MWNumericArray方法】</p>
+<h2 id="后期处理"><a class="header-anchor" href="#后期处理"></a>后期处理</h2>
+<p>释放本地资源</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MWArray.disposeArray(input);  <span class="comment">//建立的矩阵用这句</span></span><br><span class="line">WArray.disposeArray(output);  <span class="comment">// 建立的矩阵用这句</span></span><br><span class="line">MWArray.disposeArray(result);  <span class="comment">//建立的Object数组用这句</span></span><br><span class="line">c1.dispose();  <span class="comment">//建立的matlab类对象用这句</span></span><br><span class="line"><span class="comment">//以上释放时，必须保证其不为null。</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="MWNumericArray方法"><a class="header-anchor" href="#MWNumericArray方法"></a><code>MWNumericArray</code>方法</h2>
+<ul>
+<li><code>getDouble()</code>：以double格式从<code>MWNumericArray</code>获取矩阵第一个数，常用于只有一个数的矩阵</li>
+<li><code>getDouble(int i)</code>：以double格式从<code>MWNumericArray</code>获取矩阵第i个数</li>
+<li><code>getDouble(int[] i)</code>：以double的格式从<code>MWNumericArray</code>获取矩阵中的<code>i[0]</code>行，<code>i[1]</code>列的数（多维则i有多个元素）</li>
+<li><code>getDoubleData()</code>：以<code>double[]</code>一维数组的格式从<code>MWNumericArray</code>获取矩阵（按列连接）</li>
+<li><code>toDoubleArray()</code>：将矩阵以<code>Object</code>返回，实为多维<code>double</code>数组返回，需要强制转换成为多维数组。</li>
+<li><code>set(int[] i, double)</code>：对矩阵的<code>i[0]</code>行<code>i[1]</code>列进行赋值</li>
+</ul>
+<p>其他如<code>getByte</code>, <code>getInt</code>, <code>getShort</code>, <code>getLong</code>, <code>getFloat</code>也是同样的用法。</p>
+<h2 id="示例"><a class="header-anchor" href="#示例"></a>示例</h2>
+<p>这里我以调用drawplot2Line()作为例子。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">MWNumericArray x = <span class="keyword">null</span>;</span><br><span class="line">MWNumericArray y = <span class="keyword">null</span>;</span><br><span class="line">Plotter plotter = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">    <span class="keyword">int</span>[] dims = {<span class="number">1</span>, <span class="number">120001</span>};</span><br><span class="line">    x = MWNumericArray.newInstance(dims, MW</span><br><span class="line">    y = MWNumericArray.newInstance(dims, <span class="function">MW</span></span><br><span class="line"><span class="function">    <span class="title">for</span> <span class="params">(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">120001</span>; i++)</span> </span>{</span><br><span class="line">        <span class="keyword">double</span> t=<span class="number">0.001</span>*i-<span class="number">6</span>;</span><br><span class="line">        x.set(i, <span class="number">16</span>*Math.pow(Math.sin(t),<span class="number">3</span>)</span><br><span class="line">        y.set(i, <span class="number">13</span>*Math.cos(t)-<span class="number">5</span>*Math.cos(</span><br><span class="line">    }</span><br><span class="line">    plotter = <span class="keyword">new</span> Plotter();</span><br><span class="line">    plotter.drawplot( x, y);</span><br><span class="line">    plotter.waitForFigures();</span><br><span class="line">} <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">    System.out.println(e);</span><br><span class="line">} <span class="keyword">finally</span> {</span><br><span class="line">    <span class="comment">// 释放本地资源</span></span><br><span class="line">    MWArray.disposeArray(x);</span><br><span class="line">    MWArray.disposeArray(y);</span><br><span class="line">    <span class="keyword">if</span> (plotter != <span class="keyword">null</span>) {</span><br><span class="line">        plotter.dispose();</span><br><span class="line">        System.out.println(<span class="string">"over"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201270026650-matlab.png" alt="绘制爱心"></p>
+<blockquote>
+<p>这里我是用了比较简单的函数来画的爱心</p>
+<p><code>x=16*(sin(t))^3</code> 与 <code>y=13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)</code>，其中<code>-6&lt;=t&lt;=6</code></p>
+<p>当然也可以采用其他的图形。</p>
+</blockquote>
+<h1 id="环境部署"><a class="header-anchor" href="#环境部署"></a>环境部署</h1>
+<p>一般而言，在运行环境下是没有MATLAB的。</p>
+<p>没有MATLAB环境下调用jar包，会由于<code>MWNumericArray</code>这些类出现<code>NoClassDefFoundError</code>问题。对这一问题在<a target="_blank" rel="noopener" href="https://blog.csdn.net/jamesjxin/article/details/46606307">【怎么解决java.lang.NoClassDefFoundError错误】</a>中有很好的解释</p>
+<p>但MATLAB又太大，10+G起步，更好的办法就是安装MATLAB Compiler Runtime (MCR) 。</p>
+<ul>
+<li>
+<p>安装说明文档：<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/compiler/install-the-matlab-runtime.html?#bvf6b29">Install and Configure MATLAB Runtime </a></p>
+</li>
+<li>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/products/compiler/matlab-runtime.html">MATLAB Runtime - MATLAB Compiler - MATLAB</a></p>
+</li>
+</ul>
+<p>安装的MCR需要与编译时使用的MATLAB版本一致，我自己使用的是R2018(9.4)</p>
+<h2 id="Windows"><a class="header-anchor" href="#Windows"></a>Windows</h2>
+<p>下载后双击安装即可</p>
+<h2 id="Ubuntu"><a class="header-anchor" href="#Ubuntu"></a>Ubuntu</h2>
+<h3 id="下载"><a class="header-anchor" href="#下载"></a>下载</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://ssd.mathworks.com/supportfiles/downloads/R2018a/deployment_files/R2018a/installers/glnxa64/MCR_R2018a_glnxa64_installer.zip</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="解压"><a class="header-anchor" href="#解压"></a>解压</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip MCR_R2018a_glnxa64_installer.zip</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="安装"><a class="header-anchor" href="#安装"></a>安装</h3>
+<p>默认在 <code>/usr/local/MATLAB/MATLAB_Runtime/v94</code></p>
+<p>注意这里最后的版本号要视自己情况</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 普通安装</span></span><br><span class="line">sudo -H ./install</span><br><span class="line"><span class="comment"># 静默安装（无UI的Ubuntu下）</span></span><br><span class="line">sudo ./install -mode silent -agreeToLicense yes</span><br><span class="line"><span class="comment"># 指定目录</span></span><br><span class="line">sudo ./install -mode silent -agreeToLicense yes -destinationFolder  /data/tomcat/MCR</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="环境配置"><a class="header-anchor" href="#环境配置"></a>环境配置</h3>
+<blockquote>
+<p>虽说按照官方的走了一遍，但并没有成功，后面尝试了写到<code>/etc/profile</code>中也还是不行，待有空了继续捣鼓吧。 比较毕竟ubuntu只是尝试着用一用，主力还是在windows上，而且Windows安装MCR会自动配置好环境。</p>
+<p>————————————————————————2022/1/26</p>
+</blockquote>
+<ol>
+<li>
+<p>查看当前的SHELL环境</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>根据不同的SHELL环境选择不同的<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/compiler/mcr-path-settings-for-run-time-deployment.html#mw_8b4e2361-7e0d-4eb9-b3d3-55762966f1b0">配置方法</a>（我的环境为<code>/bin/bash</code>）</p>
+</li>
+<li>
+<p>保存当前的库路径为<code>mypath</code>变量，并输出</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mypath=$LD_LIBRARY_PATH &amp;&amp; echo $mypath</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>附加MATLAB环境到<code>mypath</code>中。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mypath=<span class="string">"<span class="variable">${mypath:+<span class="variable">${mypath}</span>:}</span></span></span><br><span class="line"><span class="string">&lt;MATLAB_RUNTIME_INSTALL_DIR&gt;/runtime/glnxa64:</span></span><br><span class="line"><span class="string">&lt;MATLAB_RUNTIME_INSTALL_DIR&gt;/bin/glnxa64:</span></span><br><span class="line"><span class="string">&lt;MATLAB_RUNTIME_INSTALL_DIR&gt;/sys/os/glnxa64:</span></span><br><span class="line"><span class="string">&lt;MATLAB_RUNTIME_INSTALL_DIR&gt;/extern/bin/glnxa64"</span></span><br></pre></td></tr></tbody></table></figure>
+<p>以上命令需要在一行中输入，如：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mypath=<span class="string">"<span class="variable">${mypath:+<span class="variable">${mypath}</span>:}</span>/usr/local/MATLAB/MATLAB_Runtime/v94/runtime/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v94/bin/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v94/sys/os/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v94/extern/bin/glnxa64"</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>再次打印输出查看<code>mypath</code></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$mypath</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>在当前会话中将<code>mypath</code>赋给<code>LD_LIBRARY_PATH</code></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$mypath</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>如永久设置则需要执行以下命令，写到<code>~/.bashrc</code>中</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"export LD_LIBRARY_PATH=<span class="variable">$mypath</span>"</span> &gt;&gt; ~/.bashrc</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>应用更改</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>检查GNU版本</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldd --version</span><br></pre></td></tr></tbody></table></figure>
+<p>如果是2.17及以下，则还需要按上述步骤将<code>&lt;MATLAB_RUNTIME_INSTALL_DIR&gt;/bin/glnxa64/glibc-2.17_shim.so</code>添加到<code>LD_PRELOAD</code>环境变量中。</p>
+</li>
+</ol>
+<h3 id="卸载"><a class="header-anchor" href="#卸载"></a>卸载</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &lt;MATLAB_RUNTIME_INSTALL_DIR&gt;</span><br></pre></td></tr></tbody></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Zang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/posts/13424/">http://example.com/posts/13424/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">藏得好</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a><a class="post-meta__tags" href="/tags/MATLAB/">MATLAB</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111052124311-wallpaper.jpeg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/29828/"><img class="next-cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201131104720-gradle.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">重拾Android - Gradle</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/26546/" title="Java矩阵库Jama"><img class="cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210722211308-JavaLogo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-11</div><div class="title">Java矩阵库Jama</div></div></a></div><div><a href="/posts/3458/" title="Java之stream()"><img class="cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210722211308-JavaLogo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-11</div><div class="title">Java之stream()</div></div></a></div><div><a href="/posts/17178/" title="Java之JSON工具类"><img class="cover" src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210722211308-JavaLogo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-22</div><div class="title">Java之JSON工具类</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Waline</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zang</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/angzhijin"><i></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://gitee.com/angzhijin" target="_blank" title=""><i class="iconfont icon-gitee2"></i></a><a class="social-icon" href="https://github.com/angzhijin" target="_blank" title=""><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/qq_41526540?spm=1010.2135.3001.5421" target="_blank" title=""><i class="iconfont icon-csdn1-copy"></i></a><a class="social-icon" href="https://gitee.com/angzhijin/pic-bed/raw/master/img/WeChat-QRCode.png" target="_blank" title=""><i class="fab fa-weixin"></i></a><a class="social-icon" href="https://www.weibo.com/6217773471" target="_blank" title=""><i class="fab fa-weibo"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Welcome to Zang's Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MATLAB-%E7%BC%96%E8%AF%91"><span class="toc-text">MATLAB 编译</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99"><span class="toc-text">脚本编写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85"><span class="toc-text">打包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E8%B0%83%E7%94%A8"><span class="toc-text">Java调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5"><span class="toc-text">输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8"><span class="toc-text">调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA"><span class="toc-text">输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E6%9C%9F%E5%A4%84%E7%90%86"><span class="toc-text">后期处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MWNumericArray%E6%96%B9%E6%B3%95"><span class="toc-text">MWNumericArray方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="toc-text">环境部署</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu"><span class="toc-text">Ubuntu</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-text">下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B"><span class="toc-text">解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD"><span class="toc-text">卸载</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/13424/" title="MATLAB 程序编译为 Java Package"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111052124311-wallpaper.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MATLAB 程序编译为 Java Package"/></a><div class="content"><a class="title" href="/posts/13424/" title="MATLAB 程序编译为 Java Package">MATLAB 程序编译为 Java Package</a><time datetime="2022-01-26T15:42:50.000Z" title="发表于 2022-01-26 23:42:50">2022-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/29828/" title="重拾Android - Gradle"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201131104720-gradle.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="重拾Android - Gradle"/></a><div class="content"><a class="title" href="/posts/29828/" title="重拾Android - Gradle">重拾Android - Gradle</a><time datetime="2022-01-13T02:51:21.000Z" title="发表于 2022-01-13 10:51:21">2022-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/37435/" title="大明山滑雪一日游"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202201131122285-steep.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大明山滑雪一日游"/></a><div class="content"><a class="title" href="/posts/37435/" title="大明山滑雪一日游">大明山滑雪一日游</a><time datetime="2022-01-09T07:46:59.000Z" title="发表于 2022-01-09 15:46:59">2022-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/28317/" title="LeetCode笔记III｜数与位篇"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111102011738-leetcode.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LeetCode笔记III｜数与位篇"/></a><div class="content"><a class="title" href="/posts/28317/" title="LeetCode笔记III｜数与位篇">LeetCode笔记III｜数与位篇</a><time datetime="2022-01-07T04:59:05.000Z" title="发表于 2022-01-07 12:59:05">2022-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/37490/" title="GeoServer初体验"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/202111071555655-pa.per.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GeoServer初体验"/></a><div class="content"><a class="title" href="/posts/37490/" title="GeoServer初体验">GeoServer初体验</a><time datetime="2022-01-06T09:25:20.000Z" title="发表于 2022-01-06 17:25:20">2022-01-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Zang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn"><span>浙ICP备2021023703号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://waline-comments-two.vercel.app',
+      avatar: 'monsterid',
+      avatarCDN: 'https://sdn.geekzu.org/avatar/',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline() 
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fe5b45655cc6e79560d1',
+      clientSecret: '93fae236031676637a010026d4e0a1702ef49007',
+      repo: 'hexo-comments',
+      owner: 'angzhijin',
+      admin: ['angzhijin'],
+      id: '8a783682b00992691439bef5a47b3279',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Waline' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>
