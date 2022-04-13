@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>PostGIS空间函数 | 是藏不是藏</title><meta name="keywords" content="PostgreSQL,PostGIS"><meta name="author" content="Zang"><meta name="copyright" content="Zang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="许久没研究postgresql和postgis，突然来活，再整一遍。  PostGIS官方教程汇总目录_不睡觉的怪叔叔的博客-CSDN博客_postgis教程  先附上自己测试用的随便取的一张信息表（一些没用的信息就请忽视吧！）   #空间数据 常见的空间数据结构有  点：Point 线&#x2F;线串：Linestring 面&#x2F;多边形：Polygon 集合  点集合：MultiPoint 线集合：Mult">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PostGIS空间函数">
+<meta property="og:url" content="http://zang.gold/posts/64750/index.html">
+<meta property="og:site_name" content="是藏不是藏">
+<meta property="og:description" content="许久没研究postgresql和postgis，突然来活，再整一遍。  PostGIS官方教程汇总目录_不睡觉的怪叔叔的博客-CSDN博客_postgis教程  先附上自己测试用的随便取的一张信息表（一些没用的信息就请忽视吧！）   #空间数据 常见的空间数据结构有  点：Point 线&#x2F;线串：Linestring 面&#x2F;多边形：Polygon 集合  点集合：MultiPoint 线集合：Mult">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202203281926362-wallpaper6d3a1786ece7fc79.jpg">
+<meta property="article:published_time" content="2022-04-12T16:20:13.000Z">
+<meta property="article:modified_time" content="2022-04-12T16:37:05.000Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="PostGIS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202203281926362-wallpaper6d3a1786ece7fc79.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://zang.gold/posts/64750/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "97n5zig8ri");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":100,"languages":{"author":"作者: Zang","link":"链接: ","source":"来源: 是藏不是藏","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PostGIS空间函数',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-13 00:37:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2920808_2s4r4japsaf.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">42</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.zang.gold/images/202203281926362-wallpaper6d3a1786ece7fc79.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">是藏不是藏</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PostGIS空间函数</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-12T16:20:13.000Z" title="发表于 2022-04-13 00:20:13">2022-04-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-12T16:37:05.000Z" title="更新于 2022-04-13 00:37:05">2022-04-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PostGIS空间函数"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>许久没研究postgresql和postgis，突然来活，再整一遍。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35732147/article/details/85256640">PostGIS官方教程汇总目录_不睡觉的怪叔叔的博客-CSDN博客_postgis教程</a></li>
+</ul>
+<p>先附上自己测试用的随便取的一张信息表（一些没用的信息就请忽视吧！）</p>
+<p><img src="https://img.zang.gold/images/202204101642186-postgis.png" alt="一张表"></p>
+<p><img src="https://img.zang.gold/images/202204101643801-postgis.png" alt="几何查看"></p>
+<h2 id="空间数据"><a class="header-anchor" href="#空间数据">#</a>空间数据</h2>
+<p>常见的空间数据结构有</p>
+<ul>
+<li>点：Point</li>
+<li>线/线串：Linestring</li>
+<li>面/多边形：Polygon</li>
+<li>集合
+<ul>
+<li>点集合：MultiPoint</li>
+<li>线集合：MultiLineString</li>
+<li>面集合：MultiPolygon</li>
+<li>异构集合（任意几何集合）：GeometryCollection</li>
+</ul>
+</li>
+</ul>
+<h2 id="空间信息"><a class="header-anchor" href="#空间信息">#</a>空间信息</h2>
+<h3 id="基本信息"><a class="header-anchor" href="#基本信息">#</a>基本信息</h3>
+<ul>
+<li>
+<p><code>ST_Israelid(geom)</code></p>
+<p>判断图形有效性。如<code>8</code>形的图形就是无效的图形。</p>
+<blockquote>
+<p>可以使用<code>ST_IsValidReason(geom)</code>来查找无效的原因</p>
+<p>同时没有100%的方法来修复无效的图形。最坏的方法是识别出来后移动到另一张表，到处后修复</p>
+</blockquote>
+</li>
+<li>
+<p><code>ST_SRID(geom)</code>：获取geometry的空间应用标识符SRID（如果不记得有用过那么大概率就是默认的0）</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span>, ST_SRID(geom) <span class="keyword">FROM</span> public.f5_door_point <span class="keyword">where</span> name <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> gid <span class="keyword">ASC</span> </span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202204101645763-postgis.png" alt="ST_SRID(geom)"></p>
+</li>
+<li>
+<p><code>ST_AsText(geom)</code>：将geometry转换为WKT（Well-konwn Text）格式</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span>, ST_AsText(geom) <span class="keyword">FROM</span> f5_door_point <span class="keyword">where</span> name <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> gid <span class="keyword">ASC</span> </span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202204101648892-postgis.png" alt="ST_AsText(geom)"></p>
+</li>
+</ul>
+<blockquote>
+<p>同理，可以导出的格式有：WKT，WKB（Well-known Binary），GML（Geographic Mark-up Language），KML（Keyhole Mark-up Language），GeoJson，SVG</p>
+</blockquote>
+<ul>
+<li>
+<p><code>ST_AsGeoJson(geom)</code></p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span>, ST_AsGeoJson(geom) <span class="keyword">FROM</span> f5_door_point <span class="keyword">where</span> name <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> gid <span class="keyword">ASC</span> </span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202204101647536-postgis.png" alt="ST_AsGeoJson(geom)"></p>
+</li>
+<li>
+<p><code>ST_GeomFromText(str, SRID)</code>：将WKT格式的空间信息转为geometry格式</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ST_GeomFromText(<span class="string">'POINT(5 5)'</span>, <span class="number">0</span>);</span><br><span class="line"># 或</span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">'POINT(5 5)'</span>::geometry;</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202204101651563-postgis.png" alt="ST_GeomFromText(str, SRID)"></p>
+</li>
+</ul>
+<blockquote>
+<p>同理，可以导入的格式有：WKT，WKB，GML，KML</p>
+</blockquote>
+<h3 id="点信息"><a class="header-anchor" href="#点信息">#</a>点信息</h3>
+<ul>
+<li>
+<p><code>ST_X(point)</code> / <code>ST_Y(point)</code>：返回x和y坐标</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span>, ST_X(geom), ST_Y(geom) <span class="keyword">FROM</span> f5_door_point <span class="keyword">where</span> name <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> gid <span class="keyword">ASC</span> </span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202204101701697-postgis.png" alt="ST_X(geom) / ST_Y(geom)"></p>
+</li>
+</ul>
+<h3 id="线信息"><a class="header-anchor" href="#线信息">#</a>线信息</h3>
+<ul>
+<li><code>ST_Length(line)</code>：返回线的长度</li>
+<li><code>ST_StartPoint(line)</code>：返回线的第一个坐标</li>
+<li><code>ST_EndPoint(line)</code>：返回线的最后一个坐标</li>
+<li><code>ST_NPoints(line)</code>：返回线的坐标数量</li>
+</ul>
+<h3 id="面信息"><a class="header-anchor" href="#面信息">#</a>面信息</h3>
+<ul>
+<li><code>ST_Area(polygon)</code>：返回多边形的面积</li>
+</ul>
+<blockquote>
+<p>还有很多，就不列举了</p>
+</blockquote>
+<h2 id="空间关系"><a class="header-anchor" href="#空间关系">#</a>空间关系</h2>
+<h3 id="相等"><a class="header-anchor" href="#相等">#</a>相等</h3>
+<ul>
+<li>
+<p><code>ST_Equals(geomA, geomB)</code></p>
+<p>两个相同类型的几何图形有相同的X，Y坐标，返回<code>TRUE</code></p>
+<blockquote>
+<p>空间相等，判断图形包含有相同的空间区域</p>
+</blockquote>
+</li>
+<li>
+<p><code>ST_OrderingEquals(geomA, geomB)</code></p>
+<p>精确相等：图形中的所有要素，包括点数量、点顺序严格相等</p>
+</li>
+<li>
+<p><code>=</code></p>
+<p>等边界框：图形占用相同的二维空间（矩形），但不一定占用相同空间</p>
+<blockquote>
+<p>允许使用空间索引，在连接或筛选数据时，可以将大量的比较集快速减少为更易处理的子集</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="相交"><a class="header-anchor" href="#相交">#</a>相交</h3>
+<ul>
+<li>
+<p><code>ST_Intersects(geomA, geomB)</code></p>
+<p>两个图形有相同部分，即边界或内部相交</p>
+</li>
+<li>
+<p><code>ST_DisJoint(geomA, geomB)</code></p>
+<p>两个图形没有重合的部分</p>
+<blockquote>
+<p><code>not ST_Intersects()</code>通常比<code>ST_DisJoint()</code>更有效</p>
+</blockquote>
+</li>
+<li>
+<p><code>ST_Crosses(geomA, geomB)</code></p>
+<p>常用于不同维度图形见的比较，相交部分低于两个图形的最大维度，且位于两个图形的内部</p>
+<blockquote>
+<p>穿过</p>
+</blockquote>
+</li>
+<li>
+<p><code>ST_Overlaps(geomA, geomB) </code></p>
+<p>比较两个相同维度的图形，相交部分与两个图形都不同但具有相同维度。（相同的话就是equal或contain了）</p>
+<blockquote>
+<p>重叠</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="接壤"><a class="header-anchor" href="#接壤">#</a>接壤</h3>
+<ul>
+<li>
+<p><code>ST_Touches(geomA, geomB)</code></p>
+<p>两个图形在边界上接触，但内部不相交</p>
+</li>
+</ul>
+<h3 id="包含"><a class="header-anchor" href="#包含">#</a>包含</h3>
+<ul>
+<li><code>ST_Within(geomA, geomB)</code></li>
+</ul>
+<p>​		A完全位于B内</p>
+<ul>
+<li>
+<p><code>ST_Contains(geomA, geomB)</code></p>
+<p>B完全包含在A内</p>
+<blockquote>
+<p>按我的理解是 <code>Within(A,B) == Contains(B,A)</code></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="距离"><a class="header-anchor" href="#距离">#</a>距离</h3>
+<ul>
+<li>
+<p><code>ST_Distance(geomA, geomB)</code></p>
+<p>A与B之间的最短距离，返回浮点数</p>
+</li>
+<li>
+<p><code>ST_DWithin(geomA, geomB, dis)</code></p>
+<p>A与B的距离是否在某个范围之内</p>
+</li>
+</ul>
+<h2 id="新的空间对象"><a class="header-anchor" href="#新的空间对象">#</a>新的空间对象</h2>
+<h3 id="中心"><a class="header-anchor" href="#中心">#</a>中心</h3>
+<ul>
+<li>
+<p><code>ST_Centroid(geom)</code></p>
+<p>返回质心</p>
+<blockquote>
+<p>可能位于图形外</p>
+</blockquote>
+</li>
+<li>
+<p><code>ST_PointOnSurface(geom)</code></p>
+<p>返回图形的中心点</p>
+<blockquote>
+<p>保证在图形内，但计算代价大</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="缓冲区"><a class="header-anchor" href="#缓冲区">#</a>缓冲区</h3>
+<ul>
+<li>
+<p><code>ST_Buffer(geom, dis)</code></p>
+<p>为图形生成一圈缓冲区</p>
+<blockquote>
+<p>距离可为负。</p>
+<p>对于线和点，只会返回空</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="叠置"><a class="header-anchor" href="#叠置">#</a>叠置</h3>
+<ul>
+<li>
+<p><code>ST_Intersection(geomA, geomB)</code></p>
+<p>返回两个图形的重叠部分（交集）</p>
+<blockquote>
+<p>如无交集，会返回一个空的图形</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="联合"><a class="header-anchor" href="#联合">#</a>联合</h3>
+<ul>
+<li>
+<p><code>ST_Union(geomA, geomB)</code></p>
+<p>返回两个图形的并集</p>
+</li>
+<li>
+<p><code>ST_Union([geom])</code></p>
+<p>返回数组中全部图形的并集</p>
+<blockquote>
+<p>可与<code>GROUP BY</code>一起使用</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="线性参考"><a class="header-anchor" href="#线性参考">#</a>线性参考</h2>
+<blockquote>
+<p>一个相当Amazing的方法就是捕捉，即把要素点捕捉到线性要素中</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35732147/article/details/87450027">PostGIS教程十八：线性参考_</a></p>
+</blockquote>
+<ul>
+<li><code>ST_LineLocatePoint</code></li>
+<li><code>ST_LineInterpolatePoint</code></li>
+</ul>
+<h2 id="最近邻域搜索"><a class="header-anchor" href="#最近邻域搜索">#</a>最近邻域搜索</h2>
+<blockquote>
+<p>“距离一个要素最近的是哪些要素？”</p>
+</blockquote>
+<ol>
+<li>
+<p>方法一：遍历查找比较</p>
+</li>
+<li>
+<p>方法二：添加空间索引约束</p>
+<blockquote>
+<p>我们可以在查询几何图形周围搜索的最小方框是什么？并且仍然可以找到至少一个候选几何图形？</p>
+<p>添加一个区域范围</p>
+</blockquote>
+</li>
+<li>
+<p>方法三：基于索引的kNN</p>
+<p>基于索引的KNN查询的语法在查询的ORDER BY子句中放置了一个特殊的"基于索引的距离运算符"：</p>
+<ul>
+<li>
+<p><code>&lt;-&gt;</code>：边界框中心之间的距离</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> xxx <span class="keyword">order</span> <span class="keyword">by</span> geomA <span class="operator">&lt;</span><span class="operator">-</span><span class="operator">&gt;</span> geomB limit <span class="number">10</span>;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p><code>&lt;#&gt;</code>：边界框边界之间的距离</p>
+</li>
+</ul>
+<blockquote>
+<p>注意是基于边界框进行计算，所以与实际情况会有差异。（点的边界框是自身）</p>
+<p>需要获得更高精度的，需要通过子查询得到前n个可能的结果，再依次计算。</p>
+</blockquote>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Zang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zang.gold/posts/64750/">http://zang.gold/posts/64750/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zang.gold" target="_blank">是藏不是藏</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PostgreSQL/">PostgreSQL</a><a class="post-meta__tags" href="/tags/PostGIS/">PostGIS</a></div><div class="post_share"><div class="social-share" data-image="https://img.zang.gold/images/202203281926362-wallpaper6d3a1786ece7fc79.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/33152/"><img class="next-cover" src="https://img.zang.gold/images/202203282104890-wallpaper.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MyBatis-Plus</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/65031/" title="结合 ArcGIS 对 CAD 地图入库处理"><img class="cover" src="https://img.zang.gold/images/202108261458818-earth.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-17</div><div class="title">结合 ArcGIS 对 CAD 地图入库处理</div></div></a></div><div><a href="/posts/373/" title="服务器基础搭建"><img class="cover" src="https://img.zang.gold/images/20210310190511.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-17</div><div class="title">服务器基础搭建</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Waline</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE"><span class="toc-text">空间数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E4%BF%A1%E6%81%AF"><span class="toc-text">空间信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-text">基本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E4%BF%A1%E6%81%AF"><span class="toc-text">点信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E4%BF%A1%E6%81%AF"><span class="toc-text">线信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E4%BF%A1%E6%81%AF"><span class="toc-text">面信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%85%B3%E7%B3%BB"><span class="toc-text">空间关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E7%AD%89"><span class="toc-text">相等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E4%BA%A4"><span class="toc-text">相交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%A3%A4"><span class="toc-text">接壤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E5%90%AB"><span class="toc-text">包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB"><span class="toc-text">距离</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E7%9A%84%E7%A9%BA%E9%97%B4%E5%AF%B9%E8%B1%A1"><span class="toc-text">新的空间对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E5%BF%83"><span class="toc-text">中心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-text">缓冲区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%A0%E7%BD%AE"><span class="toc-text">叠置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88"><span class="toc-text">联合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%82%E8%80%83"><span class="toc-text">线性参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E8%BF%91%E9%82%BB%E5%9F%9F%E6%90%9C%E7%B4%A2"><span class="toc-text">最近邻域搜索</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Zang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn"><span>浙ICP备2021023703号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://waline-comments-two.vercel.app',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline()
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fe5b45655cc6e79560d1',
+      clientSecret: '93fae236031676637a010026d4e0a1702ef49007',
+      repo: 'hexo-comments',
+      owner: 'angzhijin',
+      admin: ['angzhijin'],
+      id: 'd94845aa12ddcb472152a61074da42ef',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Waline' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>
