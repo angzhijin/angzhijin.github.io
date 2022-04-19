@@ -152,13 +152,13 @@
 </head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">45</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.zang.gold/images/202111241452650-terraria.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">是藏不是藏</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Terraria Server 搭建</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-24T06:47:13.000Z" title="发表于 2021-11-24 14:47:13">2021-11-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-28T13:33:12.000Z" title="更新于 2022-03-28 21:33:12">2022-03-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Terraria Server 搭建"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>在刚买了腾讯云服务器后，碰上了Terraria开启了创意工坊，就想着搭一个服务器捣鼓捣鼓。在成功部署完成后玩了一个小时，又没有再碰过。不久之后，服务器就因为环境问题重装了一遍。</p>
 <p>2021年11月，Terraria 1.4.3版本与饥荒联动了，虽然说两个游戏我都没有去深入去玩，但接着这个契机，重新在腾讯云服务器上装一个也好，顺便也补上这篇博客。</p>
 <p>吐槽一下，现在连服务器都有双十一大促了，甚至比学生优惠还便宜，吐了🤮</p>
-<h2 id="下载服务端"><a class="header-anchor" href="#下载服务端"></a>下载服务端</h2>
+<h2 id="下载服务端"><a class="header-anchor" href="#下载服务端">#</a>下载服务端</h2>
 <ul>
 <li>官网地址：<a target="_blank" rel="noopener" href="https://www.terraria.org/">Terraria</a></li>
 </ul>
 <p>在官网的页脚中选中<code>PC Dedicated Server</code> 即可下载，上传到腾讯云服务器</p>
 <p>此外，还有Terraria的工具箱 <a target="_blank" rel="noopener" href="https://terraria.fandom.com/zh/wiki/TShock">TShock</a>，提供管理员系统、建筑保护、地标传送等功能。有想折腾的可以捣鼓看看，像我这种云玩家也不需要那么多的功能</p>
-<h2 id="服务端部署配置"><a class="header-anchor" href="#服务端部署配置"></a>服务端部署配置</h2>
+<h2 id="服务端部署配置"><a class="header-anchor" href="#服务端部署配置">#</a>服务端部署配置</h2>
 <ol>
 <li>
 <p>新建文件夹</p>
@@ -203,11 +203,11 @@
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">screen -S terrariaServer</span><br><span class="line">sudo ./TerrariaServer.bin.x86_64 -config      /opt/terraria/bin/143/Windows/serverconfig.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># ctrl+A+D 退出当前会话</span></span><br><span class="line"><span class="comment"># ctrl+D 关闭当前会话</span></span><br><span class="line">screen -r terrariaServer <span class="comment"># 重新连接</span></span><br></pre></td></tr></tbody></table></figure>
 </li>
 </ol>
-<h2 id="Link-Start"><a class="header-anchor" href="#Link-Start"></a>Link Start</h2>
+<h2 id="Link-Start"><a class="header-anchor" href="#Link-Start">#</a>Link Start</h2>
 <p>进入游戏后，选择 <code>多人模式 - 通过IP加入</code>，依次选择角色，输入IP、端口、密码，就可以愉快的玩耍啦～</p>
 <p><img src="https://img.zang.gold/images/202111221447639-terraria.png" alt="image-20211122144725187"></p>
 <p><img src="https://img.zang.gold/images/202111221452631-terraria.png" alt="Terraria后台"></p>
-<h2 id="启动优化"><a class="header-anchor" href="#启动优化"></a>启动优化</h2>
+<h2 id="启动优化"><a class="header-anchor" href="#启动优化">#</a>启动优化</h2>
 <p>通过调用程序启动太麻烦了，可以写一个脚本更快速的启动</p>
 <ol>
 <li>
@@ -234,7 +234,7 @@
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务器启动 </span></span><br><span class="line">sh -x /opt/terraria/bin/terraria_script.sh start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务器停止 </span></span><br><span class="line">sh -x /opt/terraria/bin/terraria_script.sh stop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务器重启 </span></span><br><span class="line">sh -x /opt/terraria/bin/terraria_script.sh restart</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看screen</span></span><br><span class="line">screen -ls</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换screen</span></span><br><span class="line">screen -r terraria</span><br><span class="line"><span class="comment"># 暂时退出（Ctrl+A+D）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 确认状态</span></span><br><span class="line">sh -x /opt/terraria/bin/terraria_script.sh status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存世界存档</span></span><br><span class="line">sh -x /opt/terraria/bin/terraria_script.sh save</span><br></pre></td></tr></tbody></table></figure>
 </li>
 </ol>
-<h2 id="自启动-定时保存"><a class="header-anchor" href="#自启动-定时保存"></a>自启动&amp;定时保存</h2>
+<h2 id="自启动-定时保存"><a class="header-anchor" href="#自启动-定时保存">#</a>自启动&amp;定时保存</h2>
 <p>如果云服务器意外重启，可以避免Terraria没被启动</p>
 <ol>
 <li>
@@ -256,7 +256,7 @@
 </ol>
 </li>
 </ol>
-<h2 id="注意"><a class="header-anchor" href="#注意"></a>注意</h2>
+<h2 id="注意"><a class="header-anchor" href="#注意">#</a>注意</h2>
 <p>玩家客户端的版本必须和服务器的版本一样，也就一两天，我把Terraria更新到了1.4.3.1，就连不上服务器了</p>
 <p>目前更新版本后如何使用原世界还在折腾中。</p>
 <p><img src="https://img.zang.gold/images/202111281848803terraria.png" alt="你使用的版本与此服务器不同。。。。"></p>
@@ -272,7 +272,7 @@
 <p>后面想添加自启动和自动保存，还在摸索，还没成功，教程中也还只是理论部分。</p>
 <p>特喵的我登上游戏一看怎么又更新到1.4.3.2了啊！！！！</p>
 <p>-------------------2021/11/28</p>
-<h2 id="参考文档"><a class="header-anchor" href="#参考文档"></a>参考文档</h2>
+<h2 id="参考文档"><a class="header-anchor" href="#参考文档">#</a>参考文档</h2>
 <p><a target="_blank" rel="noopener" href="https://terraria.fandom.com/zh/wiki/%E6%9C%8D%E5%8A%A1%E5%99%A8#.E5.BC.80.E6.9C.8D.E6.96.B9.E6.B3.95_.28Linux.29">[1] 服务器 - 官方中文 Terraria Wiki (fandom.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1200316">[2] 如何在Linux上搭建Terraria 游戏服务器？ - 云+社区 - 腾讯云 (tencent.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/longqizhanshen/article/details/106996445">[3] 2021最新 从零开始搭建terraria(泰拉瑞亚)云服务器_longqizhanshen的博客-CSDN博客_泰拉瑞亚pe服务器ip地址2021</a></p>

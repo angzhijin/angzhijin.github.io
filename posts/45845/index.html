@@ -151,26 +151,26 @@
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 </head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/angzhijin/pic-bed/raw/master/img/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">45</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.zang.gold/images/202109032025396-wireshark.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">是藏不是藏</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Wireshark使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-08-24T06:41:03.000Z" title="发表于 2021-08-24 14:41:03">2021-08-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-28T13:09:28.000Z" title="更新于 2022-03-28 21:09:28">2022-03-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">625</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Wireshark使用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Wireshark：网络封包分析软件。</p>
 <span id="more"></span>
-<h2 id="简单介绍"><a class="header-anchor" href="#简单介绍"></a>简单介绍</h2>
+<h2 id="简单介绍"><a class="header-anchor" href="#简单介绍">#</a>简单介绍</h2>
 <p>Wireshark作为一个功能强大的抓包神器，从大学时候做计算机网络实验到项目工作抓包分析首选的都是Wireshark。网络封包分析软件的功能是撷取网络封包，并尽可能显示出最为详细的网络封包资料。Wireshark使用WinPCAP作为接口，直接与网卡进行数据报文交换。</p>
 <p>抓包过程很简单，但之后的分析就相对麻烦了。</p>
 <p>Wireshark的过滤分为捕捉过滤和显示过滤。前者在抓包前设置，选择性抓包；后者是对抓包结果中进行过滤。前者仅支持协议过滤，后者支持协议过滤也支持内容过滤。两种过滤器支持的过滤语法不太一样。</p>
 <p>我这里主要记录下显示过滤。</p>
-<h2 id="软件安装"><a class="header-anchor" href="#软件安装"></a>软件安装</h2>
+<h2 id="软件安装"><a class="header-anchor" href="#软件安装">#</a>软件安装</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.wireshark.org/download.html">官网下载地址：Wireshark · Download</a></li>
 </ul>
 <p>很简单，无脑“next”就完事了</p>
-<h2 id="抓包"><a class="header-anchor" href="#抓包"></a>抓包</h2>
+<h2 id="抓包"><a class="header-anchor" href="#抓包">#</a>抓包</h2>
 <p>打开软件 ➡️ 选择要抓取的网络连接（如下面图中捕获的是以太网），进入即开始抓取包了</p>
 <p>这里截取了采集到的一系列包，选中某一个包后下方窗口会显示对应的内容详情以及字节流。</p>
 <p>（具体含义我就不讲了，这一部分更难😢，况且当初通宵复习计网结果还是差点挂课的仔可不敢教）</p>
 <p><img src="https://img.zang.gold/images/20210824151049-wireshark.png" alt="抓包结果"></p>
-<h2 id="过滤分析"><a class="header-anchor" href="#过滤分析"></a>过滤分析</h2>
+<h2 id="过滤分析"><a class="header-anchor" href="#过滤分析">#</a>过滤分析</h2>
 <p>这里就到了本文的主要内容——显示过滤</p>
 <p>如上面抓包结果中所示，有source, Destination, Protocol, Leangth, Info 等信息，这里要做的就是根据自己需求在上方“应用显示过滤器”对数据包过滤。</p>
-<h3 id="协议过滤"><a class="header-anchor" href="#协议过滤"></a>协议过滤</h3>
-<h4 id="按协议过滤"><a class="header-anchor" href="#按协议过滤"></a>按协议过滤</h4>
+<h3 id="协议过滤"><a class="header-anchor" href="#协议过滤">#</a>协议过滤</h3>
+<h4 id="按协议过滤"><a class="header-anchor" href="#按协议过滤">#</a>按协议过滤</h4>
 <p><code>udp || tcp</code>  显示udp或tcp包</p>
 <p>按协议属性过滤</p>
 <ul>
@@ -196,7 +196,7 @@
 <p><code>http.host = "www.bing.com"</code>	显示请求的域名为“<a target="_blank" rel="noopener" href="http://www.bing.com">www.bing.com</a>”的http包</p>
 </li>
 </ul>
-<h3 id="内容过滤"><a class="header-anchor" href="#内容过滤"></a>内容过滤</h3>
+<h3 id="内容过滤"><a class="header-anchor" href="#内容过滤">#</a>内容过滤</h3>
 <p>内容过滤我使用的比较少，这里就只是纸上谈兵了</p>
 <p><code>http contains "username"</code>	显示内容包含username的http包</p>
 <p><code>http.request.uri contains ".js"</code>	显示url中包含.js的http数据包</p>
