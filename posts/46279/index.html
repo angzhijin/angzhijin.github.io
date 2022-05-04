@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Latex基础学习 | 是藏不是藏</title><meta name="keywords" content="Latex"><meta name="author" content="Zang"><meta name="copyright" content="Zang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="参考  Bilibili：1小时学会用LaTex写论文（全5集）（全英文，无字幕） Youtube：How to Write a Thesis in LaTeX pt 1 - Basic Structure - YouTube（可以使用YouTube的自动字幕+翻译，需要科学上网）  #基本结构 一个Letex项目下的结构 123456|-- chapter		|-- 各个章节的tex文件|--">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Latex基础学习">
+<meta property="og:url" content="http://zang.gold/posts/46279/index.html">
+<meta property="og:site_name" content="是藏不是藏">
+<meta property="og:description" content="参考  Bilibili：1小时学会用LaTex写论文（全5集）（全英文，无字幕） Youtube：How to Write a Thesis in LaTeX pt 1 - Basic Structure - YouTube（可以使用YouTube的自动字幕+翻译，需要科学上网）  #基本结构 一个Letex项目下的结构 123456|-- chapter		|-- 各个章节的tex文件|--">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202203281925972-wallpaperc29f0d664f2ff2ba.jpg">
+<meta property="article:published_time" content="2022-05-04T14:30:06.000Z">
+<meta property="article:modified_time" content="2022-05-04T14:52:22.066Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Latex">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202203281925972-wallpaperc29f0d664f2ff2ba.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://zang.gold/posts/46279/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "97n5zig8ri");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":100,"languages":{"author":"作者: Zang","link":"链接: ","source":"来源: 是藏不是藏","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Latex基础学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-04 22:52:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2920808_2s4r4japsaf.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.zang.gold/images/20210805201202-blogavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">47</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.zang.gold/images/202203281925972-wallpaperc29f0d664f2ff2ba.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">是藏不是藏</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fa fa-comments"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Latex基础学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-04T14:30:06.000Z" title="发表于 2022-05-04 22:30:06">2022-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-04T14:52:22.066Z" title="更新于 2022-05-04 22:52:22">2022-05-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Latex基础学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>参考</p>
+<ul>
+<li>Bilibili：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13W411v7ah?p=1&amp;t=41">1小时学会用LaTex写论文（全5集）</a>（全英文，无字幕）</li>
+<li>Youtube：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=gFAQd0ueIMc&amp;ab_channel=ShareLaTeX">How to Write a Thesis in LaTeX pt 1 - Basic Structure - YouTube</a>（可以使用YouTube的自动字幕+翻译，需要科学上网）</li>
+</ul>
+<h2 id="基本结构"><a class="header-anchor" href="#基本结构">#</a>基本结构</h2>
+<p>一个Letex项目下的结构</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|-- chapter</span><br><span class="line">		|-- 各个章节的tex文件</span><br><span class="line">|-- images</span><br><span class="line">		| - 图片文件</span><br><span class="line">|-- main.tex</span><br><span class="line">|-- references.bib</span><br></pre></td></tr></tbody></table></figure>
+<p>一个最简单的Latex项目示例为</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">\documentclass{article} % 文章类型</span><br><span class="line">\usepackage[utf8]{inputenc} % 引入包</span><br><span class="line"></span><br><span class="line">\title{Hello World}  %标题</span><br><span class="line">\author{Zang}  % 作者</span><br><span class="line">\date{4 May 2022} % 日期</span><br><span class="line"></span><br><span class="line">\begin{document} % 文章开始</span><br><span class="line"></span><br><span class="line">\maketitle % 制作封面</span><br><span class="line"></span><br><span class="line">%%%%%%%%%%%%%%</span><br><span class="line">%</span><br><span class="line">%  文章主体</span><br><span class="line">%</span><br><span class="line">%%%%%%%%%%%%%%</span><br><span class="line"></span><br><span class="line">\end{document}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><code>documentclass</code> 文章类型
+<ul>
+<li><code>article</code>为短文，对于论文等可以使用<code>report</code></li>
+<li>可以指定字体大小、是否适配双面打印等</li>
+</ul>
+</li>
+</ul>
+<h3 id="标题"><a class="header-anchor" href="#标题">#</a>标题</h3>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\title{</span><br><span class="line">	{Hello World}\\</span><br><span class="line">	{\large Zhejiang University of Technology}\\</span><br><span class="line">	{\includegraphics{zjut}} % 此处还需要引入图片包 graphicx ，后面讲</span><br><span class="line">}</span><br><span class="line">\author{Zang}</span><br><span class="line">\date{2 May 2022}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="页面布局"><a class="header-anchor" href="#页面布局">#</a>页面布局</h3>
+<p>使用<code>geometry</code>包</p>
+<p>可以对纸张大小、页边距等进行配置</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% A4纸，文本宽度，顶部边距，底部边距，双页情况下偏移量</span><br><span class="line">\usepackage[a4paper, width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm] {geometry} </span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>当配置为双页时，默认的页面 <code>|口|口|</code> 中三条<code>|</code>是等宽，即中间的宽度由两页对半分，这样会导致纵向预览时上下页面不对齐，这时可以使用<code>bindingoffset</code>设置偏移量使对齐。</p>
+</blockquote>
+<h3 id="页眉页脚"><a class="header-anchor" href="#页眉页脚">#</a>页眉页脚</h3>
+<p>使用<code>fancyhdr</code>包</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">% 引入页眉页脚</span><br><span class="line">\usepackage{fancyhdr}</span><br><span class="line">% 若要在某一部分清除需在页面中添加 \pagestyle{empty}， 使用\pagestyle{fancy} 恢复页面样式</span><br><span class="line">\pagestyle{fancy}</span><br><span class="line">% 页眉配置</span><br><span class="line">\fancyhead{}</span><br><span class="line">% 【奇数页右侧，偶数页左侧】标题</span><br><span class="line">\fancyhead[RO,LE]{Thesis Title}</span><br><span class="line"></span><br><span class="line">% 页脚配置</span><br><span class="line">\fancyfoot{}</span><br><span class="line">% [偶数页左侧，奇数页右侧] 页码</span><br><span class="line">\fancyfoot[LE,RO]{\thepage}</span><br><span class="line">% [奇数页左侧，偶数页中间] 页码</span><br><span class="line">\fancyfoot[LO,CE]{\rightmark} % {Chapter \thechapter}</span><br><span class="line">% [奇数页中间，偶数页右间] 页码</span><br><span class="line">\fancyfoot[CO,RE]{Author Name}</span><br><span class="line">% 修改页眉页脚分界线宽度 </span><br><span class="line">\renewcommand{\headrulewidth}{0.4pt}</span><br><span class="line">\renewcommand{\footrulewidth}{0.4pt}</span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li>页眉页脚有两种位置关系：一是奇偶页（奇数<code>Odd</code>，偶数<code>Even</code>）；二是左中右（<code>Left</code>，<code>Center</code>，<code>Right</code>）。两者配合可以对页眉页脚内容位置进行设置</li>
+<li>页眉页脚的分界线，需要使用<code>renewcommand</code>指令修改</li>
+</ol>
+<h3 id="章节-目录"><a class="header-anchor" href="#章节-目录">#</a>章节/目录</h3>
+<ol>
+<li>在文章正文部分，为避免正片文化均在同一文章内造成混乱，将各个部分章节独立出来，通过<code>\input{}</code>进行导入。</li>
+<li>一般分章节放在<code>chapters\</code>目录下</li>
+<li>目录部分使用<code>\tableofcontents</code>自动生成，会忽略<code>\chapter*{}</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">\begin{document}</span><br><span class="line"></span><br><span class="line">\maketitle % 制作封面</span><br><span class="line"></span><br><span class="line">% 摘要</span><br><span class="line">\chapter*{Abstract} % 带 * 表示不生成章节编号，，不列入目录，也不会修改章节标记</span><br><span class="line">This is a Abstract.</span><br><span class="line"></span><br><span class="line">% 声明（如独创性声明等）</span><br><span class="line">\chapter*{Declaration 1} </span><br><span class="line"> I declare that..</span><br><span class="line"></span><br><span class="line">\chapter*{Declaration 2}</span><br><span class="line">I declare  that..</span><br><span class="line"></span><br><span class="line">% 致谢</span><br><span class="line">\chapter*{Acknowledgements}</span><br><span class="line">I want to thank..</span><br><span class="line"></span><br><span class="line">% 目录</span><br><span class="line">\tableofcontents</span><br><span class="line"></span><br><span class="line">\chapter{Introduction}</span><br><span class="line">\input{chapters/introduction}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\chapter{Chapter Two Title}</span><br><span class="line">\input{chapters/chapter02}</span><br><span class="line"></span><br><span class="line">% 附录</span><br><span class="line">\appendix</span><br><span class="line">\chapter{Appendix Title}</span><br><span class="line">\input{chapters/appendix}</span><br><span class="line"></span><br><span class="line">\end{document}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202205042027277-latex.png" alt="目录"></p>
+<h2 id="图片加载"><a class="header-anchor" href="#图片加载">#</a>图片加载</h2>
+<ol>
+<li>使用<code>graphicx</code>包，若存在子图片需要添加子标题等，还需要<code>caption</code>和<code>subcaption</code></li>
+<li>图片存放于<code>images/</code>目录下</li>
+<li>生成图片目录<code>\listoffigures</code></li>
+<li>交叉引用中<code>\label</code>必须在<code>\caption, \subcaption</code>后面</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">% 使用图片加载</span><br><span class="line">\usepackage{graphicx}</span><br><span class="line">% 图片的根目录</span><br><span class="line">\graphicspath{{images/}}</span><br><span class="line">% 标题和副标题</span><br><span class="line">\usepackage{caption}</span><br><span class="line">\usepackage{subcaption}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">% 图片目录</span><br><span class="line">\listoffigures </span><br><span class="line"></span><br><span class="line">see Picture \ref{fig:picture1} % 图片的交叉引用</span><br><span class="line"></span><br><span class="line">% 单张图片</span><br><span class="line">\begin{figure}[h]</span><br><span class="line">\centering % 页面中心</span><br><span class="line">\includegraphics[width=0.5\textwidth]{picture}  % 引入图片[图片占文章宽度的一半]{图片名}</span><br><span class="line">\caption{An example graph} % 图片标题</span><br><span class="line">\label{fig:picture1} % 图片标记 结合 \ref{}</span><br><span class="line">\end{figure}</span><br><span class="line"></span><br><span class="line"> % 多张图片</span><br><span class="line">\begin{figure}[h]</span><br><span class="line">    \centering</span><br><span class="line">    \begin{subfigure}[b]{0.3\textwidth} % 子图片占据文章宽度的1/3 （1*3幅图）</span><br><span class="line">        \centering</span><br><span class="line">        \includegraphics[width=\textwidth]{picture}</span><br><span class="line">        \caption{$y=x$}</span><br><span class="line">        \label{fig:subpicture1}</span><br><span class="line">    \end{subfigure}</span><br><span class="line">    \hfill % 子图片间的留白</span><br><span class="line">    \begin{subfigure}[b]{0.3\textwidth}</span><br><span class="line">        \centering</span><br><span class="line">        \includegraphics[width=\textwidth]{picture}</span><br><span class="line">        \caption{$y=x$}</span><br><span class="line">        \label{fig:subpicture2}</span><br><span class="line">    \end{subfigure}</span><br><span class="line">    \hfill</span><br><span class="line">    \begin{subfigure}[b]{0.3\textwidth}</span><br><span class="line">        \centering</span><br><span class="line">        \includegraphics[width=\textwidth]{picture}</span><br><span class="line">        \caption{$y=x$}</span><br><span class="line">        \label{fig: subpicture3}</span><br><span class="line">    \end{subfigure}</span><br><span class="line">    \caption{subpicture * 3}</span><br><span class="line">    \label{fig:3 * picture}</span><br><span class="line">\end{figure}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202205042033204-latex.png" alt="图片及交叉引用"></p>
+<p><img src="https://img.zang.gold/images/202205042033736-latex.png" alt="图片目录"></p>
+<h2 id="表格加载"><a class="header-anchor" href="#表格加载">#</a>表格加载</h2>
+<ol>
+<li>表格加载与图片加载类似，不过没有表格支持包</li>
+<li>生成图片目录<code>\listoffigures </code>名称为<code>List of Tables</code></li>
+<li>交叉引用中<code>\label</code>必须在<code>\caption, \subcaption</code>后面</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">% 标题和副标题</span><br><span class="line">\usepackage{caption}</span><br><span class="line">\usepackage{subcaption}</span><br><span class="line"></span><br><span class="line">% 表格目录</span><br><span class="line">\listoftables</span><br><span class="line"></span><br><span class="line">look at tab1: \ref{tab:abc}</span><br><span class="line"></span><br><span class="line">\begin{table}[h]</span><br><span class="line">    \centering</span><br><span class="line">    \begin{tabular}{l | l | l}  % 表格结构 ｜表示有竖线</span><br><span class="line">        A &amp; B &amp; C \\ % 与 l l l 一一匹配</span><br><span class="line">        \hline % 横向分隔符</span><br><span class="line">        1 &amp; 2 &amp; 3\\</span><br><span class="line">        4 &amp; 5 &amp; 6</span><br><span class="line">    \end{tabular}</span><br><span class="line">    \caption{very basic table}</span><br><span class="line">    \label{tab:abc}  </span><br><span class="line">\end{table}</span><br><span class="line"></span><br><span class="line">look at table2.a: \ref{sub@tab:subtable1}</span><br><span class="line"></span><br><span class="line">\begin{table}[h]</span><br><span class="line">    \begin{subtable}[h]{0.45\textwidth}</span><br><span class="line">        \centering</span><br><span class="line">        \begin{tabular}{l | l l} % 仅一条竖线</span><br><span class="line">        A &amp; B &amp; C \\</span><br><span class="line">        \hline</span><br><span class="line">        1 &amp; 2 &amp; 3\\</span><br><span class="line">        4 &amp; 5 &amp; 6</span><br><span class="line">        \end{tabular}</span><br><span class="line">        \caption{subTable 1}</span><br><span class="line">        \label{tab:subtable1}</span><br><span class="line">    \end{subtable}</span><br><span class="line">    \begin{subtable}[h]{0.45\textwidth}</span><br><span class="line">        \centering</span><br><span class="line">        \begin{tabular}{l l l} % 无竖线</span><br><span class="line">        A &amp; B &amp; C \\</span><br><span class="line">        \hline</span><br><span class="line">        1 &amp; 2 &amp; 3\\</span><br><span class="line">        4 &amp; 5 &amp; 6</span><br><span class="line">        \end{tabular}</span><br><span class="line">        \caption{subTable 2}</span><br><span class="line">        \label{tab:subtable2}</span><br><span class="line">    \end{subtable}</span><br><span class="line">    \caption{very basic table}</span><br><span class="line">    \label{tab:3*abc}  </span><br><span class="line">\end{table}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202205042031278-latex.png" alt="表格及交叉引用"></p>
+<p><img src="https://img.zang.gold/images/202205042026697-latex.png" alt="表格目录"></p>
+<h2 id="引文（参考文献）"><a class="header-anchor" href="#引文（参考文献）">#</a>引文（参考文献）</h2>
+<ol>
+<li>
+<p>在<code>references.bib</code> 中保存BibTex格式的引用</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@article{referenceName,</span><br><span class="line">  title={},</span><br><span class="line">  author={},</span><br><span class="line">  journal={},</span><br><span class="line">  volume={},</span><br><span class="line">  number={},</span><br><span class="line">  pages={},</span><br><span class="line">  year={},</span><br><span class="line">  publisher={}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li>
+<p>引入<code>bib</code>包</p>
+</li>
+<li>
+<p>使用<code>\cite{} 或 \parencite{}</code>引入引用</p>
+</li>
+<li>
+<p>生成引用目录<code>\printbibliography[title={参考文献}]</code>（默认为<code>Bibliography</code>）</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">\begin{document}</span><br><span class="line"></span><br><span class="line">%  ...</span><br><span class="line">%  ...</span><br><span class="line">% 使用 无格式化引用\cite[][]{}  </span><br><span class="line">% 格式化引用 \parencite[][]{} %% [前注][后注]{bib项}</span><br><span class="line">% 上标引用 \supercite[][]{}</span><br><span class="line">reference1 \cite{liu2015smartcare}</span><br><span class="line"></span><br><span class="line">reference2 \parencite[look][here]{rublee2011orb}</span><br><span class="line"></span><br><span class="line">reference3 \parencite[here]{rublee2011orb}</span><br><span class="line"></span><br><span class="line">reference4 \parencite[look][]{rublee2011orb}</span><br><span class="line"></span><br><span class="line">reference5 \supercite{rublee2011orb}</span><br><span class="line"></span><br><span class="line">% 引文目录</span><br><span class="line">\printbibliography</span><br><span class="line"></span><br><span class="line">\end{document}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img.zang.gold/images/202205042018617-latex.png" alt="引文预览"></p>
+<p><img src="https://img.zang.gold/images/202205042019089-latex.png" alt="引文目录（参考文献）"></p>
+<h2 id="自定义封面"><a class="header-anchor" href="#自定义封面">#</a>自定义封面</h2>
+<ol>
+<li>新建<code>titlepage.tex</code></li>
+<li>在文章中引入</li>
+</ol>
+<figure class="highlight tex"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">\begin</span>{document} <span class="comment">% 文章开始</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% \maketitle % 制作封面</span></span><br><span class="line"><span class="keyword">\input</span>{titlepage}</span><br><span class="line"></span><br><span class="line"><span class="keyword">\end</span>{document}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><figcaption><span>title page.tex</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">\begin{titlepage}</span><br><span class="line">    \begin{center}</span><br><span class="line">        \vspace*{1cm}</span><br><span class="line"></span><br><span class="line">        \Huge % 特大</span><br><span class="line">        \textbf{Hello World} % 粗体</span><br><span class="line"></span><br><span class="line">        \vspace{0.5cm}</span><br><span class="line">        \LARGE</span><br><span class="line">        This is a subtitle</span><br><span class="line"></span><br><span class="line">        \vspace*{1.5cm}</span><br><span class="line"></span><br><span class="line">        \textbf{Zang}</span><br><span class="line"></span><br><span class="line">        \vfill</span><br><span class="line">        A thesis presented for the degree of\\ % 换行</span><br><span class="line">        Postgraduate of Compute Technology</span><br><span class="line"></span><br><span class="line">        \vspace{0.8cm}</span><br><span class="line"></span><br><span class="line">        \includegraphics[width=0.2\textwidth]{zjut}</span><br><span class="line"></span><br><span class="line">        \Large</span><br><span class="line">        Department Name\\</span><br><span class="line">        University Name\\</span><br><span class="line">        Country \\</span><br><span class="line">        Date</span><br><span class="line"></span><br><span class="line">    \end{center}</span><br><span class="line">\end{titlepage}</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>写好之后还需要自行对字体大小进行调整，有<code>\Huge, \LARGE, \Large, \large</code>等等</p>
+</blockquote>
+<h2 id="摘要页"><a class="header-anchor" href="#摘要页">#</a>摘要页</h2>
+<ol>
+<li>新建<code>abstract.tex</code></li>
+<li>在文章中引入</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\begin{document}</span><br><span class="line">...</span><br><span class="line">% 摘要</span><br><span class="line">% \chapter*{Abstract}</span><br><span class="line">% This is a Abstract.''</span><br><span class="line">\input{abstract}</span><br><span class="line">....</span><br><span class="line">\end{document}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><figcaption><span>abstract.tex</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">\thispagestyle{empty}</span><br><span class="line">\begin{center}</span><br><span class="line">    \Large</span><br><span class="line">    \textbf{Thesis Title}</span><br><span class="line"></span><br><span class="line">    \vspace{0.4cm}</span><br><span class="line">    \large</span><br><span class="line">    Thesis subtitle</span><br><span class="line"></span><br><span class="line">    \vspace{0.4cm}</span><br><span class="line">    \textbf{Zang}</span><br><span class="line"></span><br><span class="line">    \vspace{0.9cm}</span><br><span class="line">    \textbf{Abstract}</span><br><span class="line"></span><br><span class="line">\end{center}</span><br><span class="line"> This is abstract contents</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>只是照着教程上做的，与我们日常中的摘要模板差别还是挺大的</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Zang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zang.gold/posts/46279/">http://zang.gold/posts/46279/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zang.gold" target="_blank">是藏不是藏</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Latex/">Latex</a></div><div class="post_share"><div class="social-share" data-image="https://img.zang.gold/images/202203281925972-wallpaperc29f0d664f2ff2ba.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/45499/"><img class="next-cover" src="https://img.zang.gold/images/202203281927529-wallpapere84dfc95f7a7f084.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Mac下Latex安装配置</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/45499/" title="Mac下Latex安装配置"><img class="cover" src="https://img.zang.gold/images/202203281927529-wallpapere84dfc95f7a7f084.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-04</div><div class="title">Mac下Latex安装配置</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Waline</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-text">基本结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E9%A2%98"><span class="toc-text">标题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E5%B8%83%E5%B1%80"><span class="toc-text">页面布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E7%9C%89%E9%A1%B5%E8%84%9A"><span class="toc-text">页眉页脚</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%A0%E8%8A%82-%E7%9B%AE%E5%BD%95"><span class="toc-text">章节&#x2F;目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD"><span class="toc-text">图片加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC%E5%8A%A0%E8%BD%BD"><span class="toc-text">表格加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E6%96%87%EF%BC%88%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%EF%BC%89"><span class="toc-text">引文（参考文献）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B0%81%E9%9D%A2"><span class="toc-text">自定义封面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81%E9%A1%B5"><span class="toc-text">摘要页</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Zang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn"><span>浙ICP备2021023703号-1</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://waline-comments-two.vercel.app',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline()
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !false) {
+  if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fe5b45655cc6e79560d1',
+      clientSecret: '93fae236031676637a010026d4e0a1702ef49007',
+      repo: 'hexo-comments',
+      owner: 'angzhijin',
+      admin: ['angzhijin'],
+      id: 'ef6468af7983772b7c9f5443df56e1f9',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Waline' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>
