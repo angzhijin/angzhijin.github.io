@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="只要在Git仓库中提交过一些敏感信息，除非删库重新push，否则这些信息都还是能够在提交中找到。使用BFG可以快速的移除Git中的敏感信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BFG - 移除Git Repository 中的敏感信息">
+<meta property="og:url" content="http://zang.gold/posts/BFG/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="只要在Git仓库中提交过一些敏感信息，除非删库重新push，否则这些信息都还是能够在提交中找到。使用BFG可以快速的移除Git中的敏感信息">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202206141457438-bfg.png">
+<meta property="og:image" content="https://img.zang.gold/images/202206141456593-bfg.png">
+<meta property="og:image" content="https://img.zang.gold/images/202206141515843-bfg.png">
+<meta property="og:image" content="https://img.zang.gold/images/202206141516917-bfg.png">
+<meta property="og:image" content="https://img.zang.gold/images/202206141554106-bfg.png">
+<meta property="article:published_time" content="2022-06-14T16:38:10.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:50:25.976Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202206141457438-bfg.png"><title>BFG - 移除Git Repository 中的敏感信息 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/BFG/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">BFG - 移除Git Repository 中的敏感信息</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-06-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>整理了下自己最近的项目，全推到Gitee上了。顺便把上次Gitee整改导致“伪开源”的项目处理了下，加上了<code>README.md</code>（不加readme公开不了）。</p>
+<p>然后忽然意识到自己之前上传的项目中，都是毫无保留的上传。比如：写的大部分都是SpringBoot框架的代码，数据库连接池配置都是写在<code>application.properties/ application.yml</code>中，由于涉及配置，所以这些文件一般不会加入到<code>git.ignore</code>中，也就导致了配置的数据库密码也是被上传到gitee上了。</p>
+<p>还好这些代码大部分都没公开，公开了的也是很早之前的，密码也已经换了。但留着也不是办法啊。</p>
+<p>所以上网搜了搜，发现了在<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://docs.github.com/cn/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">GitHub Docs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>中就有提及移除隐私信息的一项，提供了好几种方法。最简单的就是采用<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://rtyley.github.io/bfg-repo-cleaner/">BFG Repo-Cleaner</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>。</p>
+
+        <h2 id="BFG">
+          <a href="#BFG" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#BFG">#</a>BFG</h2>
+      
+<ul>
+<li>官网：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<blockquote>
+<p>刚开始好奇这名字，原来是 <code>git-filter-branch</code>首字母反一下？</p>
+</blockquote>
+
+        <h3 id="移除文本">
+          <a href="#移除文本" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#移除文本">#</a>移除文本</h3>
+      
+<ol>
+<li>
+<p>下载 BFG (<code>bfg-1.14.0.jar</code>)</p>
+</li>
+<li>
+<p>创建一个<code>password.txt</code></p>
+<blockquote>
+<p>filter content of files, replacing matched text. Match expressions should be listed in the file, one expression per line - by default, each expression is treated as a literal, but ‘regex:’ &amp; ‘glob:’ prefixes are supported, with ‘==&gt;’ to specify a replacement string other than the default of <code>***REMOVED***</code>.</p>
+<p>也就是说直接将要替换的文本作为一行写入，或者<code>regex:</code> &amp;<code> glob:</code>作为前缀表示去匹配文本，然后使用<code>==&gt;</code>将需要替换掉的文本放在后面，不配置就是默认替换为<code>***REMOVED***</code></p>
+</blockquote>
+</li>
+<li>
+<p>进入需要修改的项目中运行</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar  bfg-1.14.0.jar --replace-text password.txt</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>此时原项目中是看不出修改变化的，改动的是<code>.git</code>中的各个repo，需要替换的文本均被换为<code>***REMOVED***</code>，每个commit的名字也会被替换。</p>
+</li>
+<li>
+<p>操作结果可以在项目的上级目录中生成的<code>project_name.bfg-report</code>文件夹中查看更改情况，包括Ref的id变更、Object内容的修改位置等等</p>
+<blockquote>
+<p>有一点点小问题，操作的是历史的git，对于你本身（当前）节点不会修改，所以就是push之后最新版本的是没有修改过的，有点点尴尬</p>
+</blockquote>
+</li>
+<li>
+<p>强制推送</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --force</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+
+        <h4 id="记第一次尝试">
+          <a href="#记第一次尝试" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#记第一次尝试">#</a>记第一次尝试</h4>
+      
+<blockquote>
+<p>以本人的一次错误操作演示，可能看的还更透彻</p>
+</blockquote>
+<p>项目名：<code>bootdemo</code></p>
+<p>配置文件名：<code>application.yml</code></p>
+<p>刚开始不太理解<code>password.txt</code>的配置，所以就加了个个password试一试，反正这是个老年项目了。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password</span><br></pre></td></tr></tbody></table></div></figure>
+<p>运行<code>java -jar  bfg-1.14.0.jar --replace-text password.txt</code> （这里没有配置需要改的文件）完成后，直接看项目的当前版本是没有变化的，需要看git的Repo。</p>
+<p>（左侧为当前版本，相当于未提交的）</p>
+<p><img src="https://img.zang.gold/images/202206141457438-bfg.png" alt="移除 'password'"></p>
+<p>可以看出来，密码没被改，改的是<code>password</code>文本。</p>
+<p>所以，我项目中全部的<code>password</code>文本也都被替换了。</p>
+<p>比如：我的User类中属性就被改了</p>
+<p><img src="https://img.zang.gold/images/202206141456593-bfg.png" alt="移除 'password'"></p>
+<p>将password中改为<code>"000000"</code>后再运行一次</p>
+<p><img src="https://img.zang.gold/images/202206141515843-bfg.png" alt="移除 '000000'"></p>
+<p>但也有个问题，你不会知道在你引入的其他第三方库中是不是会有相同的文本。。</p>
+<p>比如</p>
+<p><img src="https://img.zang.gold/images/202206141516917-bfg.png" alt="移除 '000000'"></p>
+<p>对于如何指定要替换的文件名，需要配置<code>--filter-content-including , -fi</code>或<code>--filter-content-excluding, -fe</code></p>
+<p>执行命令</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar /Users/angzhijin/Downloads/bfg-1.14.0.jar --replace-text password.txt --filter-content-including <span class="string">'*.yaml'</span> </span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>注意<code>yml</code>和<code>yaml</code>啊，wwww</p>
+</blockquote>
+<p><img src="https://img.zang.gold/images/202206141554106-bfg.png" alt="移除 'fiter'"></p>
+
+        <h2 id="小记">
+          <a href="#小记" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#小记">#</a>小记</h2>
+      
+<p>关于BFG，还有不少其他功能，比如说删除文件、删除文件夹、删除Blob等等，使用方法基本差不多，看看官网再拿些项目试试就基本会了。</p>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://docs.github.com/cn/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository - GitHub Docs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://rtyley.github.io/bfg-repo-cleaner/">BFG Repo-Cleaner by rtyley</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://dmesg.app/git-password.html">不小心把密码上传到 GitHub 了，怎么办 土豆不好吃</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/BFG/">http://zang.gold/posts/BFG/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Git/">Git</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/wsl/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">WSL - Windows 下的Linux子系统</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Openlayer-mousePositionControllor/"><span class="paginator-prev__text">Openlayers 鼠标坐标</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BFG"><span class="toc-number">1.</span> <span class="toc-text">
+          BFG</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E9%99%A4%E6%96%87%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">
+          移除文本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          记第一次尝试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E8%AE%B0"><span class="toc-number">2.</span> <span class="toc-text">
+          小记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">
+          参考</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

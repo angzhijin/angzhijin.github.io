@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="使用PostGIS将CAD地图导入PostgreSQL数据库中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="结合 ArcGIS 对 CAD 地图入库处理">
+<meta property="og:url" content="http://zang.gold/posts/CAD+GIS+Postgresql/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="使用PostGIS将CAD地图导入PostgreSQL数据库中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/cadd6074dd859231ada.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210711203729ArcGIS.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214455-CAD.md.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214553-shp.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214640-.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214718--.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214740-.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214820-.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214857-.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719214914-.png">
+<meta property="og:image" content="https://img.zang.gold/images/postGIS.png">
+<meta property="og:image" content="https://img.zang.gold/images/postGIS.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719220047-shp.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719220119-shp.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719220450-.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719220550-warnning.png">
+<meta property="og:image" content="https://img.zang.gold/images/20210719220704-.png">
+<meta property="article:published_time" content="2021-07-17T14:23:58.000Z">
+<meta property="article:modified_time" content="2026-07-18T14:09:32.353Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="PostGIS">
+<meta property="article:tag" content="CAD">
+<meta property="article:tag" content="DB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/cadd6074dd859231ada.png"><title>结合 ArcGIS 对 CAD 地图入库处理 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/CAD+GIS+Postgresql/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">结合 ArcGIS 对 CAD 地图入库处理</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-07-17</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>为了避免手动输2w6平的地图，也不想自己写系统来处理，终于摸索出一条曲线救国大法。</p>
+<!-- more -->
+
+        <h2 id="环境">
+          <a href="#环境" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#环境">#</a>环境</h2>
+      
+<ul>
+<li>数据库
+<ul>
+<li>PostgreSQL（需添加 PostGIS 插件，注意版本一致）</li>
+</ul>
+</li>
+<li>软件
+<ul>
+<li>ArcGIS</li>
+<li>AutoCAD（可选）</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="步骤">
+          <a href="#步骤" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#步骤">#</a>步骤</h2>
+      
+<p><img src="https://img.zang.gold/images/cadd6074dd859231ada.png" alt="步骤流程"></p>
+<p><br><br></p>
+
+        <h2 id="ArcGIS-常用工具">
+          <a href="#ArcGIS-常用工具" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#ArcGIS-常用工具">#</a>ArcGIS 常用工具</h2>
+      
+<p><img src="https://img.zang.gold/images/20210711203729ArcGIS.png" alt="常用工具"></p>
+<hr>
+
+        <h2 id="一、导入-CAD">
+          <a href="#一、导入-CAD" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#一、导入-CAD">#</a>一、导入 CAD</h2>
+      
+<p>❗️ ArcGIS 支持 CAD 数据的查看、导入、导出，但不支持编辑</p>
+<p>❗️ 本人使用的ArcGIS版本为10.2，最高只支持2010版的CAD文件，高版本需要将其降为2010以下版本（大坑！）</p>
+<ol>
+<li>
+<p><strong>添加 CAD 数据</strong></p>
+<p>也可从目录窗口中直接拖入CAD文件</p>
+<p><img src="https://img.zang.gold/images/20210719214455-CAD.md.png" alt="添加CAD数据"></p>
+</li>
+</ol>
+<hr>
+
+        <h2 id="二、绘制自己的-shp">
+          <a href="#二、绘制自己的-shp" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#二、绘制自己的-shp">#</a>二、绘制自己的 shp</h2>
+      
+<ol>
+<li>
+<p><strong>新建 shp 图层</strong></p>
+<p>目录  — 新建 — Shapefile — 命名 — 选择需要的要素类型 — 确定</p>
+<p><img src="https://img.zang.gold/images/20210719214553-shp.png" alt="新建shp图层"></p>
+</li>
+</ol>
+<hr>
+<ol start="2">
+<li>
+<p><strong>打开属性表，添加字段</strong></p>
+<p><img src="https://img.zang.gold/images/20210719214640-.png" alt="打开属性表，添加字段"></p>
+</li>
+</ol>
+<hr>
+<ol start="3">
+<li>
+<p><strong>选中新图层，进入编辑模式</strong></p>
+<p><img src="https://img.zang.gold/images/20210719214718--.png" alt="进入编辑模式"></p>
+</li>
+</ol>
+<hr>
+<ol start="4">
+<li>
+<p><strong>创建第一个要素，作为框架</strong></p>
+<p><img src="https://img.zang.gold/images/20210719214740-.png" alt="创建要素"></p>
+</li>
+</ol>
+<hr>
+<ol start="5">
+<li>
+<p><strong>选中外围要素</strong></p>
+<p><img src="https://img.zang.gold/images/20210719214820-.png" alt="外围框架"></p>
+</li>
+</ol>
+<hr>
+<ol start="6">
+<li>
+<p><strong>使用裁剪面对选中要素划分</strong></p>
+<p>点要素按照步骤4方法直接添加</p>
+<p><img src="https://img.zang.gold/images/20210719214857-.png" alt="要素划分"></p>
+</li>
+</ol>
+<hr>
+<ol start="7">
+<li>
+<p><strong>添加属性</strong></p>
+<p><img src="https://img.zang.gold/images/20210719214914-.png" alt="添加属性"></p>
+</li>
+</ol>
+<hr>
+
+        <h2 id="三、导入-shp-到-postgreSQL">
+          <a href="#三、导入-shp-到-postgreSQL" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#三、导入-shp-到-postgreSQL">#</a>三、导入 shp 到 postgreSQL</h2>
+      
+<p><strong>工具：</strong> PostGIS PostGIS Bundle 3 for PostgreSQL x64 12 Shapefile and DBF Loader Exporter</p>
+<br>
+<p><strong>准备工作</strong><br>
+在PostgreSQL数据库中加载PostGIS扩展</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EXTENSION postgis; <span class="comment">-- 加载postgis空间扩展</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> postgis_full_version();  <span class="comment">-- 确认是否加载成功</span></span><br></pre></td></tr></tbody></table></div></figure>
+<p><img src="https://img.zang.gold/images/postGIS.png" alt="postGIS导入工具界面"></p>
+<hr>
+<ol>
+<li>
+<p><strong>连接 postgreSQL</strong></p>
+<p><img src="https://img.zang.gold/images/postGIS.png" alt="连接postgreSQL数据库"></p>
+</li>
+</ol>
+<hr>
+<ol start="2">
+<li>
+<p><strong>选择要导入的 shapefile 文件</strong></p>
+<p>导入参数：</p>
+<ul>
+<li>Table：要导入的目标表名称</li>
+<li>Geo Column：geom属性字段名</li>
+<li>SRID：空间参考标识符（超纲了，有点难懂，目前还用不到它，感兴趣的可以参考 <span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35732147/article/details/85228444">PostGIS教程四：加载空间数据</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>）</li>
+<li>Mode：操作模式
+<ul>
+<li>Create：新建表，表名为{ Table }的值</li>
+<li>Append：附加到表名为 {Table} 的表后面</li>
+<li>Delete：清空表名为 {Table} 的表内容</li>
+<li>Prepare：我也不是很清楚</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img.zang.gold/images/20210719220047-shp.png" alt="选择shapfile文件"></p>
+</li>
+</ol>
+<hr>
+<ol start="3">
+<li>
+<p><strong>导入</strong></p>
+<p><img src="https://img.zang.gold/images/20210719220119-shp.png" alt="导入"></p>
+</li>
+</ol>
+<hr>
+<ol start="4">
+<li>
+<p><strong>数据库中查看</strong></p>
+<p><img src="https://img.zang.gold/images/20210719220450-.png" alt="导入结果"></p>
+</li>
+</ol>
+<hr>
+
+        <h2 id="四、空间坐标系问题">
+          <a href="#四、空间坐标系问题" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#四、空间坐标系问题">#</a>四、空间坐标系问题</h2>
+      
+<p>CAD 提供两种坐标系</p>
+<ul>
+<li>WCS（世界坐标系）</li>
+<li>UCS（用户坐标系）</li>
+</ul>
+<p><br><br></p>
+<p><strong>导入到 ArcGIS 时会提示警告</strong><br>
+⚠️  未知的空间参考</p>
+<p><img src="https://img.zang.gold/images/20210719220550-warnning.png" alt="warning：未知的空间参考"></p>
+<hr>
+<p><strong>导入结果</strong></p>
+<p>坐标系显示未定义，坐标值为 CAD 中 WCS 下的坐标值</p>
+<p><img src="https://img.zang.gold/images/20210719220704-.png" alt="导入后的数据源信息"></p>
+<p>对要素第一次进行投影，添加了坐标系，但坐标值保持不变</p>
+<p>对要素第二次进行投影，坐标系变换，同时坐标值也会换算过去</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/CAD+GIS+Postgresql/">http://zang.gold/posts/CAD+GIS+Postgresql/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostgreSQL/">PostgreSQL</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostGIS/">PostGIS</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/CAD/">CAD</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/DB/">DB</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/TweenMax-js/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TweenMax.to()的使用</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"><span class="paginator-prev__text">服务器环境配置</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">
+          环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">
+          步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArcGIS-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">3.</span> <span class="toc-text">
+          ArcGIS 常用工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AF%BC%E5%85%A5-CAD"><span class="toc-number">4.</span> <span class="toc-text">
+          一、导入 CAD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%BB%98%E5%88%B6%E8%87%AA%E5%B7%B1%E7%9A%84-shp"><span class="toc-number">5.</span> <span class="toc-text">
+          二、绘制自己的 shp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AF%BC%E5%85%A5-shp-%E5%88%B0-postgreSQL"><span class="toc-number">6.</span> <span class="toc-text">
+          三、导入 shp 到 postgreSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%A9%BA%E9%97%B4%E5%9D%90%E6%A0%87%E7%B3%BB%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">
+          四、空间坐标系问题</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

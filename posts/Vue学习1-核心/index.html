@@ -1,0 +1,708 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="我在B站学Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习I｜核心篇">
+<meta property="og:url" content="http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A01-%E6%A0%B8%E5%BF%83/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="我在B站学Vue">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202110222026309-Vue.png">
+<meta property="article:published_time" content="2021-11-07T12:38:59.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:35:12.360Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202110222026309-Vue.png"><title>Vue学习I｜核心篇 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A01-%E6%A0%B8%E5%BF%83/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Vue学习I｜核心篇</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-11-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>记录我在b站尚硅谷学习Vue的笔记（在官方笔记上的补充与修改）</p>
+<p>课程链接：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Zy4y1K7SH?p=1">尚硅谷Vue2.0+Vue3.0全套教程丨vuejs从入门到精通_哔哩哔哩_bilibili</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="特点">
+          <a href="#特点" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#特点">#</a>特点</h2>
+      
+<ol>
+<li>组件化</li>
+<li>声明式</li>
+<li>虚拟DOM+Diff算法</li>
+</ol>
+
+        <h2 id="前置知识-（JavaScript）">
+          <a href="#前置知识-（JavaScript）" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#前置知识-（JavaScript）">#</a>前置知识 （JavaScript）</h2>
+      
+<ul>
+<li>ES6语法规范，模块化</li>
+<li>包管理器</li>
+<li>原型、原型链</li>
+<li>数组常用方法</li>
+<li>axios</li>
+<li>promise</li>
+<li>。。。</li>
+</ul>
+
+        <h2 id="安装">
+          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安装">#</a>安装</h2>
+      
+
+        <h4 id="VueDeveloper">
+          <a href="#VueDeveloper" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#VueDeveloper">#</a>VueDeveloper</h4>
+      
+
+        <h4 id="script-引入">
+          <a href="#script-引入" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#script-引入">#</a><code>&lt;script&gt;</code>引入</h4>
+      
+<figure class="highlight html"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../js/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="npm安装">
+          <a href="#npm安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#npm安装">#</a>npm安装</h4>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="Vue模板语法">
+          <a href="#Vue模板语法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Vue模板语法">#</a>Vue模板语法</h2>
+      
+
+        <h3 id="Vue属性">
+          <a href="#Vue属性" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Vue属性">#</a>Vue属性</h3>
+      
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">	<span class="attr">el</span>:<span class="string">'#demo'</span>, <span class="comment">//el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串。id-#, class-$</span></span><br><span class="line">	<span class="attr">template</span>: <span class="string">`&lt;div&gt;..&lt;/div&gt;`</span></span><br><span class="line">  <span class="attr">data</span>:{ <span class="comment">//data中用于存储数据，数据供el所指定的容器去使用，值我们暂时先写成一个对象。</span></span><br><span class="line">		<span class="attr">name</span>:<span class="string">'atguigu'</span>,</span><br><span class="line">		<span class="attr">address</span>:<span class="string">'北京'</span></span><br><span class="line">	},</span><br><span class="line">  <span class="attr">methods</span>:{<span class="comment">//事件方法实现</span></span><br><span class="line">    </span><br><span class="line">  },</span><br><span class="line">  <span class="attr">computed</span>:{ <span class="comment">//计算属性</span></span><br><span class="line">    </span><br><span class="line">  },</span><br><span class="line">  <span class="attr">watch</span>:{ <span class="comment">//监视属性</span></span><br><span class="line">    </span><br><span class="line">  },</span><br><span class="line">  <span class="attr">directives</span>:{ <span class="comment">// 自定义指令</span></span><br><span class="line">    指令名:配置对象</span><br><span class="line">  },</span><br><span class="line">  <span class="attr">components</span>:{	<span class="comment">//组件</span></span><br><span class="line">  	</span><br><span class="line">  }</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>data与el的2种写法</p>
+<ol>
+<li>
+<p>el有2种写法</p>
+<ul>
+<li>new Vue时候配置el属性。</li>
+<li>先创建Vue实例，随后再通过vm.$mount(‘#root’)指定el的值。</li>
+</ul>
+</li>
+<li>
+<p>data有2种写法</p>
+<ul>
+<li>对象式</li>
+<li>函数式</li>
+</ul>
+<p>如何选择：目前哪种写法都可以，以后学习到组件时，data必须使用函数式，否则会报错。</p>
+</li>
+<li>
+<p>一个重要的原则：<br>
+由Vue管理的函数，一定不要写箭头函数，一旦写了箭头函数，this就不再是Vue实例了。</p>
+</li>
+</ol>
+</blockquote>
+
+        <h4 id="插值语法">
+          <a href="#插值语法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#插值语法">#</a>插值语法</h4>
+      
+<p>用于解析标签体内容</p>
+<ol>
+<li><code>&lt;div&gt; {{ xxx }} &lt;/div&gt;</code></li>
+</ol>
+
+        <h4 id="指令语法">
+          <a href="#指令语法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#指令语法">#</a>指令语法</h4>
+      
+<p>用于解析标签，包括：标签属性、标签体内容、绑定事件</p>
+<p>（数据绑定）</p>
+<ol>
+<li><code>v-bind</code> 动态插入标签值（单向绑定），简写为<code>:href="xxx"</code></li>
+<li><code>v-model</code> 动态插入标签值（双向绑定），只能用于表单类标签（含value），简写为<code>v-model=xxx</code></li>
+<li><code>v-if</code></li>
+</ol>
+
+        <h2 id="数据代理">
+          <a href="#数据代理" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据代理">#</a>数据代理</h2>
+      
+
+        <h3 id="回顾Object-defineProperty">
+          <a href="#回顾Object-defineProperty" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#回顾Object-defineProperty">#</a>回顾Object.defineProperty</h3>
+      
+<figure class="highlight html"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> &gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">	<span class="keyword">let</span> number = <span class="number">18</span></span></span><br><span class="line"><span class="language-javascript">	<span class="keyword">let</span> person = {</span></span><br><span class="line"><span class="language-javascript">		<span class="attr">name</span>:<span class="string">'张三'</span>,</span></span><br><span class="line"><span class="language-javascript">		<span class="attr">sex</span>:<span class="string">'男'</span>,</span></span><br><span class="line"><span class="language-javascript">	}</span></span><br><span class="line"><span class="language-javascript">	<span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(person,<span class="string">'age'</span>,{</span></span><br><span class="line"><span class="language-javascript">		<span class="comment">// value:18,</span></span></span><br><span class="line"><span class="language-javascript">		<span class="comment">// enumerable:true, //控制属性是否可以枚举，默认值是false</span></span></span><br><span class="line"><span class="language-javascript">		<span class="comment">// writable:true, //控制属性是否可以被修改，默认值是false</span></span></span><br><span class="line"><span class="language-javascript">		<span class="comment">// configurable:true //控制属性是否可以被删除，默认值是false</span></span></span><br><span class="line"><span class="language-javascript">		<span class="comment">//当有人读取person的age属性时，get函数(getter)就会被调用，且返回值就是age的值</span></span></span><br><span class="line"><span class="language-javascript">		<span class="title function_">get</span>(<span class="params"></span>){</span></span><br><span class="line"><span class="language-javascript">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'有人读取age属性了'</span>)</span></span><br><span class="line"><span class="language-javascript">			<span class="keyword">return</span> number</span></span><br><span class="line"><span class="language-javascript">		},</span></span><br><span class="line"><span class="language-javascript">		<span class="comment">//当有人修改person的age属性时，set函数(setter)就会被调用，且会收到修改的具体值</span></span></span><br><span class="line"><span class="language-javascript">		<span class="title function_">set</span>(<span class="params">value</span>){</span></span><br><span class="line"><span class="language-javascript">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'有人修改了age属性，且值是'</span>,value)</span></span><br><span class="line"><span class="language-javascript">			number = value</span></span><br><span class="line"><span class="language-javascript">		}</span></span><br><span class="line"><span class="language-javascript">	})</span></span><br><span class="line"><span class="language-javascript">	<span class="comment">// console.log(Object.keys(person))</span></span></span><br><span class="line"><span class="language-javascript">	<span class="variable language_">console</span>.<span class="title function_">log</span>(person)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="数据代理-2">
+          <a href="#数据代理-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据代理-2">#</a>数据代理</h3>
+      
+<figure class="highlight html"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 数据代理：通过一个对象代理对另一个对象中属性的操作（读/写）--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> &gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">	<span class="keyword">let</span> obj = {<span class="attr">x</span>:<span class="number">100</span>}</span></span><br><span class="line"><span class="language-javascript">	<span class="keyword">let</span> obj2 = {<span class="attr">y</span>:<span class="number">200</span>}</span></span><br><span class="line"><span class="language-javascript">	<span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj2,<span class="string">'x'</span>,{</span></span><br><span class="line"><span class="language-javascript">		<span class="title function_">get</span>(<span class="params"></span>){</span></span><br><span class="line"><span class="language-javascript">			<span class="keyword">return</span> obj.<span class="property">x</span></span></span><br><span class="line"><span class="language-javascript">		},</span></span><br><span class="line"><span class="language-javascript">		<span class="title function_">set</span>(<span class="params">value</span>){</span></span><br><span class="line"><span class="language-javascript">			obj.<span class="property">x</span> = value</span></span><br><span class="line"><span class="language-javascript">		}</span></span><br><span class="line"><span class="language-javascript">	})</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="Vue中的数据代理">
+          <a href="#Vue中的数据代理" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Vue中的数据代理">#</a>Vue中的数据代理</h3>
+      
+<p>通过vm对象来代理data对象中属性的操作（读/写）</p>
+<p><code>vm._data.student === vm.student</code></p>
+<p>好处：</p>
+<ul>
+<li>更加方便的操作data中的数据</li>
+</ul>
+<p>基本原理：</p>
+<ul>
+<li>通过Object.defineProperty()把data对象中所有属性添加到vm上。</li>
+<li>为每一个添加到vm上的属性，都指定一个getter/setter。</li>
+<li>在getter/setter内部去操作（读/写）data中对应的属性。</li>
+</ul>
+
+        <h2 id="事件处理">
+          <a href="#事件处理" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#事件处理">#</a>事件处理</h2>
+      
+
+        <h3 id="事件的基本使用">
+          <a href="#事件的基本使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#事件的基本使用">#</a>事件的基本使用</h3>
+      
+<p>点击事件 <code>v-on:click="xxx(aa)"</code>  调用Vue对象中的<code>methods</code>中函数，简写为<code>@click="xxx(aa)"</code></p>
+<ol>
+<li>使用v-on:xxx 或 @xxx 绑定事件，其中xxx是事件名；</li>
+<li>事件的回调需要配置在methods对象中，最终会在vm上；</li>
+<li>methods中配置的函数，不要用箭头函数！否则this就不是vm了；</li>
+<li>methods中配置的函数，都是被Vue所管理的函数，this的指向是vm 或 组件实例对象；</li>
+<li>@click=“demo” 和 @click=“demo($event)” 效果一致，但后者可以传参；</li>
+</ol>
+
+        <h3 id="事件修饰符">
+          <a href="#事件修饰符" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#事件修饰符">#</a>事件修饰符</h3>
+      
+<p>格式： <code>@click.{修饰符}="xxx(aa)"</code>（修饰符可以连续写）</p>
+<ol>
+<li>prevent：阻止默认事件（常用）；</li>
+<li>stop：阻止事件冒泡（常用）；</li>
+<li>once：事件只触发一次（常用）；</li>
+<li>capture：使用事件的捕获模式；</li>
+<li>self：只有event.target是当前操作的元素时才触发事件；</li>
+<li>passive：事件的默认行为立即执行，无需等待事件回调执行完毕；</li>
+</ol>
+
+        <h3 id="键盘事件">
+          <a href="#键盘事件" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#键盘事件">#</a>键盘事件</h3>
+      
+<ul>
+<li><code>@keydown</code>按下触发</li>
+<li><code>@keyup</code>抬起出发</li>
+</ul>
+<ol>
+<li>Vue常见按键别名
+<ol>
+<li>回车 =&gt; enter</li>
+<li>删除 =&gt; delete (捕获“删除”和“退格”键)</li>
+<li>退出 =&gt; esc空格 =&gt; space</li>
+<li>换行 =&gt; tab (特殊，必须配合keydown去使用)</li>
+<li>上 =&gt; up</li>
+<li>下 =&gt; down</li>
+<li>左 =&gt; left</li>
+<li>右 =&gt; right</li>
+</ol>
+</li>
+<li>Vue未提供别名的按键，可以使用按键原始的key值去绑定，但注意要转为kebab-case（短横线命名）</li>
+<li>系统修饰键（用法特殊）：ctrl、alt、shift、meta<br>
+(1). 配合<code>keyup</code>使用：按下修饰键的同时，再按下其他键，随后释放其他键，事件才被触发。<br>
+(2). 配合<code>keydown</code>使用：正常触发事件。</li>
+<li>也可以使用keyCode去指定具体的按键（不推荐）</li>
+<li><code>Vue.config.keyCodes.自定义键名 = 键码</code>，可以去定制按键别名</li>
+</ol>
+
+        <h2 id="计算属性与监视属性">
+          <a href="#计算属性与监视属性" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#计算属性与监视属性">#</a>计算属性与监视属性</h2>
+      
+<p>对比：</p>
+<ol>
+<li>插值语法实现：<code>v-model</code> + <code>{{ xxx }}</code></li>
+<li>methods实现：function</li>
+</ol>
+
+        <h3 id="计算属性-computed">
+          <a href="#计算属性-computed" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#计算属性-computed">#</a>计算属性 <code>computed</code></h3>
+      
+<ol>
+<li>定义：要用的属性不存在，要通过已有属性计算得来。</li>
+<li>原理：底层借助了Objcet.defineproperty方法提供的getter和setter。</li>
+<li>get函数什么时候执行？<br>
+(1). 初次读取时会执行一次。<br>
+(2). 当依赖的数据发生改变时会被再次调用。</li>
+<li>优势：与methods实现相比，内部有缓存机制（复用），效率更高，调试方便。</li>
+<li>备注：
+<ol>
+<li>计算属性最终会出现在vm上，直接读取使用即可。</li>
+<li>如果计算属性要被修改，那必须写set函数去响应修改，且set中要引起计算时依赖的数据发生改变。</li>
+<li>确定不需要set可使用简写</li>
+</ol>
+</li>
+</ol>
+
+        <h3 id="监视属性-watch">
+          <a href="#监视属性-watch" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#监视属性-watch">#</a>监视属性 <code>watch</code></h3>
+      
+<ol>
+<li>
+<p>当被监视的属性变化时, 回调函数自动调用, 进行相关操作</p>
+</li>
+<li>
+<p>监视的属性必须存在，才能进行监视！！</p>
+</li>
+<li>
+<p>监视的两种写法：</p>
+<p>(1) <code>new Vue{}</code>时传入<code>watch</code>配置</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">  ...,</span><br><span class="line">  <span class="attr">watch</span>:{</span><br><span class="line">    <span class="attr">isHot</span>:{</span><br><span class="line">      <span class="attr">immediate</span>:<span class="literal">true</span>, <span class="comment">//初始化时让handler调用一下</span></span><br><span class="line">      <span class="attr">deep</span>:<span class="literal">true</span>,<span class="comment">//深度监视</span></span><br><span class="line">      <span class="title function_">handler</span>(<span class="params">newValue,oldValue</span>){</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'isHot被修改了'</span>,newValue,oldValue)</span><br><span class="line">      }</span><br><span class="line">    }, </span><br><span class="line">    ...</span><br><span class="line">  }</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+<p>(2) 通过<code>vm.$watch</code>监视（==确保vm对象已创建==）</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'isHot'</span>,{</span><br><span class="line">	<span class="attr">immediate</span>:<span class="literal">true</span>, <span class="comment">//初始化时让handler调用一下</span></span><br><span class="line">	<span class="comment">//handler什么时候调用？当isHot发生改变时。</span></span><br><span class="line">	<span class="title function_">handler</span>(<span class="params">newValue,oldValue</span>){</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'isHot被修改了'</span>,newValue,oldValue)</span><br><span class="line">	}</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>深度监视</p>
+<ul>
+<li>Vue中的watch默认不监测对象内部值的改变（一层）。</li>
+<li>配置<code>deep:true</code>可以监测对象内部值改变（多层）。</li>
+<li>备注：
+<ul>
+<li>Vue自身可以监测对象内部值的改变，但Vue提供的watch默认不可以！</li>
+<li>使用watch时根据数据的具体结构，决定是否采用深度监视。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>简写模式</p>
+<p>无法进行<code>immediate</code>，<code>deep</code>属性的配置</p>
+<ul>
+<li>
+<p><code>Vue{watch:{}}</code>简写</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">  ...,</span><br><span class="line">  <span class="attr">watch</span>:{</span><br><span class="line">  	<span class="title function_">isHot</span>(<span class="params">newValue,oldValue</span>){</span><br><span class="line">  		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'isHot被修改了'</span>,newValue,oldValue,<span class="variable language_">this</span>)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p><code>vm.$watch</code>简写</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">'isHot'</span>,<span class="keyword">function</span>(<span class="params">newValue,oldValue</span>){<span class="comment">//若使用箭头函数=&gt;(),this会指向window</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'isHot被修改了'</span>,newValue,oldValue,<span class="variable language_">this</span>)</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><code>computed</code>和<code>watch</code>使用区别</p>
+<ol>
+<li>
+<p>computed能完成的功能，watch都可以完成。</p>
+</li>
+<li>
+<p>watch能完成的功能，computed不一定能完成，例如：watch可以进行异步操作（如定时器）。</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>两个重要的小原则：</p>
+<ol>
+<li>
+<p>所被Vue管理的函数，最好写成普通函数，这样this的指向才是vm 或 组件实例对象。</p>
+</li>
+<li>
+<p>所有不被Vue所管理的函数（定时器的回调函数、ajax的回调函数等、Promise的回调函数），最好写成箭头函数，这样this的指向才是vm 或 组件实例对象。</p>
+</li>
+</ol>
+</blockquote>
+
+        <h2 id="绑定样式">
+          <a href="#绑定样式" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#绑定样式">#</a>绑定样式</h2>
+      
+<ol>
+<li>class样式
+<ul>
+<li>写法<code>:class="xxx"</code> xxx可以是字符串、对象、数组。</li>
+<li>字符串写法适用于：类名不确定，要动态获取。</li>
+<li>数组写法适用于：要绑定多个样式，个数不确定，名字也不确定。</li>
+<li>对象写法适用于：要绑定多个样式，个数确定，名字也确定，但不确定用不用。</li>
+</ul>
+</li>
+<li>style样式</li>
+</ol>
+<ul>
+<li><code>:style="{fontSize: xxx}"</code>其中xxx是动态值。</li>
+<li><code>:style="[a,b]"</code>其中a、b是样式对象。</li>
+</ul>
+
+        <h2 id="页面渲染">
+          <a href="#页面渲染" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#页面渲染">#</a>页面渲染</h2>
+      
+
+        <h3 id="条件渲染">
+          <a href="#条件渲染" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#条件渲染">#</a>条件渲染</h3>
+      
+<ol>
+<li>
+<p><code>v-if</code></p>
+<ul>
+<li>写法：
+<ul>
+<li>(1). <code>v-if="表达式" </code></li>
+<li>(2). <code>v-else-if="表达式"</code></li>
+<li>(3). <code>v-else="表达式"</code></li>
+</ul>
+</li>
+<li>适用于：切换频率较低的场景。</li>
+<li>特点：不展示的DOM元素直接被移除。</li>
+<li>注意：v-if可以和:v-else-if、v-else一起使用，但要求结构不能被“打断”。</li>
+</ul>
+</li>
+<li>
+<p><code>v-show</code></p>
+<ul>
+<li>
+<p>调整<code>display</code>属性</p>
+</li>
+<li>
+<p>写法：v-show=“表达式”</p>
+</li>
+<li>
+<p>适用于：切换频率较高的场景。</p>
+</li>
+<li>
+<p>特点：不展示的DOM元素未被移除，仅仅是使用样式隐藏掉</p>
+</li>
+</ul>
+</li>
+<li>
+<p>备注：使用v-if的时，元素可能无法获取到，而使用v-show一定可以获取到。</p>
+</li>
+<li>
+<p><code>&lt;template&gt;</code>只能和<code>v-if</code>配合使用</p>
+</li>
+</ol>
+
+        <h3 id="列表渲染">
+          <a href="#列表渲染" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#列表渲染">#</a>列表渲染</h3>
+      
+<p><code>v-for</code></p>
+<ol>
+<li>用于展示列表数据</li>
+<li>语法：<code>v-for="(item, index) in xxx" :key="yyy"</code></li>
+<li>可遍历：数组、对象、字符串（用的很少）、指定次数（用的很少）</li>
+</ol>
+<blockquote>
+<p>key原理</p>
+<p>react、vue中的key有什么作用？（key的内部原理）</p>
+<ol>
+<li>
+<p>虚拟DOM中key的作用：<br>
+key是虚拟DOM对象的标识，当数据发生变化时，Vue会根据【新数据】生成【新的虚拟DOM】, 随后Vue进行【新虚拟DOM】与【旧虚拟DOM】的差异比较，比较规则如下：</p>
+</li>
+<li>
+<p>对比规则：</p>
+<p>(1).旧虚拟DOM中找到了与新虚拟DOM相同的key：</p>
+<p>①.若虚拟DOM中内容没变, 直接使用之前的真实DOM！<br>
+②.若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM。<br>
+(2).旧虚拟DOM中未找到与新虚拟DOM相同的key<br>
+创建新的真实DOM，随后渲染到到页面。</p>
+</li>
+<li>
+<p>用index作为key可能会引发的问题：<br>
+1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作：会产生没有必要的真实DOM更新 ==&gt; 界面效果没问题, 但效率低。<br>
+2. 如果结构中还包含输入类的DOM：会产生错误DOM更新 ==&gt; 界面有问题。</p>
+</li>
+<li>
+<p>开发中如何选择key?:<br>
+1. 最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。</p>
+</li>
+<li>
+<p>如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，使用index作为key是没有问题的。</p>
+</li>
+</ol>
+</blockquote>
+
+        <h4 id="列表过滤">
+          <a href="#列表过滤" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#列表过滤">#</a>列表过滤</h4>
+      
+<p>可在<code>watch</code>或<code>computed</code>中实现</p>
+<p>两者都可以时优先<code>computed</code>，更精简</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数组过滤</span></span><br><span class="line">arr.<span class="title function_">filter</span>(<span class="function">(<span class="params">p</span>)=&gt;</span>{</span><br><span class="line">	<span class="keyword">return</span> p.<span class="property">name</span>.<span class="title function_">indexOf</span>(val) !== -<span class="number">1</span>	<span class="comment">//过滤条件</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="列表排序">
+          <a href="#列表排序" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#列表排序">#</a>列表排序</h4>
+      
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数组排序</span></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="function">(<span class="params">p1,p2</span>)=&gt;</span>{</span><br><span class="line">	<span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">sortType</span> === <span class="number">1</span> ? p2.<span class="property">age</span>-p1.<span class="property">age</span> : p1.<span class="property">age</span>-p2.<span class="property">age</span> <span class="comment">//排 序条件 降序：升序</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+<p><code>Vue.set</code></p>
+<p><code>vm.$set()</code></p>
+<blockquote>
+<p>Vue监视数据的原理：</p>
+<ol>
+<li>vue会监视data中所有层次的数据。</li>
+<li>如何监测对象中的数据？<br>
+通过setter实现监视，且要在new Vue时就传入要监测的数据。<br>
+(1).对象中后追加的属性，Vue默认不做响应式处理<br>
+(2).如需给后添加的属性做响应式，请使用如下API：<br>
+<code>Vue.set(target，propertyName/index，value)</code> 或<br>
+<code>vm.$set(target，propertyName/index，value)</code></li>
+<li>如何监测数组中的数据？<br>
+通过包裹数组更新元素的方法实现，本质就是做了两件事：<br>
+(1).调用原生对应的方法对数组进行更新。<br>
+(2).重新解析模板，进而更新页面。</li>
+<li>在Vue==修改数组==中的某个元素一定要用如下方法：<br>
+1. 使用这些API: <code>push()</code>、<code>pop()</code>、<code>shift()</code>、<code>unshift()</code>、<code>splice()</code>、<code>sort()</code>、<code>reverse()</code><br>
+2. <code>Vue.set()</code> 或<code> vm.$set()</code></li>
+</ol>
+<p>特别注意：<code>Vue.set() </code>和 <code>vm.$set() </code>不能给vm 或 vm的==根数据对象== 添加属性！！！</p>
+</blockquote>
+
+        <h2 id="表单收集">
+          <a href="#表单收集" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#表单收集">#</a>表单收集</h2>
+      
+<ul>
+<li>若：<code>&lt;input type="text"/&gt;</code>，则<code>v-model</code>收集的是value值，用户输入的就是<code>value</code>值。</li>
+<li>若：<code>&lt;input type="radio"/&gt;</code>，则<code>v-mode</code>l收集的是value值，且要给标签配置<code>value</code>值。</li>
+<li>若：<code>&lt;input type="checkbox"/&gt;</code>
+<ol>
+<li>没有配置<code>input</code>的<code>value</code>属性，那么收集的就是<code>checked</code>（勾选 or 未勾选，是布尔值）</li>
+<li>配置<code>input</code>的<code>value</code>属性:<br>
+(1) <code>v-model</code>的初始值是非数组，那么收集的就是<code>checked</code>（勾选 or 未勾选，是布尔值）<br>
+(2) <code>v-model</code>的初始值是数组，那么收集的的就是<code>value</code>组成的数组</li>
+</ol>
+</li>
+<li>备注：<code>v-model</code>的三个修饰符：
+<ul>
+<li><code>lazy</code>：失去焦点再收集数据</li>
+<li><code>number</code>：输入字符串转为有效的数字</li>
+<li><code>trim</code>：输入首尾空格过滤</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="过滤器">
+          <a href="#过滤器" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#过滤器">#</a>过滤器</h2>
+      
+<ul>
+<li>定义：对要显示的数据进行特定格式化后再显示（适用于一些简单逻辑的处理）。</li>
+<li>语法：
+<ol>
+<li>注册过滤器：<code>Vue.filter(name,callback)</code>（全局过滤器） 或 <code>new Vue{filters:{}}</code>（局部过滤器）</li>
+<li>使用过滤器：<code>{{ xxx | 过滤器名}}</code>  或  <code>v-bind:属性 = "xxx | 过滤器名"</code>，<code>v-model</code>不可使用</li>
+</ol>
+</li>
+<li>备注：
+<ol>
+<li>过滤器也可以接收额外参数、多个过滤器也可以串联</li>
+<li>并没有改变原本的数据, 是产生新的对应的数据</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//时间戳格式为例</span></span><br><span class="line"><span class="comment">// 1.计算属性实现</span></span><br><span class="line"><span class="attr">computed</span>: {</span><br><span class="line">	<span class="title function_">fmtTime</span>(<span class="params"></span>){</span><br><span class="line">		<span class="keyword">return</span> <span class="title function_">dayjs</span>(<span class="variable language_">this</span>.<span class="property">time</span>).<span class="title function_">format</span>(<span class="string">'YYYY年MM月DD日 HH:mm:ss'</span>)</span><br><span class="line">	}</span><br><span class="line">},</span><br><span class="line"><span class="comment">// 2. methods实现</span></span><br><span class="line"><span class="attr">methods</span>: {</span><br><span class="line">	<span class="title function_">getFmtTime</span>(<span class="params"></span>){</span><br><span class="line">		<span class="keyword">return</span> <span class="title function_">dayjs</span>(<span class="variable language_">this</span>.<span class="property">time</span>).<span class="title function_">format</span>(<span class="string">'YYYY年MM月DD日 HH:mm:ss'</span>)</span><br><span class="line">	}</span><br><span class="line">},</span><br><span class="line"><span class="comment">// 3.过滤器实现</span></span><br><span class="line"><span class="comment">// {time | timeFormater}}</span></span><br><span class="line"><span class="comment">// {{time | timeFormater('YYYY_MM_DD') | mySlice}}  （传cang）</span></span><br><span class="line"><span class="comment">//局部过滤器</span></span><br><span class="line"><span class="attr">filters</span>:{</span><br><span class="line">	<span class="title function_">timeFormater</span>(<span class="params">value,str=<span class="string">'YYYY年MM月DD日 HH:mm:ss'</span></span>){</span><br><span class="line">		<span class="comment">// console.log('@',value)</span></span><br><span class="line">		<span class="keyword">return</span> <span class="title function_">dayjs</span>(value).<span class="title function_">format</span>(str)</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="指令">
+          <a href="#指令" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#指令">#</a>指令</h2>
+      
+
+        <h3 id="内置指令">
+          <a href="#内置指令" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#内置指令">#</a>内置指令</h3>
+      
+<ul>
+<li>
+<p><code>v-bind</code>    : 单向绑定解析表达式, 可简写为 :xxx</p>
+</li>
+<li>
+<p><code>v-model</code>  : 双向数据绑定</p>
+</li>
+<li>
+<p><code>v-for </code> 	: 遍历数组/对象/字符串</p>
+</li>
+<li>
+<p><code>v-on</code>   	: 绑定事件监听, 可简写为@</p>
+</li>
+<li>
+<p><code>v-if</code> 	  : 条件渲染（动态控制节点是否存在）</p>
+</li>
+<li>
+<p><code>v-else</code>   : 条件渲染（动态控制节点是否存在）</p>
+</li>
+<li>
+<p><code>v-show</code>   : 条件渲染 (动态控制节点是否展示)</p>
+</li>
+<li>
+<p><code>v-text</code></p>
+<ol>
+<li>作用：向其所在的节点中渲染文本内容。</li>
+<li>与插值语法的区别：v-text会替换掉节点中的内容，则不会。</li>
+</ol>
+</li>
+<li>
+<p><code>v-html</code></p>
+<ol>
+<li>作用：向指定节点中渲染包含html结构的内容。</li>
+<li>与插值语法的区别：
+<ul>
+<li>v-html会替换掉节点中所有的内容，则不会。</li>
+<li>v-html可以识别html结构。</li>
+</ul>
+</li>
+<li>严重注意：v-html有安全性问题！！！！
+<ul>
+<li>在网站上动态渲染任意HTML是非常危险的，容易导致XSS攻击。</li>
+<li>一定要在可信的内容上使用v-html，永不要用在用户提交的内容上！</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p><code>v-cloak</code></p>
+<p>不带值</p>
+<ol>
+<li>本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。</li>
+<li>使用css配合v-cloak可以解决网速慢时页面展示出的问题。</li>
+</ol>
+</li>
+<li>
+<p><code>v-once</code></p>
+<ol>
+<li>v-once所在节点在初次动态渲染后，就视为静态内容了。</li>
+<li>以后数据的改变不会引起v-once所在结构的更新，可以用于优化性能。</li>
+</ol>
+</li>
+<li>
+<p><code>v-pre</code></p>
+<ol>
+<li>跳过其所在节点的编译过程。</li>
+<li>可利用它跳过：没有使用指令语法、没有使用插值语法的节点，会加快编译。</li>
+</ol>
+</li>
+</ul>
+
+        <h3 id="自定义指令">
+          <a href="#自定义指令" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#自定义指令">#</a>自定义指令</h3>
+      
+<ol>
+<li>
+<p>定义语法</p>
+<ul>
+<li>
+<p>局部指令：</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({						</span><br><span class="line">	<span class="attr">directives</span>:{指令名:配置对象}</span><br><span class="line">}) 							</span><br><span class="line"><span class="comment">// 或</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">	directives{指令名:回调函数}</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>全局指令</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">directive</span>(指令名,配置对象) </span><br><span class="line"><span class="comment">//或   </span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">directive</span>(指令名,回调函数)</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>配置对象中常用的3个回调：</p>
+<ul>
+<li>bind：指令与元素成功绑定时调用。</li>
+<li>inserted：指令所在元素被插入页面时调用。</li>
+<li>update：指令所在模板结构被重新解析时调用。</li>
+</ul>
+</li>
+<li>
+<p>备注</p>
+<ol>
+<li>指令定义时不加v-，但使用时要加v-；</li>
+<li>指令名如果是多个单词，要使用kebab-case命名方式，不要用camelCase命名。</li>
+</ol>
+</li>
+</ol>
+
+        <h2 id="生命周期">
+          <a href="#生命周期" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#生命周期">#</a>生命周期</h2>
+      
+<blockquote>
+<ul>
+<li>
+<p>又名：生命周期回调函数、生命周期函数、生命周期钩子</p>
+</li>
+<li>
+<p>是Vue在关键时刻帮我们调用的一些特殊名称的函数。</p>
+</li>
+<li>
+<p>生命周期函数的名字不可更改，但函数的具体内容是程序员根据需求编写的。</p>
+</li>
+<li>
+<p>生命周期函数中的this指向是vm 或 组件实例对象。</p>
+</li>
+</ul>
+</blockquote>
+<p><img src="https://img.zang.gold/images/202110222026309-Vue.png" alt="生命周期"></p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">  <span class="attr">el</span>: <span class="string">"#root"</span>,</span><br><span class="line">  <span class="title function_">beforeCreate</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"beforeCreate"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">created</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"created"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">beforeMount</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"beforeMount"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">mounted</span>(<span class="params"></span>) { <span class="comment">//发送ajax请求、启动定时器、绑定自定义事件、订阅消息等【初始化操作】 </span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"mounted"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">beforeUpdate</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"beforeUpdate"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">updated</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"updated"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">beforeDestroy</span>(<span class="params"></span>) { <span class="comment">//清除定时器、解绑自定义事件、取消订阅消息等【收尾工作】</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"beforeDestroy"</span>);</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">destroyed</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">"destroyed"</span>);</span><br><span class="line">  },</span><br><span class="line">});</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>关于销毁Vue实例</p>
+<ol>
+<li>销毁后借助Vue开发者工具看不到任何信息。</li>
+<li>销毁后自定义事件会失效，但原生DOM事件依然有效。</li>
+<li>一般不会在beforeDestroy操作数据，因为即便操作数据，也不会再触发更新流程了。</li>
+</ol>
+</blockquote>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A01-%E6%A0%B8%E5%BF%83/">http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A01-%E6%A0%B8%E5%BF%83/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/%E5%89%8D%E7%AB%AF/">前端</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Javascript/">Javascript</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Vue/">Vue</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Vue%E5%AD%A6%E4%B9%A02-%E7%BB%84%E4%BB%B6%E5%8C%96/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Vue学习II｜组件化编程</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Hexo-theme-ButterFly/"><span class="paginator-prev__text">Hexo｜ButterFly主题</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">
+          特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86-%EF%BC%88JavaScript%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">
+          前置知识 （JavaScript）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">
+          安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VueDeveloper"><span class="toc-number">3.0.1.</span> <span class="toc-text">
+          VueDeveloper</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#script-%E5%BC%95%E5%85%A5"><span class="toc-number">3.0.2.</span> <span class="toc-text">
+          &lt;script&gt;引入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#npm%E5%AE%89%E8%A3%85"><span class="toc-number">3.0.3.</span> <span class="toc-text">
+          npm安装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">
+          Vue模板语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue%E5%B1%9E%E6%80%A7"><span class="toc-number">4.1.</span> <span class="toc-text">
+          Vue属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%80%BC%E8%AF%AD%E6%B3%95"><span class="toc-number">4.1.1.</span> <span class="toc-text">
+          插值语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E8%AF%AD%E6%B3%95"><span class="toc-number">4.1.2.</span> <span class="toc-text">
+          指令语法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BB%A3%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">
+          数据代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%A1%BEObject-defineProperty"><span class="toc-number">5.1.</span> <span class="toc-text">
+          回顾Object.defineProperty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BB%A3%E7%90%86-2"><span class="toc-number">5.2.</span> <span class="toc-text">
+          数据代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BB%A3%E7%90%86"><span class="toc-number">5.3.</span> <span class="toc-text">
+          Vue中的数据代理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">
+          事件处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">6.1.</span> <span class="toc-text">
+          事件的基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="toc-number">6.2.</span> <span class="toc-text">
+          事件修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6"><span class="toc-number">6.3.</span> <span class="toc-text">
+          键盘事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E4%B8%8E%E7%9B%91%E8%A7%86%E5%B1%9E%E6%80%A7"><span class="toc-number">7.</span> <span class="toc-text">
+          计算属性与监视属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7-computed"><span class="toc-number">7.1.</span> <span class="toc-text">
+          计算属性 computed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E8%A7%86%E5%B1%9E%E6%80%A7-watch"><span class="toc-number">7.2.</span> <span class="toc-text">
+          监视属性 watch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%91%E5%AE%9A%E6%A0%B7%E5%BC%8F"><span class="toc-number">8.</span> <span class="toc-text">
+          绑定样式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93"><span class="toc-number">9.</span> <span class="toc-text">
+          页面渲染</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%B8%B2%E6%9F%93"><span class="toc-number">9.1.</span> <span class="toc-text">
+          条件渲染</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E6%B8%B2%E6%9F%93"><span class="toc-number">9.2.</span> <span class="toc-text">
+          列表渲染</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E8%BF%87%E6%BB%A4"><span class="toc-number">9.2.1.</span> <span class="toc-text">
+          列表过滤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E6%8E%92%E5%BA%8F"><span class="toc-number">9.2.2.</span> <span class="toc-text">
+          列表排序</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E6%94%B6%E9%9B%86"><span class="toc-number">10.</span> <span class="toc-text">
+          表单收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">11.</span> <span class="toc-text">
+          过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4"><span class="toc-number">12.</span> <span class="toc-text">
+          指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E6%8C%87%E4%BB%A4"><span class="toc-number">12.1.</span> <span class="toc-text">
+          内置指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4"><span class="toc-number">12.2.</span> <span class="toc-text">
+          自定义指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">13.</span> <span class="toc-text">
+          生命周期</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="从0开始的服务器建设事业">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器环境配置">
+<meta property="og:url" content="http://zang.gold/posts/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="从0开始的服务器建设事业">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-17T04:50:08.000Z">
+<meta property="article:modified_time" content="2026-07-18T14:17:20.242Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="OS">
+<meta property="article:tag" content="Tomcat">
+<meta name="twitter:card" content="summary"><title>服务器环境配置 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">服务器环境配置</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-07-17</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>服务器三大件（JDK，Tomcat，MySQL）以及本人项目需求中的其他软件（Nginx，PostgreSQL等）的安装与配置</p>
+
+        <h2 id="服务器基础">
+          <a href="#服务器基础" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#服务器基础">#</a>服务器基础</h2>
+      
+<p>本人的服务器基于腾讯云轻量级应用服务器进行搭建，相比于云服务CVM，在一些功能上有了限制，不过对于本菜狗来说完全够用了</p>
+<p>服务器系统为Ubuntu 18.04 1 LTS。</p>
+<ol>
+<li>
+<p>远程连接</p>
+<ol>
+<li>
+<p>ssh</p>
+<p><code>ssh {用户名}@{服务器ip地址} -p {port}</code></p>
+<p>如系统重置，因密钥改变，需要删除 C:\Users\用户/.ssh/known_hosts 中对应的密钥重新建立连接</p>
+</li>
+<li>
+<p>winSCP （<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://winscp.net/eng/download.php">下载链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>）</p>
+</li>
+</ol>
+</li>
+<li>
+<p>安装工具</p>
+<blockquote>
+<p><code>Temporary failure resolving 'archive.ubuntu.com'</code>等问题，到<code>/etc/resolv.conf</code>添加<code>nameserver 8.8.8.8</code></p>
+</blockquote>
+<ol>
+<li>
+<p>apt-get</p>
+<p>apt-get是一款适用于Unix和Linux系统的应用程序管理器。</p>
+<ul>
+<li>
+<p>系统安装软件一般在 <code>/usr/share</code>，可执行的文件在 <code>/usr/bin</code>，配置文件可能安装到了<code>/etc</code>下等。</p>
+</li>
+<li>
+<p>文档一般在 <code>/usr/share</code></p>
+</li>
+<li>
+<p>可执行文件 <code>/usr/bin</code> 或 <code>/usr/sbin</code></p>
+</li>
+<li>
+<p>配置文件 <code>/etc</code></p>
+</li>
+<li>
+<p>lib文件 <code>/usr/lib</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>apt</p>
+<p>apt流行于Ubuntu 16.04版本后，与apt-get的使用在大部分情况下基本相同，官方也鼓励使用apt</p>
+</li>
+</ol>
+<blockquote>
+<p>查询已安装的包<code>dpkg -l|grep '^ii'</code></p>
+<p>或安装<code>sudo apt-get install aptitude</code>，运行<code>sudo aptitude</code>进行查看</p>
+<ul>
+<li>列出所有可更新的软件清单：<code>sudo apt update</code></li>
+<li>升级所有软件包：<code>sudo apt upgrede </code></li>
+<li>查找软件包：<code>sudo apt search &lt;keyword&gt;</code></li>
+<li>列出可更新的软件包及版本信息：<code>apt list --upgradeable</code></li>
+<li>列出所有已安装的软件包：<code>apt list --installed</code></li>
+<li>列出所有已安装的包的版本信息：<code>apt list --all-versions</code></li>
+<li>安装软件包：<code>sudo apt install &lt;package_name1&gt; &lt;package_name2&gt;...</code></li>
+<li>删除软件包：<code>apt remove &lt;package_name&gt;</code></li>
+<li>自动清理不再使用的软件包：<code>sudo apt autoremove</code></li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>防火墙</p>
+<p>这里直接用腾讯云终端自带的即可，再使用相当于墙中墙。当然如果要更安全，也可以开启</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看开放的端口</span></span><br><span class="line">firewall-cmd --list-all</span><br><span class="line"><span class="comment"># 设置开放的端口</span></span><br><span class="line">firewall-cmd --add-service=http --permanent</span><br><span class="line">firewall-cmd --add-port=80/tcp --permanent</span><br><span class="line"><span class="comment"># 重启防火墙</span></span><br><span class="line">firewall-cmd -reload</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+
+        <h2 id="JDK">
+          <a href="#JDK" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#JDK">#</a>JDK</h2>
+      
+<p>可以安装Oracle，也可以安装OpenJDK。以下均以Oracle为例。</p>
+
+        <h3 id="安装包安装">
+          <a href="#安装包安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安装包安装">#</a>安装包安装</h3>
+      
+<ol>
+<li>
+<p>下载jdk并上传到服务器（<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">下载链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>）</p>
+<blockquote>
+<p>注意<code>aarch64</code>版本和纯<code>x64</code>版本</p>
+</blockquote>
+</li>
+<li>
+<p>解压  <code>tar -zxvf jdk-8u271-linux-x64.tar.gz</code></p>
+</li>
+<li>
+<p>移到指定目录  <code>sudo mv jdk1.8.0_271 /usr/lib/jdk1.8</code></p>
+</li>
+<li>
+<p>设置环境变量  <code>sudo vim /etc/profile</code> （如果是zsh则为<code>~/.zshrc</code>）</p>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件末尾加入</span></span><br><span class="line"><span class="comment"># 具体位置视你的位置而定，主要的就是JAVA_HOME的位置，其他位置可直接如下</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jdk1.8</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">${JAVA_HOME}</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">${JAVA_HOME}</span>/lib:<span class="variable">${JRE_HOME}</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=.:<span class="variable">${JAVA_HOME}</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>使配置环境生效并检查  <code>source /etc/profile</code> ;</p>
+</li>
+<li>
+<p>查看版本号 <code>java -version</code></p>
+</li>
+</ol>
+
+        <h3 id="yum安装">
+          <a href="#yum安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#yum安装">#</a>yum安装</h3>
+      
+<ol>
+<li>检查是否已安装java<code>yum -qa | grep java</code></li>
+<li>查找可用包<code>yum list | grep java-1.8.0-openjdk</code></li>
+<li>安装<code>yum -y install java-1.8.0-openjdk*</code></li>
+<li>查看版本号<code>java -version</code></li>
+</ol>
+
+        <h3 id="更新">
+          <a href="#更新" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#更新">#</a>更新</h3>
+      
+<p>删除原安装目录，解压新版本换到同一目录下即可，还可以省的改配置</p>
+
+        <h2 id="Tomcat">
+          <a href="#Tomcat" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Tomcat">#</a>Tomcat</h2>
+      
+
+        <h3 id="安装包安装-2">
+          <a href="#安装包安装-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安装包安装-2">#</a>安装包安装</h3>
+      
+<ol>
+<li>
+<p>下载(<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://tomcat.apache.org/download-80.cgi">下载链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>)</p>
+</li>
+<li>
+<p>解压  <code>tar -zxvf apache-tomcat-8.5.61.tar.gz</code></p>
+</li>
+<li>
+<p>移到指定目录  <code>sudo mv apache-tomcat-8.5.61 /opt/tomcat8</code></p>
+</li>
+<li>
+<p>配置环境变量  <code>sudo vim /opt/tomcat8/bin/startup.sh</code>  ;</p>
+<p>​						<code>sudo vim /opt/tomcat8/bin/shutdown.sh</code></p>
+</li>
+</ol>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##在最后一行exec "$PRGDIR"/"$EXECUTABLE" start "$@"，前添加以下内容即可</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jdk1.8</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">${JAVA_HOME}</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">${JAVA_HOME}</span>/lib:<span class="variable">${JRE_HOME}</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=.:<span class="variable">${JAVA_HOME}</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> TOMCAT_HOME=/opt/tomcat8</span><br></pre></td></tr></tbody></table></div></figure>
+<ol start="5">
+<li>启动tomcat服务器<code>/opt/tomcat/bin/startup.sh</code></li>
+<li>浏览器输入 {IP地址}:8080</li>
+<li>关闭tomcat  <code>/opt/tomcat/bin/shutdown.sh</code></li>
+</ol>
+<blockquote>
+<p>要实现tomcat的可视化管理，需要在<code>/conf/tomcat-user.xml</code>中根据模板添加用户<code>manager-gui</code></p>
+<figure class="highlight xml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">role</span> <span class="attr">rolename</span>=<span class="string">"manager-gui"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">user</span> <span class="attr">username</span>=<span class="string">"tomcat"</span> <span class="attr">password</span>=<span class="string">"s3cret"</span> <span class="attr">roles</span>=<span class="string">"manager-gui"</span>/&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+<p>另外，默认是只有同一机子上才可以访问，其他的均为<code>403</code>，需要去<code>context.xml</code>中配置访问IP</p>
+<figure class="highlight xml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">privileged</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"org.apache.catalina.valves.RemoteAddrValve"</span> <span class="attr">allow</span>=<span class="string">"127\.0\.0\.1"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Context</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+</blockquote>
+
+        <h3 id="自启动设置">
+          <a href="#自启动设置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#自启动设置">#</a>自启动设置</h3>
+      
+<ol>
+<li>
+<p>修改tomcat8下的<code>/bin/setclasspath.sh</code>文件</p>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">#  Set JAVA_HOME or JRE_HOME if not already set, ensure any provided settings</span></span><br><span class="line"><span class="comment">#  are valid and consistent with the selected start-up options and set up the</span></span><br><span class="line"><span class="comment">#  endorsed directory.</span></span><br><span class="line"><span class="comment"># -----------------------------------------------------------------------------</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jdk1.8   <span class="comment"># 自己的jdk路径</span></span><br><span class="line"><span class="built_in">export</span> CATALINA_BASE=/opt/tomcat8  <span class="comment"># 自己的tomcat路径</span></span><br><span class="line"><span class="built_in">export</span> CATALINA_PID=<span class="variable">$CATALINA_BASE</span>/tomcat.pid</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>在<code>/etc/systemd/system/</code>目录下添加<code>tomcat8.service</code>文件</p>
+<figure class="highlight sh"><figcaption><span>tomcat8.service</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=A Servlet Container</span><br><span class="line"> </span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/usr/local/tomcat/tomcat.pid  <span class="comment"># 修改为自己的路径</span></span><br><span class="line">ExecStart=/usr/local/tomcat/bin/catalina.sh start <span class="comment"># 修改为自己的路径</span></span><br><span class="line">ExecStop=/usr/local/tomcat/bin/catalina.sh stop   <span class="comment"># 修改为自己的路径</span></span><br><span class="line"> </span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>注意要修改为自己的路径，如果忘记改了，之后补上，需要执行<code>systemctl daemon-reload</code>来重新载入单元模块</p>
+</blockquote>
+</li>
+<li>
+<p>添加可执行权限 <code>sudo chmod +x tomcat8.service</code></p>
+</li>
+<li>
+<p>此时可以通过<code>systemctl</code>命令来控制tomcat</p>
+<ul>
+<li>启动服务 <code>sudo systemctl start tomcat8</code></li>
+<li>查看状态 <code>sudo systemctl status tomcat8</code></li>
+<li>停止服务 <code>sudo systemctl stop tomcat8</code></li>
+</ul>
+</li>
+<li>
+<p>设置开机自启</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> tomcat8</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>出现<code>Created symlink /etc/systemd/system/multi-user.target.wants/tomcat8.service → /etc/systemd/system/tomcat8.service.</code>说明成功</p>
+</blockquote>
+</li>
+</ol>
+
+        <h2 id="MySQL">
+          <a href="#MySQL" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#MySQL">#</a>MySQL</h2>
+      
+<ul>
+<li><a href="https://zang.gold/posts/7666/">MySQL使用小结 </a></li>
+</ul>
+
+        <h2 id="MariaDB">
+          <a href="#MariaDB" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#MariaDB">#</a>MariaDB</h2>
+      
+<p>mariadb是Mysql的一个分支，使用上没啥差别，在机缘巧合下把mysql覆盖为mariadb后，感觉在ubuntu系统上交互性更好了。</p>
+<blockquote>
+<p>但也发现个问题，每次通过<code>systemctl</code>进行管理时，就会很长时间没有变化，，，</p>
+</blockquote>
+<p>安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install mariadb-server</span><br><span class="line"><span class="built_in">sudo</span> systemctl status mariadb</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="Nginx">
+          <a href="#Nginx" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Nginx">#</a>Nginx</h2>
+      
+
+        <h3 id="apt-安装">
+          <a href="#apt-安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#apt-安装">#</a>apt 安装</h3>
+      
+<p>参考官网文档（<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="http://nginx.org/en/linux_packages.html#Ubuntu">官网：nginx: Linux packages</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>）</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 安装先决条件</span></span><br><span class="line"><span class="built_in">sudo</span> apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 导入官方nginx官方密钥</span></span><br><span class="line">curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \</span><br><span class="line">    | <span class="built_in">sudo</span> <span class="built_in">tee</span> /usr/share/keyrings/nginx-archive-keyring.gpg &gt;/dev/null</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 3. 验证下载的文件是否包含正确的密钥</span></span><br><span class="line">gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg</span><br><span class="line"><span class="comment">## 输出需要包含指纹 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.为nginx设置apt存储库</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \</span></span><br><span class="line"><span class="string">http://nginx.org/packages/ubuntu `lsb_release -cs` nginx"</span> \</span><br><span class="line">    | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/sources.list.d/nginx.list</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 5. 设置存储库固定</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n"</span> \</span><br><span class="line">    | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/preferences.d/99nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 下载安装</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install nginx</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="使用">
+          <a href="#使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#使用">#</a>使用</h4>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可执行文件路径  /usr/sbin/nginx</span></span><br><span class="line"><span class="comment"># 配置文件路径   /etc/nginx/nginx.conf  /etc/nginx/conf.d/default.conf</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> /usr/sbin/nginx -c /etc/nginx/nginx.conf  <span class="comment"># 以配置文件nginx.conf启动</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/sbin/nginx -s stop 	<span class="comment"># 停止</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/sbin/nginx -s reload 	<span class="comment"># 重启</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="apt-get安装">
+          <a href="#apt-get安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#apt-get安装">#</a>apt-get安装</h3>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"><span class="built_in">sudo</span> apt-get install nginx</span><br><span class="line"><span class="built_in">sudo</span> apt-get remove nginx  <span class="comment">#卸载</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> nginx -c /etc/nginx/nginx.conf  <span class="comment">#启动</span></span><br><span class="line"><span class="built_in">sudo</span> nginx -s stop  <span class="comment">#停止 quit/reload/reopen</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="Postgresql">
+          <a href="#Postgresql" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Postgresql">#</a>Postgresql</h2>
+      
+<ul>
+<li><a href="https://zang.gold/posts/8571/">PostgreSQL </a></li>
+</ul>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.csdn.net/csdnwxhw/article/details/114199445">mysql8.0.23：Access denied for user ‘root‘@‘localhost‘_newbee_wxh的博客-CSDN博客</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">http://zang.gold/posts/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Java/">Java</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostgreSQL/">PostgreSQL</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Nginx/">Nginx</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/MySQL/">MySQL</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/OS/">OS</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Tomcat/">Tomcat</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/CAD+GIS+Postgresql/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">结合 ArcGIS 对 CAD 地图入库处理</span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">
+          服务器基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK"><span class="toc-number">2.</span> <span class="toc-text">
+          JDK</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">
+          安装包安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yum%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.</span> <span class="toc-text">
+          yum安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0"><span class="toc-number">2.3.</span> <span class="toc-text">
+          更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tomcat"><span class="toc-number">3.</span> <span class="toc-text">
+          Tomcat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85%E5%AE%89%E8%A3%85-2"><span class="toc-number">3.1.</span> <span class="toc-text">
+          安装包安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%90%AF%E5%8A%A8%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">
+          自启动设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL"><span class="toc-number">4.</span> <span class="toc-text">
+          MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MariaDB"><span class="toc-number">5.</span> <span class="toc-text">
+          MariaDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx"><span class="toc-number">6.</span> <span class="toc-text">
+          Nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#apt-%E5%AE%89%E8%A3%85"><span class="toc-number">6.1.</span> <span class="toc-text">
+          apt 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">6.1.1.</span> <span class="toc-text">
+          使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apt-get%E5%AE%89%E8%A3%85"><span class="toc-number">6.2.</span> <span class="toc-text">
+          apt-get安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Postgresql"><span class="toc-number">7.</span> <span class="toc-text">
+          Postgresql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">8.</span> <span class="toc-text">
+          参考</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="我在B站学Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习V｜Vuex">
+<meta property="og:url" content="http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A05-Vuex/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="我在B站学Vue">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202111241434641-vue.png">
+<meta property="article:published_time" content="2021-11-24T06:37:43.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:35:01.209Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202111241434641-vue.png"><title>Vue学习V｜Vuex | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A05-Vuex/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Vue学习V｜Vuex</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-11-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>记录我在b站尚硅谷学习Vue的笔记（在官方笔记上的补充与修改）</p>
+<p>课程链接：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Zy4y1K7SH?p=105">尚硅谷Vue2.0+Vue3.0全套教程丨vuejs从入门到精通_哔哩哔哩_bilibili</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>随脚手架课程篇开始的的全课程demo：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://gitee.com/angzhijin/vue_demo">angzhijin/vue_demo (gitee.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="概念">
+          <a href="#概念" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#概念">#</a>概念</h2>
+      
+<p>在Vue中实现集中式状态（数据）管理的一个Vue插件，对vue应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信。</p>
+<p><img src="https://img.zang.gold/images/202111241434641-vue.png" alt="Vuex工作原理"></p>
+
+        <h2 id="何时使用？">
+          <a href="#何时使用？" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#何时使用？">#</a>何时使用？</h2>
+      
+<p>多个组件需要共享数据时</p>
+
+        <h2 id="搭建vuex环境">
+          <a href="#搭建vuex环境" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#搭建vuex环境">#</a>搭建vuex环境</h2>
+      
+<p>安装<code>npm i vuex</code></p>
+<ol>
+<li>
+<p>创建文件<code>/src/store/index.js</code></p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入Vue核心库</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="comment">//引入Vuex</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"><span class="comment">//应用Vuex插件</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line">   </span><br><span class="line"><span class="comment">//准备actions对象——响应组件中的动作</span></span><br><span class="line"><span class="keyword">const</span> actions = {}</span><br><span class="line"><span class="comment">//准备mutations对象——操作state中的数据</span></span><br><span class="line"><span class="keyword">const</span> mutations = {}</span><br><span class="line"><span class="comment">//准备state对象——存储具体的数据</span></span><br><span class="line"><span class="keyword">const</span> state = {}</span><br><span class="line">   </span><br><span class="line"><span class="comment">//创建并暴露store</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>({</span><br><span class="line">	actions,</span><br><span class="line">	mutations,</span><br><span class="line">	state</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>在<code>main.js</code>中创建vue时传入<code>store</code>配置项</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"><span class="comment">//引入store</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'./store'</span></span><br><span class="line">......</span><br><span class="line">   </span><br><span class="line"><span class="comment">//创建vm</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">	<span class="attr">el</span>:<span class="string">'#app'</span>,</span><br><span class="line">	<span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> <span class="title function_">h</span>(<span class="title class_">App</span>),</span><br><span class="line">	store</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+
+        <h2 id="基本使用">
+          <a href="#基本使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#基本使用">#</a>基本使用</h2>
+      
+<ol>
+<li>
+<p>初始化数据，配置<code>actions</code>, 配置<code>mutations</code>, 操作文件<code>store.js</code></p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入Vue核心库</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="comment">//引入Vuex</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"><span class="comment">//引用Vuex</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">const</span> actions = {</span><br><span class="line">    <span class="comment">//响应组件中加的动作</span></span><br><span class="line">	<span class="title function_">jia</span>(<span class="params">context,value</span>){</span><br><span class="line">		<span class="comment">// console.log('actions中的jia被调用了',miniStore,value)</span></span><br><span class="line">		context.<span class="title function_">commit</span>(<span class="string">'JIA'</span>,value)</span><br><span class="line">	},</span><br><span class="line">}</span><br><span class="line">   </span><br><span class="line"><span class="keyword">const</span> mutations = {</span><br><span class="line">    <span class="comment">//执行加</span></span><br><span class="line">	<span class="title function_">JIA</span>(<span class="params">state,value</span>){</span><br><span class="line">		<span class="comment">// console.log('mutations中的JIA被调用了',state,value)</span></span><br><span class="line">		state.<span class="property">sum</span> += value</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line">   </span><br><span class="line"><span class="comment">//初始化数据</span></span><br><span class="line"><span class="keyword">const</span> state = {</span><br><span class="line">   <span class="attr">sum</span>:<span class="number">0</span></span><br><span class="line">}</span><br><span class="line">   </span><br><span class="line"><span class="comment">//创建并暴露store</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>({</span><br><span class="line">	actions,</span><br><span class="line">	mutations,</span><br><span class="line">	state,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>组件中读取vuex中的数据<code>$store.state.data</code></p>
+</li>
+<li>
+<p>组件中修改vuex中的数据：<code>$store.dispatch('action中的方法名',数据)</code> 或 <code>$store.commit('mutations中的方法名',数据)</code></p>
+<blockquote>
+<p>备注：</p>
+<ol>
+<li>
+<p>若没有网络请求或其他业务逻辑，组件中也可以越过actions，即不写<code>dispatch</code>，直接编写<code>commit</code></p>
+</li>
+<li>
+<p>action中业务逻辑复杂可连着使用多个dispatchq使用</p>
+</li>
+<li>
+<p>业务内容在action中实现</p>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+
+        <h2 id="getters">
+          <a href="#getters" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#getters">#</a>getters</h2>
+      
+<ol>
+<li>
+<p>概念：当state中的数据需要经过加工后再使用时，可以使用getters加工。</p>
+</li>
+<li>
+<p>在<code>store.js</code>中追加<code>getters</code>配置</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getters = {</span><br><span class="line">	<span class="title function_">bigSum</span>(<span class="params">state</span>){</span><br><span class="line">		<span class="keyword">return</span> state.<span class="property">sum</span> * <span class="number">10</span></span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">//1. 创建并暴露store</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>({</span><br><span class="line">	......</span><br><span class="line">	getters</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>组件中读取数据：<code>$store.getters.bigSum</code></p>
+</li>
+</ol>
+
+        <h2 id="四个map方法使用">
+          <a href="#四个map方法使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#四个map方法使用">#</a>四个map方法使用</h2>
+      
+
+        <h3 id="mapState方法">
+          <a href="#mapState方法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#mapState方法">#</a>mapState方法</h3>
+      
+<p>用于帮助我们映射<code>state</code>中的数据为计算属性</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入</span></span><br><span class="line"><span class="keyword">import</span> {mapState} <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">computed</span>: {</span><br><span class="line">    <span class="comment">//借助mapState生成计算属性：sum、school、subject（对象写法）</span></span><br><span class="line">     ...<span class="title function_">mapState</span>({<span class="attr">sum</span>:<span class="string">'sum'</span>,<span class="attr">school</span>:<span class="string">'school'</span>,<span class="attr">subject</span>:<span class="string">'subject'</span>}),</span><br><span class="line">         </span><br><span class="line">    <span class="comment">//借助mapState生成计算属性：sum、school、subject（数组写法）</span></span><br><span class="line">    ...<span class="title function_">mapState</span>([<span class="string">'sum'</span>,<span class="string">'school'</span>,<span class="string">'subject'</span>]),</span><br><span class="line">},</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="mapGetters方法">
+          <a href="#mapGetters方法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#mapGetters方法">#</a>mapGetters方法</h3>
+      
+<p>用于帮助我们映射<code>getters</code>中的数据为计算属性</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入</span></span><br><span class="line"><span class="keyword">import</span> {mapGetters} <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">computed</span>: {</span><br><span class="line">    <span class="comment">//借助mapGetters生成计算属性：bigSum（对象写法）</span></span><br><span class="line">    ...<span class="title function_">mapGetters</span>({<span class="attr">bigSum</span>:<span class="string">'bigSum'</span>}),</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//借助mapGetters生成计算属性：bigSum（数组写法）</span></span><br><span class="line">    ...<span class="title function_">mapGetters</span>([<span class="string">'bigSum'</span>])</span><br><span class="line">},</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="mapActions方法">
+          <a href="#mapActions方法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#mapActions方法">#</a>mapActions方法</h3>
+      
+<p>用于帮助我们生成与<code>actions</code>对话的方法，即：包含<code>$store.dispatch(xxx)</code>的函数，方法中会调用<code>dispatch</code>去联系actions</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">methods</span>:{</span><br><span class="line">    <span class="comment">//靠mapActions生成：incrementOdd、incrementWait（对象形式）</span></span><br><span class="line">    ...<span class="title function_">mapActions</span>({<span class="attr">incrementOdd</span>:<span class="string">'jiaOdd'</span>,<span class="attr">incrementWait</span>:<span class="string">'jiaWait'</span>})</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//靠mapActions生成：incrementOdd、incrementWait（数组形式）</span></span><br><span class="line">    ...<span class="title function_">mapActions</span>([<span class="string">'jiaOdd'</span>,<span class="string">'jiaWait'</span>])</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="mapMutations方法">
+          <a href="#mapMutations方法" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#mapMutations方法">#</a>mapMutations方法</h3>
+      
+<p>用于帮助我们生成与<code>mutations</code>对话的方法，即：包含<code>$store.commit(xxx)</code>的函数，方法中会调用<code>commit</code>去联系mutations</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">methods</span>:{</span><br><span class="line">    <span class="comment">//靠mapActions生成：increment、decrement（对象形式）</span></span><br><span class="line">    ...<span class="title function_">mapMutations</span>({<span class="attr">increment</span>:<span class="string">'JIA'</span>,<span class="attr">decrement</span>:<span class="string">'JIAN'</span>}),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//靠mapMutations生成：JIA、JIAN（对象形式）</span></span><br><span class="line">    ...<span class="title function_">mapMutations</span>([<span class="string">'JIA'</span>,<span class="string">'JIAN'</span>]),</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>备注：<code>mapActions</code>与<code>mapMutations</code>使用时，若需要传递参数需要：在模板中绑定事件时传递好参数，否则参数是事件对象。</p>
+</blockquote>
+
+        <h2 id="模块化-命名空间">
+          <a href="#模块化-命名空间" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#模块化-命名空间">#</a>模块化+命名空间</h2>
+      
+<ol>
+<li>
+<p>目的：让代码更好维护，让多种数据分类更加明确。</p>
+</li>
+<li>
+<p>修改<code>store.js</code></p>
+<figure class="highlight javascript"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> countAbout = {</span><br><span class="line">  <span class="attr">namespaced</span>:<span class="literal">true</span>,<span class="comment">//开启命名空间</span></span><br><span class="line">  <span class="attr">state</span>:{<span class="attr">x</span>:<span class="number">1</span>},</span><br><span class="line">  <span class="attr">mutations</span>: { ... },</span><br><span class="line">  <span class="attr">actions</span>: { ... },</span><br><span class="line">  <span class="attr">getters</span>: {</span><br><span class="line">    <span class="title function_">bigSum</span>(<span class="params">state</span>){</span><br><span class="line">       <span class="keyword">return</span> state.<span class="property">sum</span> * <span class="number">10</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> personAbout = {</span><br><span class="line">  <span class="attr">namespaced</span>:<span class="literal">true</span>,<span class="comment">//开启命名空间</span></span><br><span class="line">  <span class="attr">state</span>:{ ... },</span><br><span class="line">  <span class="attr">mutations</span>: { ... },</span><br><span class="line">  <span class="attr">actions</span>: { ... }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>({</span><br><span class="line">  <span class="attr">modules</span>: {</span><br><span class="line">    countAbout,</span><br><span class="line">    personAbout</span><br><span class="line">  }</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>开启命名空间后，组件中读取state数据：</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式一：自己直接读取</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">state</span>.<span class="property">personAbout</span>.<span class="property">list</span></span><br><span class="line"><span class="comment">//方式二：借助mapState读取：</span></span><br><span class="line">...<span class="title function_">mapState</span>(<span class="string">'countAbout'</span>,[<span class="string">'sum'</span>,<span class="string">'school'</span>,<span class="string">'subject'</span>]),</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>开启命名空间后，组件中读取getters数据：</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式一：自己直接读取</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">getters</span>[<span class="string">'personAbout/firstPersonName'</span>]</span><br><span class="line"><span class="comment">//方式二：借助mapGetters读取：</span></span><br><span class="line">...<span class="title function_">mapGetters</span>(<span class="string">'countAbout'</span>,[<span class="string">'bigSum'</span>])</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>开启命名空间后，组件中调用dispatch</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式一：自己直接dispatch</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">dispatch</span>(<span class="string">'personAbout/addPersonWang'</span>,person)</span><br><span class="line"><span class="comment">//方式二：借助mapActions：</span></span><br><span class="line">...<span class="title function_">mapActions</span>(<span class="string">'countAbout'</span>,{<span class="attr">incrementOdd</span>:<span class="string">'jiaOdd'</span>,<span class="attr">incrementWait</span>:<span class="string">'jiaWait'</span>})</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>开启命名空间后，组件中调用commit</p>
+<figure class="highlight js"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式一：自己直接commit</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">'personAbout/ADD_PERSON'</span>,person)</span><br><span class="line"><span class="comment">//方式二：借助mapMutations：</span></span><br><span class="line">...<span class="title function_">mapMutations</span>(<span class="string">'countAbout'</span>,{<span class="attr">increment</span>:<span class="string">'JIA'</span>,<span class="attr">decrement</span>:<span class="string">'JIAN'</span>}),</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A05-Vuex/">http://zang.gold/posts/Vue%E5%AD%A6%E4%B9%A05-Vuex/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/%E5%89%8D%E7%AB%AF/">前端</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Javascript/">Javascript</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Vue/">Vue</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/TerrariaServer/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Terraria Server 搭建</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Vue%E5%AD%A6%E4%B9%A04-ajax/"><span class="paginator-prev__text">Vue学习IV｜Ajax</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">
+          概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%95%E6%97%B6%E4%BD%BF%E7%94%A8%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          何时使用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BAvuex%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">
+          搭建vuex环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">
+          基本使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getters"><span class="toc-number">5.</span> <span class="toc-text">
+          getters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E4%B8%AAmap%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">
+          四个map方法使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mapState%E6%96%B9%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text">
+          mapState方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mapGetters%E6%96%B9%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">
+          mapGetters方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mapActions%E6%96%B9%E6%B3%95"><span class="toc-number">6.3.</span> <span class="toc-text">
+          mapActions方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mapMutations%E6%96%B9%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text">
+          mapMutations方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">7.</span> <span class="toc-text">
+          模块化+命名空间</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

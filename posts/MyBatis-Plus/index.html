@@ -1,0 +1,388 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="汇总下MyBatis-Plus的基本内容，但具体使用还是看需求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis-Plus学习">
+<meta property="og:url" content="http://zang.gold/posts/MyBatis-Plus/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="汇总下MyBatis-Plus的基本内容，但具体使用还是看需求">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-12T16:19:58.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:38:30.896Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="DB">
+<meta property="article:tag" content="MyBatis-Plus">
+<meta name="twitter:card" content="summary"><title>MyBatis-Plus学习 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/MyBatis-Plus/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">MyBatis-Plus学习</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>差不多是本科毕业那个暑假，要接手师兄的项目，开始学起了Web开发，那时候还是前端后端两手抓，结果学到后面啥也不熟。</p>
+<p>在当时后端学习时候，接触到了<code>MyBatis</code>，哇测，写Dao层简直不要太方便，后面又熟练掌握了MyBatis的使用（虽然当时对于xml形式的配置也没有好好的学）。再后来，机缘巧合之下，发现了<code>MyBatis-Plus</code>，再次哇测，更方便了啊，使用起来Dao层可以说是全自动了。</p>
+<p>不过，随着使用的深入，对于各种需求的提升，有点感觉这些框架在提高了效率的同时，也增加了局限性，<code>lambda</code>写法很难应用上，比如说父子实体类（大概率是我自己学艺不精了）。后面就主用<code>MyBatis</code>。</p>
+<blockquote>
+<p>虽然说<code>MyBatis</code>也发现了一些局限性，比如<code>#{}</code>参数占位符，是依赖于参数对应类的<code>getter</code>方法，而并不是所有类都符合其要求，比如说<code>PostgreSQL</code>中的<code>PGpoint</code>，表示的是地理信息中的点，提供的是<code>getValue()</code>返回xy坐标的字符串，这个就没办法处理。当时是用回了<code>JDBC</code>来处理。</p>
+</blockquote>
+<p>到了现在，又是要就是另一师兄的班，在他的后端项目中是使用了MyBatis-Plus，我为了省力些方便自己的<code>ctrl+C</code>和<code>ctrl+V</code>操作，就顺便再复习<code>下MyBatis-Plus</code>吧。</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://mybatis.org/mybatis-3/zh/getting-started.html">MyBatis官网</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://baomidou.com/">MyBatis-Plus官网</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="MyBatis温习">
+          <a href="#MyBatis温习" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#MyBatis温习">#</a>MyBatis温习</h2>
+      
+<p>随手写的例子，可能有些错误的。</p>
+
+        <h3 id="配置">
+          <a href="#配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#配置">#</a>配置</h3>
+      
+<figure class="highlight yaml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="attr">config-location:</span></span><br><span class="line">  <span class="comment">#    classpth: mybatis/mybatis-config.xml  # xml配置模式 </span></span><br><span class="line">  <span class="attr">mapper-locations:</span></span><br><span class="line">    <span class="string">classpath:mybatis/mapper/*.xml</span> <span class="comment"># 配置路径，与注解方式不冲突</span></span><br><span class="line">  <span class="attr">configuration:</span></span><br><span class="line">    <span class="attr">map-underscore-to-camel-case:</span> <span class="literal">true</span>  <span class="comment"># 开启驼峰命名</span></span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight java"><figcaption><span>Application.java</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@MapperScanner("com.example.mapper")</span>  <span class="comment">// 开启全局扫描,将该包下的所有视为Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Application</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        SpringApplication.run(PositionServerApplication.class, args);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="Mapper">
+          <a href="#Mapper" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Mapper">#</a>Mapper</h3>
+      
+<blockquote>
+<p>官方提示对于复杂点的语句注解会力不从心，对于复杂的可以使用XML来映射语句</p>
+<p>其他：</p>
+<ul>
+<li><code>@Insert</code>对于主键自增ID需要在数据库中使用<code>serial</code>类型，其默认值为 <code>nextval('xxxx_seq'::regclass)</code></li>
+<li><code>@Select</code>映射到实体类相当于是调用<code>resultMap</code>+无参构造器+<code>setter</code>。</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><figcaption><span>PersonMapper.java</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span> <span class="comment">// 开启全局扫描后可以不加</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">PersonMapper</span> {</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加人员（配置主键，经调用存储后会自动添加id）数据库中id要求类型为serial</span></span><br><span class="line"><span class="comment">     * 返回1说明添加成功</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Insert("insert into person(name, sex) value(#{name}, #{sex})")</span></span><br><span class="line">    <span class="meta">@Options(useGeneratedKeys = true, keyProperty = "id)</span>  <span class="comment">// </span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insertPerson</span><span class="params">(Person person)</span>;</span><br><span class="line">             </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 按name查询（确保无重名，否则返回就应该用List）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Select("select * from person where name = #{name}")</span></span><br><span class="line">    Person <span class="title function_">queryPersonById</span><span class="params">(String name)</span>;</span><br><span class="line">             </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 按性别查询</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Select("select * from person where sex = #{sex}")</span></span><br><span class="line">    List&lt;Person&gt; <span class="title function_">queryPersonsBySex</span><span class="params">(Integer sex)</span>;</span><br><span class="line">             </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 修改姓名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Update("update person set name = #{name} where id =#{id}")</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateBandUsingState</span><span class="params">(MyBand myBand)</span>;</span><br><span class="line">             </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Delete("delete from person where id = #{id}")</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deletePersonById</span><span class="params">(<span class="type">int</span> id)</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>应该也就这些了吧，XML不熟，虽然说官网说明是以XML为主</p>
+</blockquote>
+
+        <h2 id="MyBatis-Plus">
+          <a href="#MyBatis-Plus" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#MyBatis-Plus">#</a>MyBatis-Plus</h2>
+      
+
+        <h3 id="引入">
+          <a href="#引入" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#引入">#</a>引入</h3>
+      
+<figure class="highlight xml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 当前的最新版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.baomidou<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-plus<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="配置-2">
+          <a href="#配置-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#配置-2">#</a>配置</h3>
+      
+<p>这部分和MyBatis没啥区别</p>
+<p>在专属配置中有</p>
+<figure class="highlight yaml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis-plus:</span></span><br><span class="line">  <span class="attr">configuration:</span></span><br><span class="line">    <span class="attr">log-impl:</span> <span class="string">org.apache.ibatis.logging.stdout.StdOutImpl</span> <span class="comment">#开启SQL语句打印</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="Mapper-2">
+          <a href="#Mapper-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Mapper-2">#</a>Mapper</h3>
+      
+<p>在mapper包下编写接口</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; {</span><br><span class="line">	<span class="comment">// 没错，不需要再多写了</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Insert">
+          <a href="#Insert" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Insert">#</a>Insert</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插入一条记录</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Delete">
+          <a href="#Delete" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Delete">#</a>Delete</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 entity 条件，删除记录</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; wrapper)</span>;</span><br><span class="line"><span class="comment">// 删除（根据ID 批量删除）</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(Constants.COLLECTION)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line"><span class="comment">// 根据 ID 删除</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line"><span class="comment">// 根据 columnMap 条件，删除记录</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(Constants.COLUMN_MAP)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Update">
+          <a href="#Update" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Update">#</a>Update</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 whereWrapper 条件，更新记录</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(Constants.ENTITY)</span> T updateEntity, <span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; whereWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 ID 修改</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(Constants.ENTITY)</span> T entity)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Select">
+          <a href="#Select" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Select">#</a>Select</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 ID 查询</span></span><br><span class="line">T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line"><span class="comment">// 根据 entity 条件，查询一条记录</span></span><br><span class="line">T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询（根据ID 批量查询）</span></span><br><span class="line">List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(Constants.COLLECTION)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line"><span class="comment">// 根据 entity 条件，查询全部记录</span></span><br><span class="line">List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 查询（根据 columnMap 条件）</span></span><br><span class="line">List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(Constants.COLUMN_MAP)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询全部记录</span></span><br><span class="line">List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询全部记录。注意： 只返回第一个字段的值</span></span><br><span class="line">List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据 entity 条件，查询全部记录（并翻页）</span></span><br><span class="line">IPage&lt;T&gt; <span class="title function_">selectPage</span><span class="params">(IPage&lt;T&gt; page, <span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询全部记录（并翻页）</span></span><br><span class="line">IPage&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMapsPage</span><span class="params">(IPage&lt;T&gt; page, <span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询总记录数</span></span><br><span class="line">Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="Service">
+          <a href="#Service" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Service">#</a>Service</h3>
+      
+<figure class="highlight java"><figcaption><span>UserService.java</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserService</span> <span class="keyword">extends</span> <span class="title class_">IService</span>&lt;User&gt; {</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight java"><figcaption><span>USerServiceImpl.java</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImpl</span> <span class="keyword">extends</span> <span class="title class_">ServiceImpl</span>&lt;UserMapper, User&gt; <span class="keyword">implements</span> <span class="title class_">UserService</span> {</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Save">
+          <a href="#Save" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Save">#</a>Save</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插入一条记录（选择字段，策略插入）</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">save</span><span class="params">(T entity)</span>;</span><br><span class="line"><span class="comment">// 插入（批量）</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">saveBatch</span><span class="params">(Collection&lt;T&gt; entityList)</span>;</span><br><span class="line"><span class="comment">// 插入（批量）</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">saveBatch</span><span class="params">(Collection&lt;T&gt; entityList, <span class="type">int</span> batchSize)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Remove">
+          <a href="#Remove" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Remove">#</a>Remove</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 entity 条件，删除记录</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 ID 删除</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">removeById</span><span class="params">(Serializable id)</span>;</span><br><span class="line"><span class="comment">// 根据 columnMap 条件，删除记录</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">removeByMap</span><span class="params">(Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line"><span class="comment">// 删除（根据ID 批量删除）</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">removeByIds</span><span class="params">(Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Update-2">
+          <a href="#Update-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Update-2">#</a>Update</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 UpdateWrapper 条件，更新记录 需要设置sqlset</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">update</span><span class="params">(Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 whereWrapper 条件，更新记录</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">update</span><span class="params">(T updateEntity, Wrapper&lt;T&gt; whereWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 ID 选择修改</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">updateById</span><span class="params">(T entity)</span>;</span><br><span class="line"><span class="comment">// 根据ID 批量更新</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">updateBatchById</span><span class="params">(Collection&lt;T&gt; entityList)</span>;</span><br><span class="line"><span class="comment">// 根据ID 批量更新</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">updateBatchById</span><span class="params">(Collection&lt;T&gt; entityList, <span class="type">int</span> batchSize)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Get">
+          <a href="#Get" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Get">#</a>Get</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 ID 查询</span></span><br><span class="line">T <span class="title function_">getById</span><span class="params">(Serializable id)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper，查询一条记录。结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")</span></span><br><span class="line">T <span class="title function_">getOne</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper，查询一条记录</span></span><br><span class="line">T <span class="title function_">getOne</span><span class="params">(Wrapper&lt;T&gt; queryWrapper, <span class="type">boolean</span> throwEx)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper，查询一条记录</span></span><br><span class="line">Map&lt;String, Object&gt; <span class="title function_">getMap</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper，查询一条记录</span></span><br><span class="line">&lt;V&gt; V <span class="title function_">getObj</span><span class="params">(Wrapper&lt;T&gt; queryWrapper, Function&lt;? <span class="built_in">super</span> Object, V&gt; mapper)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="List">
+          <a href="#List" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#List">#</a>List</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询所有</span></span><br><span class="line">List&lt;T&gt; <span class="title function_">list</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 查询列表</span></span><br><span class="line">List&lt;T&gt; <span class="title function_">list</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 查询（根据ID 批量查询）</span></span><br><span class="line">Collection&lt;T&gt; <span class="title function_">listByIds</span><span class="params">(Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line"><span class="comment">// 查询（根据 columnMap 条件）</span></span><br><span class="line">Collection&lt;T&gt; <span class="title function_">listByMap</span><span class="params">(Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line"><span class="comment">// 查询所有列表</span></span><br><span class="line">List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">listMaps</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 查询列表</span></span><br><span class="line">List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">listMaps</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 查询全部记录</span></span><br><span class="line">List&lt;Object&gt; <span class="title function_">listObjs</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 查询全部记录</span></span><br><span class="line">&lt;V&gt; List&lt;V&gt; <span class="title function_">listObjs</span><span class="params">(Function&lt;? <span class="built_in">super</span> Object, V&gt; mapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询全部记录</span></span><br><span class="line">List&lt;Object&gt; <span class="title function_">listObjs</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询全部记录</span></span><br><span class="line">&lt;V&gt; List&lt;V&gt; <span class="title function_">listObjs</span><span class="params">(Wrapper&lt;T&gt; queryWrapper, Function&lt;? <span class="built_in">super</span> Object, V&gt; mapper)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Page">
+          <a href="#Page" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Page">#</a>Page</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 无条件分页查询</span></span><br><span class="line">IPage&lt;T&gt; <span class="title function_">page</span><span class="params">(IPage&lt;T&gt; page)</span>;</span><br><span class="line"><span class="comment">// 条件分页查询</span></span><br><span class="line">IPage&lt;T&gt; <span class="title function_">page</span><span class="params">(IPage&lt;T&gt; page, Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"><span class="comment">// 无条件分页查询</span></span><br><span class="line">IPage&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">pageMaps</span><span class="params">(IPage&lt;T&gt; page)</span>;</span><br><span class="line"><span class="comment">// 条件分页查询</span></span><br><span class="line">IPage&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">pageMaps</span><span class="params">(IPage&lt;T&gt; page, Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="Count">
+          <a href="#Count" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Count">#</a>Count</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询总记录数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">count</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 根据 Wrapper 条件，查询总记录数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">count</span><span class="params">(Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="相关注解">
+          <a href="#相关注解" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#相关注解">#</a>相关注解</h3>
+      
+
+        <h4 id="实体类">
+          <a href="#实体类" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#实体类">#</a>实体类</h4>
+      
+
+        <h5 id="TableName">
+          <a href="#TableName" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#TableName">#</a>@TableName</h5>
+      
+<p>实体类对应的表名</p>
+
+        <h5 id="TableId">
+          <a href="#TableId" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#TableId">#</a>@TableId</h5>
+      
+<p>实体类对应的主键</p>
+
+        <h5 id="IdType">
+          <a href="#IdType" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#IdType">#</a>@IdType</h5>
+      
+<p>主键Id的类型</p>
+<p>AUTO、 NONE等</p>
+
+        <h5 id="TableField">
+          <a href="#TableField" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#TableField">#</a>@TableField</h5>
+      
+<p>字段注解（非主键）</p>
+
+        <h5 id="Version">
+          <a href="#Version" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Version">#</a>@Version</h5>
+      
+<p>乐观锁</p>
+
+        <h2 id="Wrapper条件构造器">
+          <a href="#Wrapper条件构造器" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Wrapper条件构造器">#</a>Wrapper条件构造器</h2>
+      
+<p>构造器，用于构造sql语句</p>
+
+        <h3 id="AbstractWrapper">
+          <a href="#AbstractWrapper" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#AbstractWrapper">#</a>AbstractWrapper</h3>
+      
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>含义</th>
+<th>方法</th>
+<th>含义</th>
+<th>方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allEq()</code></td>
+<td>全等与（个别null）</td>
+<td><code>eq()</code></td>
+<td>等于</td>
+<td><code>ne()</code></td>
+<td>不等于</td>
+</tr>
+<tr>
+<td><code>gt()</code></td>
+<td>大雨</td>
+<td><code>ge()</code></td>
+<td>大于等于</td>
+<td><code>between()</code></td>
+<td>在中间</td>
+</tr>
+<tr>
+<td><code>lt()</code></td>
+<td>小于</td>
+<td><code>le()</code></td>
+<td>小于等于</td>
+<td><code>notBetween()</code></td>
+<td>不在中间</td>
+</tr>
+<tr>
+<td><code>like()</code></td>
+<td>like’%值%’</td>
+<td><code>notLike()</code></td>
+<td>不like ‘%值%’</td>
+<td><code>likeLeft()</code></td>
+<td>like’%值’</td>
+</tr>
+<tr>
+<td><code>isNull()</code></td>
+<td>字段为空</td>
+<td><code>isNotNull()</code></td>
+<td>字段不为空</td>
+<td><code>lekrRight()</code></td>
+<td>like’值%’</td>
+</tr>
+<tr>
+<td><code>groupBy()</code></td>
+<td>group by</td>
+<td><code>orderBYAsc()</code></td>
+<td>升序 orderby</td>
+<td><code>orderByDesc()</code></td>
+<td>降序order by</td>
+</tr>
+<tr>
+<td><code>orderBy()</code></td>
+<td>order by</td>
+<td><code>or()</code></td>
+<td>sql的<code>or</code></td>
+<td><code>and()</code></td>
+<td>sql的<code>and</code></td>
+</tr>
+<tr>
+<td><code>exist()</code></td>
+<td>存在</td>
+<td><code>notExist()</code></td>
+<td>不存在</td>
+<td><code>having()</code></td>
+<td><code>having</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>eg.</p>
+<p><code>.eq("id",1).or().ne("name","老王")</code>—&gt;<code>id = 1 or name != '老王'</code></p>
+<p><code>.lambda.eq(User::getId,1).or().ne(User::getName,"老王")</code>—&gt;<code>id = 1 or name != '老王'</code></p>
+<p><code>orderBy(false, true, "id", "name")</code>—&gt;<code>... order by id DESC,name ASC</code></p>
+<p><code>.last("limit 10")</code> —&gt;<code>... limit 10</code></p>
+
+        <h3 id="QueryWrapper">
+          <a href="#QueryWrapper" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#QueryWrapper">#</a>QueryWrapper</h3>
+      
+<p>创建：<code>new QueryWrapper().lambda()</code></p>
+
+        <h4 id="select">
+          <a href="#select" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#select">#</a>select</h4>
+      
+<p>设置查询字段</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select(String... sqlSelect)</span><br><span class="line">select(Predicate&lt;TableFieldInfo&gt; predicate)</span><br><span class="line">select(Class&lt;T&gt; entityClass, Predicate&lt;TableFieldInfo&gt; predicate)</span><br></pre></td></tr></tbody></table></div></figure>
+<p>eg.</p>
+<ul>
+<li><code>select("id", "name", "age")</code></li>
+<li><code>select(i -&gt; i.getProperty().startsWith("test"))</code></li>
+</ul>
+
+        <h3 id="UpdateWrapper">
+          <a href="#UpdateWrapper" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#UpdateWrapper">#</a>UpdateWrapper</h3>
+      
+
+        <h4 id="set">
+          <a href="#set" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#set">#</a>set</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set(String column, Object val)</span><br><span class="line">set(<span class="type">boolean</span> condition, String column, Object val)</span><br></pre></td></tr></tbody></table></div></figure>
+<p>eg.</p>
+<ul>
+<li><code>set("name", "老李头")</code></li>
+<li><code>set("name", "")</code>—&gt;<code>数据库字段值变为空字符串</code></li>
+</ul>
+
+        <h4 id="setSql">
+          <a href="#setSql" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#setSql">#</a>setSql</h4>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setSql(String sql)</span><br></pre></td></tr></tbody></table></div></figure>
+<p>eg.</p>
+<ul>
+<li><code>setSql("name = '老李头'")</code></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/MyBatis-Plus/">http://zang.gold/posts/MyBatis-Plus/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/DB/">DB</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/MyBatis-Plus/">MyBatis-Plus</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/postgis/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">PostGIS空间函数</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/LeetCode4-%E6%A0%88%E4%B8%8E%E9%80%92%E5%BD%92/"><span class="paginator-prev__text">LeetCode笔记IV｜栈与递归篇</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E6%B8%A9%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">
+          MyBatis温习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">
+          配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mapper"><span class="toc-number">1.2.</span> <span class="toc-text">
+          Mapper</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus"><span class="toc-number">2.</span> <span class="toc-text">
+          MyBatis-Plus</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-number">2.1.</span> <span class="toc-text">
+          引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-2"><span class="toc-number">2.2.</span> <span class="toc-text">
+          配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mapper-2"><span class="toc-number">2.3.</span> <span class="toc-text">
+          Mapper</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Insert"><span class="toc-number">2.3.1.</span> <span class="toc-text">
+          Insert</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Delete"><span class="toc-number">2.3.2.</span> <span class="toc-text">
+          Delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Update"><span class="toc-number">2.3.3.</span> <span class="toc-text">
+          Update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Select"><span class="toc-number">2.3.4.</span> <span class="toc-text">
+          Select</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service"><span class="toc-number">2.4.</span> <span class="toc-text">
+          Service</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Save"><span class="toc-number">2.4.1.</span> <span class="toc-text">
+          Save</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Remove"><span class="toc-number">2.4.2.</span> <span class="toc-text">
+          Remove</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Update-2"><span class="toc-number">2.4.3.</span> <span class="toc-text">
+          Update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Get"><span class="toc-number">2.4.4.</span> <span class="toc-text">
+          Get</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#List"><span class="toc-number">2.4.5.</span> <span class="toc-text">
+          List</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Page"><span class="toc-number">2.4.6.</span> <span class="toc-text">
+          Page</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Count"><span class="toc-number">2.4.7.</span> <span class="toc-text">
+          Count</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%B3%A8%E8%A7%A3"><span class="toc-number">2.5.</span> <span class="toc-text">
+          相关注解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">2.5.1.</span> <span class="toc-text">
+          实体类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#TableName"><span class="toc-number">2.5.1.1.</span> <span class="toc-text">
+          @TableName</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#TableId"><span class="toc-number">2.5.1.2.</span> <span class="toc-text">
+          @TableId</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#IdType"><span class="toc-number">2.5.1.3.</span> <span class="toc-text">
+          @IdType</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#TableField"><span class="toc-number">2.5.1.4.</span> <span class="toc-text">
+          @TableField</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Version"><span class="toc-number">2.5.1.5.</span> <span class="toc-text">
+          @Version</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wrapper%E6%9D%A1%E4%BB%B6%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">
+          Wrapper条件构造器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AbstractWrapper"><span class="toc-number">3.1.</span> <span class="toc-text">
+          AbstractWrapper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QueryWrapper"><span class="toc-number">3.2.</span> <span class="toc-text">
+          QueryWrapper</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#select"><span class="toc-number">3.2.1.</span> <span class="toc-text">
+          select</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UpdateWrapper"><span class="toc-number">3.3.</span> <span class="toc-text">
+          UpdateWrapper</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#set"><span class="toc-number">3.3.1.</span> <span class="toc-text">
+          set</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setSql"><span class="toc-number">3.3.2.</span> <span class="toc-text">
+          setSql</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="对自己在杭州城市大脑实习期间的一个回顾">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实习小记">
+<meta property="og:url" content="http://zang.gold/posts/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E8%AE%B0/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="对自己在杭州城市大脑实习期间的一个回顾">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-12T14:05:28.000Z">
+<meta property="article:modified_time" content="2026-07-18T14:16:57.553Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="Maven">
+<meta property="article:tag" content="消息队列">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="实习">
+<meta name="twitter:card" content="summary"><title>实习小记 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E8%AE%B0/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">实习小记</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-09-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>当初组长让我写报告的时候就想着又可以水一篇博客了，一举两得，然而还是摸了半个多月才发（不愧是我）</p>
+<p>顺便列一列实习时候学习的详单吧，毕竟这个才是实习收获的大头<code>^_^</code></p>
+
+        <h2 id="随手学学-doge">
+          <a href="#随手学学-doge" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#随手学学-doge">#</a>随手学学/doge</h2>
+      
+
+        <h3 id="WSL">
+          <a href="#WSL" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#WSL">#</a>WSL</h3>
+      
+<p>原本这一块应该是Docker的，也是从其他组听来的要用Docker。但由于自己电脑的未知原因（RPC服务器不可用），导致DockerHub启动失败。所幸发现了WSL，于是把自己windows下的MySQL、Redis都装到到上面去了，以及实习后期需要的Zookeeper、RabbitMQ那些中间件。</p>
+<ul>
+<li><a href="https://zang.gold/posts/33188/">WSL - Windows 下的Linux子系统</a></li>
+</ul>
+
+        <h3 id="Maven">
+          <a href="#Maven" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Maven">#</a>Maven</h3>
+      
+<p>不得不说Maven真的牛皮，各大项目都跑不了用Maven。之前因为库源的原因折腾过一段时间，现在顺便再学一学。maven的配置文件，一个组（甚至整个公司）用一套就完事了，据公司师兄们说，Maven常用的命令也就一只手能数（最多两只手），看他们敲一长串的maven命令是真的熟练啊，一看就是老手了，面试的时候也问了maven命令相关的。</p>
+<p>看看官网还是挺有用的，官方注释以及官方示例，都比较容易看明白。</p>
+<p>对于多个独立的项目也已经能熟练地合并与分离了。</p>
+<ul>
+<li><a href="https://zang.gold/posts/31077/">Maven命令行小结 </a></li>
+<li><a href="https://zang.gold/posts/41408/">Maven-pom.xml解读</a></li>
+</ul>
+
+        <h3 id="Git">
+          <a href="#Git" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Git">#</a>Git</h3>
+      
+<p>Git也是学习大头，一个项目要想管理好就跑不了Git。虽说只是个实习生，但要是一不小心污染了代码库我也慌啊。所以又找出《ProGit》啃了一遍（其实还是没啃完，基本够用），基本操作基本没啥问题了，包括<code>.gitignore</code>这些也能自己配一配，也在尽可能的在自己个人项目中都用上了。不过还是有些小小的问题，比如说win上如果不依靠IDEA基本上就不会用了（因为win上还有个服务器的git钩子需要ssh密钥，但是又配不好多密钥）；比如常常有推送失败、拉取失败的情况（目前知道的一个原因是本地有同名的未跟踪文件）。</p>
+<p>另外，还从公司师兄那学了IDEA中Git插件的一些使用，包括筛选分支、筛选项目（这点基于Maven组合多个项目，但等项目多了菜的人就把握不住了，比如我TAT）。</p>
+<ul>
+<li><a href="https://zang.gold/posts/53682/">版本控制Git</a></li>
+</ul>
+
+        <h3 id="Redis">
+          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Redis">#</a>Redis</h3>
+      
+<p>Redis算是实习最大的收获之一了。以前不知道为啥，总觉得Redis学起来很难（或许是高并发在学校里压根用不到吧）。现在实习为了看懂代码不得不去学，发现其实也没有那么难，毕竟各大轮子基本都造的差不多了。</p>
+<p>不过Redis客户端确实是五花八门啊，先不说可视化客户端一大堆，光是Java主流的几个就有Jedis、Redisson、Lettuce这些（还没学完）。</p>
+<p>同时，Redis在事务方面也没学好，比如Lua脚本实现的事务（如过期时间+计数器，用于登录失败计数），实习时候不好好学，现在代码回收了等想到了已经来不及了（哭）。</p>
+<ul>
+<li><a href="https://zang.gold/posts/55620/">初探Redis</a></li>
+<li><a href="https://zang.gold/posts/43259/">Redis数据操作</a></li>
+<li><a href="https://zang.gold/posts/9748/">Redis-Java 客户端</a></li>
+</ul>
+
+        <h3 id="Java">
+          <a href="#Java" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Java">#</a>Java</h3>
+      
+
+        <h4 id="多线程">
+          <a href="#多线程" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#多线程">#</a>多线程</h4>
+      
+<p>有师兄手把手带我过了一遍juc的核心代码，太感人了，可惜太菜一会就忘TAT。</p>
+<p>还有就是一些多线程任务的相关功能，如<code>CountDownLatch</code>, <code>CyclicBarrier</code>两个都可以实现一组多线程任务的执行需求。</p>
+<p>目前还没好好看，只是简单跟着使用过<code>CountDownLatch</code>，下次一定补上！！（已补！）</p>
+<ul>
+<li><a href="https://zang.gold/posts/22816/">Java线程同步器</a></li>
+</ul>
+
+        <h4 id="POJO分层模型">
+          <a href="#POJO分层模型" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#POJO分层模型">#</a>POJO分层模型</h4>
+      
+<p>pojo的分层模型，之前虽然说跟了不少项目，但没一个提到这个的（可能是我没一个跟完的），在阿里的《码出高效：Java开发手册》其实也有提到，不过一笔带过，也就没注意。</p>
+<p>在我的第一个需求完成提交之后，师兄和我说不是只用Entity的，这时候我才发现有PO、DO、DAO、BO、VO这些区分。（最早只接触过DAO，当时我还想过为啥叫“道”，原来是之前就埋过的坑，还是意识不够啊）</p>
+<ul>
+<li><a href="https://zang.gold/posts/60769/">Java中的一些Object模型</a></li>
+</ul>
+
+        <h4 id="MapStruct">
+          <a href="#MapStruct" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#MapStruct">#</a>MapStruct</h4>
+      
+<p>至于这么多的POJO，怎么高效地转换呢。看了代码发现了都是用的MapStruct框架，这可真的好东西啊。只要指定好转换的对象，麻烦点的需要自己配置转换规则，等编译的时候框架就自动生成这个转换方法了。Great！</p>
+<ul>
+<li><a href="https://zang.gold/posts/47009/">属性映射框架Mapstruct </a></li>
+</ul>
+
+        <h4 id="统一消息模型">
+          <a href="#统一消息模型" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#统一消息模型">#</a>统一消息模型</h4>
+      
+<p>很早之前就听室友说过这个，当时没在意，等自己开始写了，才知道这一基础的模型在代码的整洁和可读上有多大的提升。</p>
+<ul>
+<li><a href="https://zang.gold/posts/42609/">Web通信响应体</a>（早期作品，会抽时间会把新版的写一篇，真的太优雅了TAT）</li>
+<li><a href="https://zang.gold/posts/9815/">Awesome Api !!</a></li>
+</ul>
+
+        <h3 id="SpringAOP">
+          <a href="#SpringAOP" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#SpringAOP">#</a>SpringAOP</h3>
+      
+<p>AOP的实现效果上与拦截器、过滤器有些类似，在其执行的先后顺序上又存在着区别。目前使用到的还仅限于日志系统上：在请求执行前、消息返回前将相关信息做好日志。</p>
+<p>此外，sql的自定义日志可以使用拦截器实现，如MyBatis的sql-debug层级的日志过于冗杂。</p>
+<ul>
+<li><a href="https://zang.gold/posts/56445/">Spring-AOP学习</a></li>
+</ul>
+
+        <h3 id="数据库">
+          <a href="#数据库" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据库">#</a>数据库</h3>
+      
+
+        <h4 id="TimeStamp">
+          <a href="#TimeStamp" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#TimeStamp">#</a>TimeStamp</h4>
+      
+<p>对于一个业务来说，不仅仅是需求中提到的业务，还有许多隐式的需求，比如说某一段数据的创建时间、修改时间、删除时间。这一类信息往往很少用到，但关键时刻还是很需要的。</p>
+<ul>
+<li><a href="https://zang.gold/posts/34834/">数据库时间存储</a></li>
+</ul>
+
+        <h4 id="代码生成器">
+          <a href="#代码生成器" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#代码生成器">#</a>代码生成器</h4>
+      
+<p>只有做过大型项目才知道自己之前手敲Entity、Dao、Service是有多憨批。其实之前在看尚硅谷的时候就接触过，用的是人人开源的。后来才发现，原来MyBatis有个扩展功能就是代码生成器。</p>
+<p>使用代码生成器就可以在数据库定义完成后，直接就能将基础的Entity、Dao、Service层直接生成，大大缩减工作量，精力可以放在业务实现上。</p>
+<ul>
+<li><a href="https://zang.gold/posts/60112/">代码生成器 </a></li>
+</ul>
+
+        <h4 id="动态数据源">
+          <a href="#动态数据源" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#动态数据源">#</a>动态数据源</h4>
+      
+<p>还没实习的时候就遇到过这个需求，当时是因为我自个捣鼓出了PostgeSQL+PostGIS的用法，但是老项目又是用的MySQL，整个实验室也就罗桑师兄提了好像有个方法提到过，也没在意，谁也没注意到项目里用了那么多的MyBatisPlus就可以提供多数据源，麻了。我反正就是直接整个给换成了PostgreSQL，毕竟基本的数据类型也没啥差别。现在再想着用多数据源也不想改了，还是好多细节好处理，换了就换了吧。</p>
+<p>MyBatis的动态数据源可以配置多个库，或者是一个组下的多个子库，然后采用<code>@DS</code>注解来决定用哪个数据源。另外听实习的师兄说，他更习惯于在Service层就直接使用（记不太清了TAT）。</p>
+<ul>
+<li><a href="https://zang.gold/posts/41765/">MyBatisPlus 动态数据源</a></li>
+</ul>
+
+        <h3 id="Shiro">
+          <a href="#Shiro" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Shiro">#</a>Shiro</h3>
+      
+<p>说实话，都说Shiro很容易上手，功能齐全，但我个人感觉，还是挺绕的（还是因为菜），花了好几周的时间看了官方的指南以及实习项目的Shiro部分。也自己照着写了个Demo，但还是感觉迷迷糊糊的。</p>
+<p>目前的Demo是Shiro+JWT+Redis的一套方案。</p>
+<ul>
+<li><a href="https://zang.gold/posts/9022/">Shiro学习 Part I </a></li>
+<li><a href="https://zang.gold/posts/9827/">Shiro学习 Part II</a></li>
+</ul>
+
+        <h3 id="消息队列">
+          <a href="#消息队列" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#消息队列">#</a>消息队列</h3>
+      
+
+        <h4 id="RabbitMQ">
+          <a href="#RabbitMQ" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#RabbitMQ">#</a>RabbitMQ</h4>
+      
+<p>加的一个项目里就是有用RabbitMQ，但之前一点也没接触过，所以我在安装完RabbitMQ并顺利跑起来之后，就跑去官网学起来了。不过还没等我看完，那项目又不需要我去管了，又开始忙其他的，接着就是断断续续的看了。等我把RabbitMQ的使用场景都过完，写过demo后，项目以及被回收了，说实话我除了知道他项目跑起来要RabbitMQ，在哪里用到了我压根不知道（TAT）。</p>
+<p>但总归是MQ入了个门。</p>
+<ul>
+<li><a href="https://zang.gold/posts/4527/">消息队列RabbitMQ初探 </a></li>
+</ul>
+
+        <h4 id="RocketMQ">
+          <a href="#RocketMQ" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#RocketMQ">#</a>RocketMQ</h4>
+      
+<p>原本也只是打算看完RabbitMQ就好的，好巧不巧，当时带我的jjx师兄刚好闲下来，要了个活，就是折腾消息队列，更巧的是他要完活之后来看看我在干嘛，我当时就是在看RabbitMQ，瞬间就拉高了好感度？第二天又了解到我有个腾讯云服务器，拉着我去试着装环境（RocketMQ+Canal，可怜我当时RabbitMQ都没看完）</p>
+<p>RocketMQ安装步骤很简单，下个包解压就可以用，但我还是在师兄的一步一步指导下才装完。。</p>
+<ul>
+<li><a href="https://zang.gold/posts/13444/">RocketMQ初探 </a></li>
+</ul>
+
+        <h4 id="Canal">
+          <a href="#Canal" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Canal">#</a>Canal</h4>
+      
+<p>就硬生生的被师兄带着装了这个，不过也就仅仅是安装+启动了。因为我升级后的4G内存的服务器居然还是没法同时满足RocketMQ和Canal两个。</p>
+<ul>
+<li><a href="https://zang.gold/posts/5723/">Canal初探 </a></li>
+</ul>
+
+        <h3 id="Zookeeper">
+          <a href="#Zookeeper" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Zookeeper">#</a>Zookeeper</h3>
+      
+<p>Zookeeper的认知还只是停留于安装阶段，为了项目能跑而安装，对其具体的使用还并不是很了解。</p>
+<ul>
+<li><a href="https://zang.gold/posts/31124/">Zookeeper初探 </a></li>
+</ul>
+
+        <h3 id="其他杂项">
+          <a href="#其他杂项" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#其他杂项">#</a>其他杂项</h3>
+      
+<ul>
+<li>使用<code>VSCode</code>、<code>Sublime</code>等编辑工具和Excel批量处理/生成sql语句；</li>
+<li>IDEA的Git插件的使用；</li>
+<li>IDEA的<code>MyBatisX</code>插件的使用（我说怎么之前用<code>mapper.xml</code>相当麻烦，就是缺这个）；</li>
+<li>另外还copy了不少的工具类，比如时间相关的；</li>
+<li>Google的Guava包，对Java做了大量的扩展，也是值得一看的，比如Optional参数校验等等</li>
+</ul>
+
+        <h2 id="报告本体">
+          <a href="#报告本体" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#报告本体">#</a>报告本体</h2>
+      
+<p>自2022年6月20日加入到杭州城市大脑进行实习已过去2个月有余。在此，我对本次实习做一个总结。</p>
+<p>刚进入公司时，第一个任务就是电脑的环境配置。虽然说按照yw组长的要求只需要安装好一些基础软件如MySQL、Redis并修改默认配置即可，但我从同期进入公司学习的同学说，他们那要用Docker。于是我也尽可能的去尝试着使用Docker，但由于设备原因，Docker的安装并未成功，但对于Docker的使用也有了进一步的了解。同时，我也发现了在Windows上提供的Linux子系统功能并成功安装运行，将公司所需的运行环境单独部署进子系统，便于管理，同时也能提升自己的Linux操作能力。</p>
+<p>最开始是由lyf师兄带我做项目。在第一次拿到一个项目并开始调试运行时，我是第一次了解Maven在实际项目中是应该如何去应用、去管理项目的每一个模块，也意识到自己之前写的代码的简陋。于是，我在空闲时间参阅了Maven官方文档，做好笔记，让自己能尽快适应项目结构。此外，为了避免自己在项目的版本控制上出差错，我阅读了《ProGit》，巩固好基础的同时，尽可能的避免代码仓库管理上出现失误。</p>
+<p>在之后，又先后在lr、dw、jjx等多位师兄带领下，参与了“浙里康养”、“文明实践九宫格”等项目中一些需求的实现或bug的修复。在熟悉代码与编写代码的过程中，也有着很多新的知识点亟需我去了解与学习，比如Redis、Zookeeper、消息队列，还有一些框架如MapStruct、Shiro等等。而有着实际项目作为案例，自上而下的学习也使进度也拉快了许多。对于原先有接触过的一些技术，也有了进一步的认识，如MySQL，MyBatis，Spring AOP，多线程等等。有时师兄们也会引导着我去阅读源码，对我的学习方式也有很大的改进。</p>
+<p>由于自己之前也写过些项目，在写代码的过程中也遇到过不少实现中存在疑惑或是效果未达预期导致多次改版的情况，往往这一类问题又不容易在网上找到合适的解决。所以在熟悉代码的过程中，也会有意识地去寻找其中类似的需求，或是直接请教师兄们，学习效率更高、扩展性更好的设计思路与实现方法，比如数据库的设计、自定义过滤器实现SQL日志打印、Object的分层邻域模型、Web接口模板、压力测试等等。遗憾的是时间有限，项目中还有很多的技术点没有来得及深入学习。</p>
+<p>除了以上一些比较系统的技术学习，还从各位师兄手下学到了不少的小技巧，对我以后的工作效率都有很大的提升。</p>
+<p>说实话，自我感觉挺多时候其实都在摸鱼，也从未留在公司加过班，相比于整个组的工作而言，自己的贡献是极为微小的。但也仅仅是这点工作量，让我获益匪浅。我对后端开发的理解更加深刻，对于项目开发的基本流程有了进一步的了解，同时，也意识到了自己需要学的还有很多很多，在计算机基础、思维能力、代码能力等方面还有很大的不足，这些都还需要我在之后的学习中去弥补、去提升。</p>
+<p>很荣幸能够参与到城市大脑的工作之中！</p>
+<p>报告人：Zang</p>
+<p>日期：2022年8月23日</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E8%AE%B0/">http://zang.gold/posts/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E8%AE%B0/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Java/">Java</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Git/">Git</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Maven/">Maven</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Redis/">Redis</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Spring/">Spring</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/%E5%AE%9E%E4%B9%A0/">实习</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Java%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%99%A8/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Java线程同步器</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/canal-start/"><span class="paginator-prev__text">Canal初探</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%89%8B%E5%AD%A6%E5%AD%A6-doge"><span class="toc-number">1.</span> <span class="toc-text">
+          随手学学&#x2F;doge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WSL"><span class="toc-number">1.1.</span> <span class="toc-text">
+          WSL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven"><span class="toc-number">1.2.</span> <span class="toc-text">
+          Maven</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-number">1.3.</span> <span class="toc-text">
+          Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis"><span class="toc-number">1.4.</span> <span class="toc-text">
+          Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java"><span class="toc-number">1.5.</span> <span class="toc-text">
+          Java</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          多线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POJO%E5%88%86%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">
+          POJO分层模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapStruct"><span class="toc-number">1.5.3.</span> <span class="toc-text">
+          MapStruct</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.5.4.</span> <span class="toc-text">
+          统一消息模型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpringAOP"><span class="toc-number">1.6.</span> <span class="toc-text">
+          SpringAOP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.7.</span> <span class="toc-text">
+          数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TimeStamp"><span class="toc-number">1.7.1.</span> <span class="toc-text">
+          TimeStamp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8"><span class="toc-number">1.7.2.</span> <span class="toc-text">
+          代码生成器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">1.7.3.</span> <span class="toc-text">
+          动态数据源</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shiro"><span class="toc-number">1.8.</span> <span class="toc-text">
+          Shiro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.9.</span> <span class="toc-text">
+          消息队列</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RabbitMQ"><span class="toc-number">1.9.1.</span> <span class="toc-text">
+          RabbitMQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RocketMQ"><span class="toc-number">1.9.2.</span> <span class="toc-text">
+          RocketMQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Canal"><span class="toc-number">1.9.3.</span> <span class="toc-text">
+          Canal</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Zookeeper"><span class="toc-number">1.10.</span> <span class="toc-text">
+          Zookeeper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%9D%82%E9%A1%B9"><span class="toc-number">1.11.</span> <span class="toc-text">
+          其他杂项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E5%91%8A%E6%9C%AC%E4%BD%93"><span class="toc-number">2.</span> <span class="toc-text">
+          报告本体</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

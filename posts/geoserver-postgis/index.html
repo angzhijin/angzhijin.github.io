@@ -1,0 +1,250 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="基于Geoserver发布存储于PostgreSQL中的地理信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GeoServer图层发布">
+<meta property="og:url" content="http://zang.gold/posts/geoserver-postgis/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="基于Geoserver发布存储于PostgreSQL中的地理信息">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202204192138520-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192143796-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192140660-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192120541-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192142571-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192145028-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192146476-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192150140-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192155257-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192158354-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192159821-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192207784-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192205730-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192214966-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192215655-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192218795-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192222884-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202204192225093-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202210152204998-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202210152207722-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202210152209134-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202210152210688-geoserver.png">
+<meta property="og:image" content="https://img.zang.gold/images/202210152215239-zjut-cs-gis.png">
+<meta property="article:published_time" content="2022-04-19T15:02:09.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:50:46.835Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="PostGIS">
+<meta property="article:tag" content="GeoServer">
+<meta property="article:tag" content="GIS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202204192138520-geoserver.png"><title>GeoServer图层发布 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/geoserver-postgis/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">GeoServer图层发布</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-19</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>geoserver配合postgresql+postGIS发布地图可真是太舒服了！</p>
+<blockquote>
+<p>2022/6/25：补充一个宝藏教程<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV15v4y137zc?p=1&amp;vd_source=e58e49d93c69dac4709c6a9c65f964d4">【Geoserver】你猜猜我做了多少关于Geoserver的内容~_哔哩哔哩_bilibili</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h2 id="建立数据连接">
+          <a href="#建立数据连接" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#建立数据连接">#</a>建立数据连接</h2>
+      
+<ol>
+<li>
+<p>登陆geoserver</p>
+</li>
+<li>
+<p>在工作区中为自己的项目单独建立一个工作区（命名空间也必填，随便填下）</p>
+<p><img src="https://img.zang.gold/images/202204192138520-geoserver.png" alt="新建工作区"></p>
+<p><img src="https://img.zang.gold/images/202204192143796-geoserver.png" alt="编辑工作区"></p>
+</li>
+<li>
+<p>在数据存储中选择<code>添加新的数据存储</code></p>
+<p><img src="https://img.zang.gold/images/202204192140660-geoserver.png" alt="添加数据存储"></p>
+</li>
+<li>
+<p>选择<code>PostGIS</code>（还有shapefile等数据源选项）</p>
+<p><img src="https://img.zang.gold/images/202204192120541-geoserver.png" alt="选择数据源"></p>
+</li>
+<li>
+<p>选择<code>工作区</code>，为其命名，并输入数据库host、port、database、user、passwd等，保存即可</p>
+<p><img src="https://img.zang.gold/images/202204192142571-geoserver.png" alt="配置数据源信息"></p>
+</li>
+</ol>
+
+        <h2 id="发布图层">
+          <a href="#发布图层" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#发布图层">#</a>发布图层</h2>
+      
+<ol>
+<li>
+<p>进入图层项，选择<code>添加新的资源</code></p>
+<p><img src="https://img.zang.gold/images/202204192145028-geoserver.png" alt="image-20220419214526987"></p>
+</li>
+<li>
+<p>选择自己的工作区</p>
+</li>
+<li>
+<p>选好后会自动连接至数据库，列出数据库中的所有表</p>
+<p><img src="https://img.zang.gold/images/202204192146476-geoserver.png" alt="新建图层"></p>
+<blockquote>
+<p>包括不含空间信息的表也会列出，如业务表</p>
+<p>已发布的会显示勾，操作也会变为<code>再次发布</code></p>
+</blockquote>
+</li>
+<li>
+<p>选择自己想要发布的图层，点击<code>发布</code>进行配置。主要配置内容为图层命名、坐标参考系统SRS、边框等</p>
+<blockquote>
+<p>SRS由于本人没有经过系统学习不是很懂，也算是运气好，看眼缘选择的2406刚好适合自己项目所需</p>
+<p>边框可以通过点击<code>从数据中计算</code>, <code>compute from native bounds</code>自动获取</p>
+</blockquote>
+<p><img src="https://img.zang.gold/images/202204192150140-geoserver.png" alt="图层发布配置"></p>
+</li>
+<li>
+<p>选择<code>保存</code>/<code>Apply</code></p>
+</li>
+</ol>
+
+        <h2 id="图层预览">
+          <a href="#图层预览" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#图层预览">#</a>图层预览</h2>
+      
+<p><img src="https://img.zang.gold/images/202204192155257-geoserver.png" alt="图层预览"></p>
+<ol>
+<li>
+<p>对于图层较多时可以使用搜索</p>
+</li>
+<li>
+<p>预览的格式很多，除了显示的<code>Openlayers</code> / <code>GML</code> / <code>KML</code>，在<code>Select one</code>中，还有 <code>PNG</code> / <code>JPG</code> / <code>GeoJSON</code>等多种格式 。</p>
+<p><img src="https://img.zang.gold/images/202204192158354-geoserver.png" alt="OpenLayers预览"></p>
+</li>
+</ol>
+<p><img src="https://img.zang.gold/images/202204192159821-geoserver.png" alt="GeoJSON预览"></p>
+
+        <h2 id="图层组">
+          <a href="#图层组" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#图层组">#</a>图层组</h2>
+      
+<p>以上是单个图层的情况，多个图层同样可以。</p>
+<ol>
+<li>
+<p>进入图层组，选择<code>添加新图层组</code></p>
+<p><img src="https://img.zang.gold/images/202204192207784-geoserver.png" alt="添加新图层组"></p>
+</li>
+<li>
+<p>选择工作区（不选则使用所有工作区）</p>
+</li>
+<li>
+<p>在图层中添加多个图层</p>
+<blockquote>
+<ul>
+<li>位置在上面的先渲染，即位置越上面的，图层位于最下面</li>
+<li>风格为Openlayer显示的风格，使用css配置，在<code>样式</code>中进行管理</li>
+</ul>
+</blockquote>
+<p><img src="https://img.zang.gold/images/202204192205730-geoserver.png" alt="配置图层组"></p>
+</li>
+<li>
+<p>点击<code>生成边界</code>，自动得到边界与SRS</p>
+</li>
+<li>
+<p>点击<code>保存</code>/<code>Apply</code></p>
+</li>
+<li>
+<p>回到图层预览进行查看</p>
+<p><img src="https://img.zang.gold/images/202204192214966-geoserver.png" alt="图层预览 - 图层组"></p>
+<p><img src="https://img.zang.gold/images/202204192215655-geoserver.png" alt="图层组OpenLayers预览"></p>
+</li>
+</ol>
+
+        <h2 id="样式">
+          <a href="#样式" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#样式">#</a>样式</h2>
+      
+<p><img src="https://img.zang.gold/images/202204192218795-geoserver.png" alt="样式管理"></p>
+<p>样式的处理难度比较大，一般是按照形状（Point、Line、Polygon等）默认生成，或是从已有样式导入进行修改</p>
+<p><img src="https://img.zang.gold/images/202204192222884-geoserver.png" alt="编写样式"></p>
+<p>最后展示一下自己的半成品吧</p>
+<p><img src="https://img.zang.gold/images/202204192225093-geoserver.png" alt="半成品"></p>
+<p>---------2022/10/15</p>
+<p>终于想着来补一补了，其实这样式难度也不大，用QGIS就很方便，另外还有一个 <span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/sldeditor/sldeditor">SLD Edit</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 也可以，不过并没有去试过。</p>
+<ul>
+<li>参考<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV15v4y137zc/?p=8&amp;spm_id_from=pageDriver&amp;vd_source=e58e49d93c69dac4709c6a9c65f964d4">Geoserver06-快速地图配置_哔哩哔哩_bilibili</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<ol>
+<li>
+<p>图层样式中编辑“符号化”、“标注”等</p>
+<p><img src="https://img.zang.gold/images/202210152204998-geoserver.png" alt="image-20221015220432933"></p>
+</li>
+<li>
+<p>导出为SLD，添加到geoserver样式中</p>
+<p><img src="https://img.zang.gold/images/202210152207722-geoserver.png" alt="image-20221015220716658"><img src="https://img.zang.gold/images/202210152209134-geoserver.png" alt="image-20221015220932068"></p>
+</li>
+<li>
+<p>geoserver中“添加样式”，将导出的文件内容全部复制到编辑器中</p>
+<p><img src="https://img.zang.gold/images/202210152210688-geoserver.png" alt="image-20221015221041623"></p>
+<blockquote>
+<p>QGIS插件推荐</p>
+<ul>
+<li>Bulk vector export：图层导出</li>
+<li>SLD4raster：样式导出为文件或上传到geoserver</li>
+<li>Clip Multiple Layers：图层裁剪</li>
+</ul>
+</blockquote>
+<p>不过呢，由于QGIS在图层样式提供的功能很多，有些比较复杂的就不太容易在geoserver中实现，特别是带表达式的样式，这里挂一下我磨了好久的图呗～（虽说还是挺丑）</p>
+<p><img src="https://img.zang.gold/images/202210152215239-zjut-cs-gis.png" alt="image.png"></p>
+</li>
+</ol>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/geoserver-postgis/">http://zang.gold/posts/geoserver-postgis/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostgreSQL/">PostgreSQL</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostGIS/">PostGIS</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/GeoServer/">GeoServer</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/GIS/">GIS</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/PolarDB4PG-4/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">PostgreSQL进阶</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Linux-screen/"><span class="paginator-prev__text">Linux下screen指令</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%95%B0%E6%8D%AE%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.</span> <span class="toc-text">
+          建立数据连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E5%B8%83%E5%9B%BE%E5%B1%82"><span class="toc-number">2.</span> <span class="toc-text">
+          发布图层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%B1%82%E9%A2%84%E8%A7%88"><span class="toc-number">3.</span> <span class="toc-text">
+          图层预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%B1%82%E7%BB%84"><span class="toc-number">4.</span> <span class="toc-text">
+          图层组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B7%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">
+          样式</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

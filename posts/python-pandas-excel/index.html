@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="使用pandas实现不同excel表中的长文本匹配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="excel内容匹配(pandas)及python打包为EXE">
+<meta property="og:url" content="http://zang.gold/posts/python-pandas-excel/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="使用pandas实现不同excel表中的长文本匹配">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-18T01:26:27.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:37:11.426Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Pandas">
+<meta name="twitter:card" content="summary"><title>excel内容匹配(pandas)及python打包为EXE | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/python-pandas-excel/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">excel内容匹配(pandas)及python打包为EXE</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-07-18</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>今天我哥那来了个需求，要在两张表里去匹配某一列数据在另一张表出现的位置，而这些数据可能是由多个编号拼接而成。</p>
+<p>比如表一中有<code>12345,98765,667788</code>，要在表二中找出<code>12345</code>, <code>98765</code>, <code>667788</code>所在的行数，而且出现次数不确定，且表二中的也是拼接而成，如<code>00000,12345</code>。</p>
+<p>原本打算依靠Excel去解决，但似乎不太行，我所接触的最强大的工具VLOOKUP也只是能找到匹配的第一个罢了。</p>
+<p>于是乎，试着拿python去写了（研究生以来还是第一次写）。</p>
+
+        <h2 id="技术选型">
+          <a href="#技术选型" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#技术选型">#</a>技术选型</h2>
+      
+<ul>
+<li>Python</li>
+<li>Pandas</li>
+<li>pyinstaller</li>
+</ul>
+
+        <h2 id="需求实现">
+          <a href="#需求实现" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#需求实现">#</a>需求实现</h2>
+      
+<blockquote>
+<p>最开始，也只是想着读取每一行，将一行数据拆分为字符串数组，然后遍历这个数组，去表二每一行字符串中看有没有。</p>
+<p>思路很简单，难的还是对python许久不写不太熟悉。</p>
+<p>这个思路写完，发现效率拉的一批，毕竟三层循环的基础上还加了了很多低效查询。。。</p>
+</blockquote>
+
+        <h3 id="读取数据">
+          <a href="#读取数据" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#读取数据">#</a>读取数据</h3>
+      
+<p>第一步是读取excel数据，找了下有三四种方法，但最直接的还是使用pandas，相对来说也是稍微熟悉点的。</p>
+<p>存储结构的话两个表都是<code>|序号|数据|</code>的格式</p>
+<figure class="highlight python"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">sheet1 = pd.read_excel(fileName, sheet_name=<span class="number">0</span>, keep_default_na=<span class="literal">False</span>)</span><br><span class="line">sheet2 = pd.read_excel(fileName, sheet_name=<span class="number">1</span>, keep_default_na=<span class="literal">False</span>)</span><br><span class="line">sheet3 = pd.DataFrame({<span class="string">"sheet1行数"</span>: [],</span><br><span class="line">                       <span class="string">"数据1"</span>: [],</span><br><span class="line">                       <span class="string">"对应sheet2行数"</span>: []})</span><br></pre></td></tr></tbody></table></div></figure>
+<p>读取并转储为DataFrame格式</p>
+<p><code>read_excel</code> 有多个配置项，这里列一点</p>
+<ul>
+<li><code>sheet_name</code>: 可以是数字也可以是sheet的名字，数字的话对应顺序</li>
+<li><code>keep_default_na</code>: 对于空单元格读取为<code>""</code>, 而不是<code>NaN</code></li>
+</ul>
+
+        <h3 id="数据匹配">
+          <a href="#数据匹配" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据匹配">#</a>数据匹配</h3>
+      
+<p>按照笨办法拆分匹配效果太差，抱着试一试的心态搜了搜“pandas查找excel包含字符串的行”，居然真有！！</p>
+<p><code>arr = sheet2.loc[(sheet2['数据2'].str.contains(ss))]</code></p>
+<figure class="highlight python"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> sheet1.index:</span><br><span class="line">    s1 = <span class="built_in">str</span>(sheet1.loc[index].values[<span class="number">1</span>]) <span class="comment"># sheet1的数据</span></span><br><span class="line">    sIndex1 = sheet1.loc[index].values[<span class="number">0</span>] <span class="comment"># sheet序号</span></span><br><span class="line">    sArr1 = s1.split(<span class="string">','</span>) <span class="comment"># 将sheet1的数据拆分为数组</span></span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> sArr1:   </span><br><span class="line">        <span class="built_in">print</span>(sIndex1, <span class="string">"-"</span>, qq, <span class="string">": \t"</span>, end=<span class="string">''</span>)</span><br><span class="line">        ss = sheet2.loc[(sheet2[<span class="string">'数据2'</span>].<span class="built_in">str</span>.contains(s))] <span class="comment"># 找出sheet中所有包含s的行</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> ss.index: <span class="comment"># 处理每一行结果</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"|"</span>, ss.loc[i].values[<span class="number">0</span>], end=<span class="string">'\t'</span>)</span><br><span class="line">            sheet3.loc[<span class="built_in">len</span>(sheet3.index)] = [sIndex1, s, i] <span class="comment"># 保存到sheet3中</span></span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line">    <span class="built_in">print</span>(sIndex1, <span class="string">"/"</span>, <span class="built_in">len</span>(sheet1.index))  <span class="comment"># sheet1 匹配进度</span></span><br><span class="line"><span class="built_in">print</span>(sheet3)</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="数据导出">
+          <a href="#数据导出" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据导出">#</a>数据导出</h3>
+      
+<p>导出方法也很多，但为了便捷，我需要把它导出到同一个文件中，采用的是基于<code>openpyxl</code>引擎的读写</p>
+<figure class="highlight python"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"数据保存中......"</span>)</span><br><span class="line"><span class="keyword">with</span> pd.ExcelWriter(fileName, mode=<span class="string">'a'</span>, engine=<span class="string">'openpyxl'</span>) <span class="keyword">as</span> writer: </span><br><span class="line">    sheet3.to_excel(writer, sheet_name=<span class="string">"output"</span>,encoding=<span class="string">'utf-8'</span>)</span><br></pre></td></tr></tbody></table></div></figure>
+<p><code>pd.ExcelWriter</code>配置项：</p>
+<ul>
+<li><code>mode</code>: a==append, 表示附加模式，不另外新建文件；w==write，覆写</li>
+<li><code>engine</code>: 使用的引擎，还有一种是 <code>xlsxwriter</code></li>
+</ul>
+<p><code>sheet3.to_excel</code>配置项：</p>
+<ul>
+<li><code>sheet_name</code>：导出到sheet表的名字</li>
+<li><code>encoding</code>：编码格式</li>
+</ul>
+<figure class="highlight python"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 简写版</span></span><br><span class="line">sheet3.to_excel(filename, index=<span class="literal">False</span>, engine=<span class="string">'xlsxwriter'</span>,encoding=<span class="string">'utf-8'</span>)</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>补充：</p>
+<p>由于需求之一是url地址的匹配，在数据量逐渐增大之后，出现了新的问题：</p>
+<p><code>xlsxwriter\worksheet.py:1179: UserWarning: Ingoring URL 'xxxxx' since it exceeds Excel's limit of 65,530 URLS per worksheet</code>，就是说excel的工作表中只能放65530个URL超链接格式文本。</p>
+<p>解决方法就是配置<code>strings_to_urls</code>项，写出的时候url仅以文本格式写处，而不是写成url超链接格式。</p>
+<figure class="highlight python"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pd.ExcelWriter(fileName, engine=<span class="string">'xlsxwriter'</span>, option={<span class="string">'strings_tourls'</span>:<span class="literal">False</span>}) <span class="keyword">as</span> writer: </span><br><span class="line">    sheet3.to_excel(writer, index=<span class="literal">False</span>, encoding=<span class="string">'utf-8'</span>)</span><br></pre></td></tr></tbody></table></div></figure>
+<p>注意此时无法写简写版了，因为<code>to_excel</code>函数不提供<code>option</code>参数。</p>
+</blockquote>
+
+        <h2 id="打包为可执行文件">
+          <a href="#打包为可执行文件" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#打包为可执行文件">#</a>打包为可执行文件</h2>
+      
+<p>毕竟不是谁都会给自己电脑安装python环境的，所以我打算打包成exe，之前也试过将冬奥时很火的python绘制冰墩墩打包成exe过。</p>
+<p>主要依靠<code>pyinstaller</code></p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install pyinstaller</span><br><span class="line"></span><br><span class="line">pyinstaller -F xxx.py </span><br></pre></td></tr></tbody></table></div></figure>
+<p>常用的参数有：</p>
+<ul>
+<li>-F, –onefile：覆盖打包</li>
+<li>-w：使用windows子系统执行，程序启动时不会打开命令行</li>
+<li>-c：带控制台，使用windows命令行执行（默认）</li>
+<li>-i，-icon：指定打包后的图标</li>
+</ul>
+<p>有一点不太友好的是，他会把当前环境中的所有的依赖库一起打包，不管程序是不是用到了。</p>
+<p>一种方法是在它生成的一个<code>xxx.spec</code>中配置<code>excludes=[]</code>项排除不需要的包。</p>
+<p>简单一点就是重新搞个环境，这一点使用conda就很方便了。</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda create --name new_env </span><br><span class="line"></span><br><span class="line">conda activate new_env</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>对于打包这一需求，其实golang挺好，编译完就会生成不同操作系统下的执行文件。</p>
+<p>而pyinstaller就比较憨，只针对当前的系统进行打包，比如说Mac上打包成Unix可执行文件，Win上打包成EXE可执行文件。</p>
+</blockquote>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/python-pandas-excel/">http://zang.gold/posts/python-pandas-excel/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Python/">Python</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Pandas/">Pandas</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Git/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">版本控制Git</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/MyBatisPlus-DS/"><span class="paginator-prev__text">MyBatisPlus 动态数据源</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          技术选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">
+          需求实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">
+          读取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%B9%E9%85%8D"><span class="toc-number">2.2.</span> <span class="toc-text">
+          数据匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA"><span class="toc-number">2.3.</span> <span class="toc-text">
+          数据导出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">
+          打包为可执行文件</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

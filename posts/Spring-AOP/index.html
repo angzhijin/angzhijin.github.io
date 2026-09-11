@@ -1,0 +1,292 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="面向切片编程AOP的实现与对比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring-AOP学习">
+<meta property="og:url" content="http://zang.gold/posts/Spring-AOP/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="面向切片编程AOP的实现与对比">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202208011534040-aop.png">
+<meta property="og:image" content="https://img.zang.gold/images/202208011650873-aop.png">
+<meta property="og:image" content="https://img.zang.gold/images/202208011813248-aop.png">
+<meta property="article:published_time" content="2022-08-08T07:34:27.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:36:31.281Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="AOP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202208011534040-aop.png"><title>Spring-AOP学习 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/Spring-AOP/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Spring-AOP学习</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-08-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><h2 id="什么是AOP">
+          <a href="#什么是AOP" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#什么是AOP">#</a>什么是AOP</h2>
+      
+<p><code>AOP</code>，<code>Aspect Oriented Programming</code>，面向切片编程，在面经中不知道遇到了多少次，背的也是迷迷糊糊的，其中一大原因是之前一点没接触到过它的用处。到了工作中，观摩各位大佬的代码，不经意间发现了其中的Aspect的应用，这才开始有所明悟（也发现了自己之前学的有多混）。</p>
+<blockquote>
+<p>在软件业，AOP为<code>Aspect Oriented Programming</code>的缩写，意为：面向切面编程，通过预编译方式和运行期间动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。</p>
+</blockquote>
+<p>切面，按我自己的理解来就是两个模块间的那一部分，在结构上好比关系型数据库中的关系表一样。</p>
+<p>切片的作用，就是将一些公共的处理，比如说日志管理、权限控制等功能进行封装，统一管理，减少代码重复度，降低模块间的耦合度。</p>
+<p>目前接触到的实现与拦截器类似，在Web请求的响应前后，获取请求的信息，以及响应的数据。</p>
+
+        <h3 id="基本术语">
+          <a href="#基本术语" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#基本术语">#</a>基本术语</h3>
+      
+<ul>
+<li>切面<code>Aspect</code>：拦截器类</li>
+<li>通知<code>Advice</code>：拦截后要执行的代码，包含前置<code>Before</code>、后置<code>After</code>、围绕<code>Around</code>等不同类型</li>
+<li>目标<code>Target</code>：要被增强的对象</li>
+<li>代理<code>Proxy</code></li>
+<li>连接点<code>Joinpoint</code>：拦截的某个执行点</li>
+<li>切入点<code>Pointcut</code>：具体拦截的某个业务点的定义</li>
+<li>增强器<code>Advisor</code>：切面的另一种实现，由切入点和通知组成</li>
+</ul>
+
+        <h2 id="过滤器、拦截器与AOP">
+          <a href="#过滤器、拦截器与AOP" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#过滤器、拦截器与AOP">#</a>过滤器、拦截器与AOP</h2>
+      
+<p>这三个在效果上有一定的相似性，但又有其不同的地方</p>
+
+        <h3 id="过滤器">
+          <a href="#过滤器" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#过滤器">#</a>过滤器</h3>
+      
+<p>过滤器主要用于对用户请求进行预处理和后处理，有一个典型的处理链。</p>
+
+        <h4 id="完整流程">
+          <a href="#完整流程" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#完整流程">#</a>完整流程</h4>
+      
+<ol>
+<li>Filter对用户请求进行预处理</li>
+<li>将请求交给Servlet进行预处理并生成响应</li>
+<li>Filter对服务器响应进行后处理</li>
+</ol>
+
+        <h4 id="常见的几个过滤器">
+          <a href="#常见的几个过滤器" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#常见的几个过滤器">#</a>常见的几个过滤器</h4>
+      
+<ul>
+<li><code>Authentication Filter</code> 用户访问权限过滤</li>
+<li><code>Logging and Auditing Filter</code> 日志过滤</li>
+<li><code>Image conversion Filter</code></li>
+<li><code>Data compression Filter</code></li>
+<li><code>Encryption Filter</code></li>
+<li><code>Tokenizing Filter</code></li>
+<li>。。。</li>
+</ul>
+
+        <h4 id="实现方式">
+          <a href="#实现方式" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#实现方式">#</a>实现方式</h4>
+      
+<p>实现 <code>javax.Servlet.Filter</code>接口，并重写三个方法：</p>
+<ol>
+<li>
+<p>初始化<code>void init(FilterConfig config)</code></p>
+</li>
+<li>
+<p>销毁<code>void destroy()</code>，完成某些资源的回收</p>
+</li>
+<li>
+<p>过滤功能<code>void doFilter(ServletRequest request, Servletresponse response, FilterChain chain)</code></p>
+<p>以<code>chain.doFilter(request, response)</code>执行请求响应，区分前后</p>
+</li>
+</ol>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException {</span><br><span class="line">        log.info(<span class="string">"++++++++++ init in MyFilter: {}"</span>, filterConfig.getFilterName());</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException {</span><br><span class="line">        log.info(<span class="string">"++++++++++ doFilter in MyFilter"</span>);</span><br><span class="line">        log.info(<span class="string">"++++++++++ before chain.doFilter"</span>);</span><br><span class="line">        filterChain.doFilter(servletRequest, servletResponse);</span><br><span class="line">        log.info(<span class="string">"++++++++++ after chain.doFilter"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> {</span><br><span class="line">        log.info(<span class="string">"++++++++++ destroy in MyFilter"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="注册方式">
+          <a href="#注册方式" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#注册方式">#</a>注册方式</h4>
+      
+<ol>
+<li><code>@Component</code>注解</li>
+<li>SpringBoot 中使用Config类(<code>@Configuration</code>)，可以自由配置拦截的URL</li>
+<li>SpringMVC 在<code>web.xml</code>中注册</li>
+</ol>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyFilterConfig</span> {</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> FilterRegistrationBean <span class="title function_">myFilterReg</span><span class="params">()</span>{</span><br><span class="line">        <span class="type">FilterRegistrationBean</span> <span class="variable">filterRegistrationBean</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FilterRegistrationBean</span>();</span><br><span class="line">        <span class="type">MyFilter</span> <span class="variable">myfilter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyFilter</span>();</span><br><span class="line"></span><br><span class="line">        filterRegistrationBean.setFilter(myfilter);</span><br><span class="line">        List&lt;String&gt; urls = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 匹配所有路径</span></span><br><span class="line">        urls.add(<span class="string">"/*"</span>);</span><br><span class="line"></span><br><span class="line">        filterRegistrationBean.setUrlPatterns(urls);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> filterRegistrationBean;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="缺陷">
+          <a href="#缺陷" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#缺陷">#</a>缺陷</h4>
+      
+<p>Filter无法知道请求是由哪个Controller执行的</p>
+
+        <h3 id="拦截器">
+          <a href="#拦截器" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#拦截器">#</a>拦截器</h3>
+      
+<p>在某个方法或字段被访问之前，进行拦截，然后在之前或之后加入某些操作</p>
+<p>是AOP的一种实现策略。</p>
+
+        <h4 id="作用">
+          <a href="#作用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#作用">#</a>作用</h4>
+      
+<ul>
+<li>日志记录</li>
+<li>权限检查</li>
+<li>性能监控</li>
+<li>通用行为</li>
+</ul>
+
+        <h4 id="实现方式-2">
+          <a href="#实现方式-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#实现方式-2">#</a>实现方式</h4>
+      
+<p>实现<code>HandlerInterceptor</code>接口，并重写三个方法：</p>
+<ol>
+<li>
+<p><code>boolean preHandler(HttpServletRequest request, HttpServletResponse response, Object handler)</code></p>
+<p>请求处理前调用（Controller方法前），可以进行一些前置初始化操作，或是对请求的预处理，或判断请求是否继续（return false）</p>
+</li>
+<li>
+<p><code>postHandler(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</code></p>
+<p>请求处理后调用（Controller方法后），会在DispatcherServlet进行视图返回渲染前被调用，可以在值里对Controller处理后的ModelAndView进行操作</p>
+</li>
+<li>
+<p><code>afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handle, Exception ex)</code></p>
+<p>当前对应的preHandler返回值为true时才执行，主要用于进行资源清理。</p>
+</li>
+</ol>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        log.info(<span class="string">"---------- preHandler in Interceptor, URI: {}"</span>,request.getRequestURL());</span><br><span class="line">        <span class="keyword">return</span> HandlerInterceptor.<span class="built_in">super</span>.preHandle(request, response, handler);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        log.info(<span class="string">"---------- postHandle in Interceptor, "</span>);</span><br><span class="line">        HandlerInterceptor.<span class="built_in">super</span>.postHandle(request, response, handler, modelAndView);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        log.info(<span class="string">"---------- afterCompletion in Interceptor "</span>);</span><br><span class="line">        HandlerInterceptor.<span class="built_in">super</span>.afterCompletion(request, response, handler, ex);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="注册方式-2">
+          <a href="#注册方式-2" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#注册方式-2">#</a>注册方式</h4>
+      
+<p><code>@Component</code>修饰 + 实现<code>WebMvcConfigurer</code>手动注册</p>
+<p>SpringMVC中通过xml文件配置<code>&lt;mvc:interceptors&gt;</code></p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyWebMvcConfig</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> {</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    MyInterceptor myInterceptor;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> {</span><br><span class="line">        registry.addInterceptor(myInterceptor);</span><br><span class="line">        <span class="comment">//.addPathPatterns("/**")..excludePathPatterns("...");</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="缺点">
+          <a href="#缺点" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#缺点">#</a>缺点</h4>
+      
+<p>不能够获取request的参数以及控制器之后的response</p>
+
+        <h3 id="AOP">
+          <a href="#AOP" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#AOP">#</a>AOP</h3>
+      
+
+        <h4 id="实现">
+          <a href="#实现" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#实现">#</a>实现</h4>
+      
+<p>引入spring的AOP</p>
+<figure class="highlight xml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>${spring-boot.version}<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+<p>主要是几个注解的使用</p>
+<ul>
+<li><code>@Aspect</code></li>
+<li><code>@Component</code></li>
+<li><code>@Pointcut</code></li>
+<li><code>@Around</code>/ <code>@Before</code>/ <code>@After</code></li>
+</ul>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAspect</span> {</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 申明一个切点 里面是execution表达式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Pointcut("execution(public * com.example.web.controller.*Controller.*(..))")</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">controllerAspect</span><span class="params">()</span> {</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求method前打印内容</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> joinPoint</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Before(value = "controllerAspect()")</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">methodBefore</span><span class="params">(JoinPoint joinPoint)</span> <span class="keyword">throws</span> ClassNotFoundException {</span><br><span class="line">        log.info(<span class="string">"********** in AOP methodBefore"</span>);</span><br><span class="line">        <span class="type">ServletRequestAttributes</span> <span class="variable">requestAttributes</span> <span class="operator">=</span> (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">        <span class="type">HttpServletRequest</span> <span class="variable">request</span> <span class="operator">=</span> requestAttributes.getRequest();</span><br><span class="line">        <span class="comment">/* 打印请求内容 */</span></span><br><span class="line">        log.info(<span class="string">"********** 请求地址: {}, method: {}"</span>, request.getRequestURI(), request.getMethod());</span><br><span class="line">        log.info(<span class="string">"********** 请求类方法: {}, args: {}"</span>, joinPoint.getSignature(), Arrays.toString(joinPoint.getArgs()));</span><br><span class="line">        <span class="comment">/* 获取连接点目标类名 */</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">targetName</span> <span class="operator">=</span> joinPoint.getTarget().getClass().getName() ;</span><br><span class="line">        <span class="comment">/*根据连接点类的名字获取指定类*/</span></span><br><span class="line">        Class&lt;?&gt; targetClass = Class.forName(targetName);</span><br><span class="line">        log.info(<span class="string">"********** 连接点目标类名: {}"</span>, targetName);</span><br><span class="line">        </span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在方法执行完结后打印返回内容</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> o</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">   </span><br><span class="line">    <span class="meta">@AfterReturning(returning = "o", pointcut = "controllerAspect()")</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">methodAfterReturning</span><span class="params">(Object o)</span>{</span><br><span class="line">        log.info(<span class="string">"********** 返回内容: {}"</span>, o.toString());</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="综合使用效果">
+          <a href="#综合使用效果" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#综合使用效果">#</a>综合使用效果</h2>
+      
+
+        <h3 id="正常流程">
+          <a href="#正常流程" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#正常流程">#</a>正常流程</h3>
+      
+<p>WebController：</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IndexController</span> {</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping("/hello")</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">(<span class="meta">@RequestParam("msg")</span> String msg)</span>{</span><br><span class="line">        log.info(<span class="string">"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; executing in controller"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"receive: "</span>+ msg;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>发送请求 <code>localhost:8080/hello?msg=hiSiri</code>效果</p>
+<ul>
+<li><code>+</code>：Filter</li>
+<li><code>-</code>：Interceptor</li>
+<li><code>*</code>： AOP</li>
+<li><code>&gt;</code>：executing</li>
+</ul>
+<p><img src="https://img.zang.gold/images/202208011534040-aop.png" alt="image-20220801153407930"></p>
+<p>综上，可以一个请求的访问先后顺序是：<code>Filter -&gt; Interceptor -&gt; AOP -&gt; Controller</code></p>
+<p>对于响应的访问顺序是：<code>Controller -&gt; AOP -&gt; Inteceptor -&gt; Filter</code></p>
+
+        <h3 id="异常抛出">
+          <a href="#异常抛出" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#异常抛出">#</a>异常抛出</h3>
+      
+<p>那么，假如方法执行抛出异常，那么这个异常响应如何处理</p>
+<p>需要用<code>@RestControllerAdvice</code></p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalExceptionHandler</span> {</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler(Exception.class)</span></span><br><span class="line">    <span class="meta">@ResponseStatus(HttpStatus.BAD_REQUEST)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">handleException</span><span class="params">(Exception e)</span> {</span><br><span class="line">        log.error(<span class="string">"?????????? 参数异常: {}"</span>, e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"exception: "</span> + e.getMessage();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>为Controller添加一个方法</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping("/exception")</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">exception</span><span class="params">(<span class="meta">@RequestParam("msg")</span> String msg)</span>{</span><br><span class="line">    <span class="keyword">try</span>{</span><br><span class="line">        <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">1</span>/<span class="number">0</span>;  </span><br><span class="line">    } <span class="keyword">catch</span> (Exception e){</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    log.info(<span class="string">"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; executing in controller"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"receive: "</span>+ msg;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>再次发送请求 <code>localhost:8080/hello?msg=hiSiri</code>效果</p>
+<ul>
+<li><code>?</code>：ExceptionHandler</li>
+</ul>
+<p><img src="https://img.zang.gold/images/202208011650873-aop.png" alt="image-20220801165018805"></p>
+<p><img src="https://img.zang.gold/images/202208011813248-aop.png" alt="一层层"></p>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60842627">Spring AOP(一) AOP基本概念 - 知乎 (zhihu.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/289045">一篇文搞懂《AOP面向切面编程》是一种什么样的体验？-云社区-华为云</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.csdn.net/q982151756/article/details/80513340">细说Spring——AOP详解（AOP概览）_Jivan2233的博客-CSDN博客_aop</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/144684116">过滤器 拦截器 切片的区别 - 知乎 (zhihu.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/Spring-AOP/">http://zang.gold/posts/Spring-AOP/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Spring/">Spring</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/AOP/">AOP</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Shiro/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Shiro学习 Part I</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/CodeGenerater/"><span class="paginator-prev__text">代码生成器</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFAOP"><span class="toc-number">1.</span> <span class="toc-text">
+          什么是AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="toc-number">1.1.</span> <span class="toc-text">
+          基本术语</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%81%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8EAOP"><span class="toc-number">2.</span> <span class="toc-text">
+          过滤器、拦截器与AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">
+          过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-number">2.1.1.</span> <span class="toc-text">
+          完整流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E4%B8%AA%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.1.2.</span> <span class="toc-text">
+          常见的几个过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.3.</span> <span class="toc-text">
+          实现方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.4.</span> <span class="toc-text">
+          注册方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E9%99%B7"><span class="toc-number">2.1.5.</span> <span class="toc-text">
+          缺陷</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">
+          拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">2.2.1.</span> <span class="toc-text">
+          作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-2"><span class="toc-number">2.2.2.</span> <span class="toc-text">
+          实现方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E6%96%B9%E5%BC%8F-2"><span class="toc-number">2.2.3.</span> <span class="toc-text">
+          注册方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">2.2.4.</span> <span class="toc-text">
+          缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOP"><span class="toc-number">2.3.</span> <span class="toc-text">
+          AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.1.</span> <span class="toc-text">
+          实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E4%BD%BF%E7%94%A8%E6%95%88%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">
+          综合使用效果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">
+          正常流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA"><span class="toc-number">3.2.</span> <span class="toc-text">
+          异常抛出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">
+          参考</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

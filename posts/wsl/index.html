@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="Windows下的Linux子系统整的太好用啦！linux沉浸式体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WSL - Windows 下的Linux子系统">
+<meta property="og:url" content="http://zang.gold/posts/wsl/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="Windows下的Linux子系统整的太好用啦！linux沉浸式体验">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202210231443642-wsl.png">
+<meta property="og:image" content="https://img.zang.gold/images/202210231455920-wsl.png">
+<meta property="article:published_time" content="2022-06-21T03:29:21.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:33:00.295Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202210231443642-wsl.png"><title>WSL - Windows 下的Linux子系统 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/wsl/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">WSL - Windows 下的Linux子系统</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-06-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>Windows作为刷剧打游戏等日常使用是相当友好，但在开发上，相比于Unix/Linux还是比较拉的。所以微软自家也搞出了个Windows下的Linux子系统，相当于官方支持的一个虚拟机，相比于VMWare在系统配置上又省事了很多。</p>
+<p>目前的应用思路是将MySQL、Redis等通过WSL实现在Windows上的运行。（特别是Redis！）</p>
+
+        <h2 id="安装">
+          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安装">#</a>安装</h2>
+      
+<blockquote>
+<p>系统版本需要 Win 10 2004（内核版本1904）及以上</p>
+<p><code>控制面板 &gt; 程序 &gt; 程序与功能 &gt; 启用或关闭windows功能</code>中需要勾选“适用于Linux的Windows子系统”，“虚拟机平台”</p>
+</blockquote>
+<ol>
+<li>微软商店直接下载</li>
+<li><code>wsl --install</code>进行安装</li>
+</ol>
+
+        <h2 id="使用">
+          <a href="#使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#使用">#</a>使用</h2>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">wsl    <span class="comment"># 未提供命令行，将启动默认分发</span></span><br><span class="line">wsl --status           <span class="comment"># 显示wsl系统的状态</span></span><br><span class="line">wsl --<span class="built_in">help</span></span><br><span class="line">wsl --<span class="built_in">exec</span> &lt;CommandLine&gt;  <span class="comment"># 在不使用默认linux Shell 的情况下执行指定的命令  ,-e</span></span><br><span class="line"></span><br><span class="line">wsl --set-default-version 2 <span class="comment"># 更改新分发的默认安装版本为wsl2</span></span><br><span class="line">wsl --set-version &lt;分发&gt; 2   <span class="comment"># 修改新分发的安装本版为wsl2</span></span><br><span class="line"></span><br><span class="line">wsl --list --all		<span class="comment"># 列出所有的分发</span></span><br><span class="line">wsl --list --online 	<span class="comment"># 列出可用的分发</span></span><br><span class="line">wsl --list --running	<span class="comment"># 列出正在运行的分发 </span></span><br><span class="line">wsl --list --verbose	<span class="comment"># 列出分发的详细信息  </span></span><br><span class="line"></span><br><span class="line">wsl --install 			<span class="comment"># 安装Ubuntu分发</span></span><br><span class="line">wsl --distribution/-d  &lt;DistroName&gt;   <span class="comment"># 运行指定的分发</span></span><br><span class="line">wsl --distribution-id  &lt;DistroGuid&gt;   <span class="comment"># 运行指定id的分发</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">wsl --terminate &lt;分发&gt;   <span class="comment"># 终止指定的分发</span></span><br><span class="line">wsl --shutdown 		   <span class="comment"># 立即终止所有运行的分发</span></span><br><span class="line">wsl --unregister  &lt;Distro&gt;   <span class="comment"># 卸载分发 </span></span><br><span class="line">&lt;DistributionName&gt; config --default-user &lt;Username&gt;  <span class="comment"># 更改发行版的默认用户（此命令不适用于导入的发行版，因为这些发行版没有可执行启动器）</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>由于WSL 中的 systemd 不是原生的，对一些服务的启动管理不能使用<code>systemctl</code>，而是需要使用<code>sudo service xxx staus</code></p>
+</blockquote>
+
+        <h2 id="WSL迁移">
+          <a href="#WSL迁移" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#WSL迁移">#</a>WSL迁移</h2>
+      
+<p>怎么说WSL也可以看作是一个操作系统了，但又一个操作系统挂载在C盘难受的一批，占着自己的系统盘（整整12G+！），一个解决方法就是迁移到其他盘。</p>
+<blockquote>
+<p>另一种方法是直接安装时（安装包安装）就选择其他位置</p>
+<ol>
+<li>下载离线安装包：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/wsl/install-manual#downloading-distributions">Downloading distributions</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>修改后缀<code>.Appx</code>为<code>zip</code>，解压</li>
+<li>运行<code>.exe</code>，等待其在改目录下安装</li>
+</ol>
+</blockquote>
+<p>默认的安装位置为：<code>C:\Users\12071\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu20.04onWindows_**\LocalState\rootfs</code>，这里对应的就是WSL中Ubuntu的文件系统。</p>
+<ol>
+<li>
+<p>查看正在运行的WSL</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl -l --running</span><br><span class="line"><span class="comment"># Ubuntu-20.04</span></span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>终止当前正在运行的WSL</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>将需要迁移的WSL导出</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --<span class="built_in">export</span> Ubuntu-20.04 D:\WSL\ubuntu2004.tar</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>将导出的文件放到需要保存的地方，进行导入（此处的版本需要和原来一样）</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --import Ubuntu2004 D:\WSL\ubuntu2004 D:\WSL\ubuntu2004.tar --version 2</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>将原有的发布进行卸载</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister Ubuntu-20.04</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+<blockquote>
+<p>操作过程中遇到“RPC服务器连接问题”，导致导入这一步失败。（还好没有导出后就卸载）</p>
+<p>主要是因为版本没选对，目前我的电脑在使用版本2的时候还存在问题。  ——2022/8/18</p>
+<p>迁移之后，默认登录用户就会变成root，但不影响原用户的存在，可以改为使用 <code>/etc/wsl.conf</code> 文件（需要新建）来更改导入的发行版的默认用户。具体见<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/wsl-config#user-settings">WSL 中的高级设置配置</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight sh"><figcaption><span>wsl.conf</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Set the user when launching a distribution with WSL.</span></span><br><span class="line">[user]</span><br><span class="line">default = DemoUser</span><br></pre></td></tr></tbody></table></div></figure>
+</blockquote>
+
+        <h2 id="配置">
+          <a href="#配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#配置">#</a>配置</h2>
+      
+<p>官方示例<code>\etc\wsl.conf</code></p>
+<figure class="highlight shell"><figcaption><span>wsl.conf</span></figcaption><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Automatically mount Windows drive when the distribution is launched</span></span><br><span class="line">[automount]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set to <span class="literal">true</span> will automount fixed drives (C:/ or D:/) with DrvFs under the root directory <span class="built_in">set</span> above. Set to <span class="literal">false</span> means drives won<span class="string">'t be mounted automatically, but need to be mounted manually or with fstab.</span></span></span><br><span class="line">enabled = true</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Sets the directory where fixed drives will be automatically mounted. This example changes the mount location, so your C-drive would be /c, rather than the default /mnt/c.</span></span> </span><br><span class="line">root = /</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">DrvFs-specific options can be specified.</span></span>  </span><br><span class="line">options = "metadata,uid=1003,gid=1003,umask=077,fmask=11,case=off"</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Sets the `/etc/fstab` file to be processed when a WSL distribution is launched.</span></span></span><br><span class="line">mountFsTab = true</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Network host settings that enable the DNS server used by WSL 2. This example changes the hostname, sets generateHosts to false, preventing WSL from the default behavior of auto-generating /etc/hosts, and sets generateResolvConf to false, preventing WSL from auto-generating /etc/resolv.conf, so that you can create your own (ie. nameserver 1.1.1.1).</span></span></span><br><span class="line">[network]</span><br><span class="line">hostname = DemoHost</span><br><span class="line">generateHosts = false</span><br><span class="line">generateResolvConf = false</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Set whether WSL supports interop process like launching Windows apps and adding path variables. Setting these to false will block the launch of Windows processes and block adding $PATH environment variables.</span></span></span><br><span class="line">[interop]</span><br><span class="line">enabled = false</span><br><span class="line">appendWindowsPath = false</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Set the user when launching a distribution with WSL.</span></span></span><br><span class="line">[user]</span><br><span class="line">default = DemoUser</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Set a command to run when a new WSL instance launches. This example starts the Docker container service.</span></span></span><br><span class="line">[boot]</span><br><span class="line">command = service docker start</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="systemd支持">
+          <a href="#systemd支持" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#systemd支持">#</a>systemd支持</h3>
+      
+<p>在<code>wsl.conf</code>中添加：</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[boot]</span><br><span class="line">systemd=true</span><br></pre></td></tr></tbody></table></div></figure>
+<p>重启WSL</p>
+<p>之后就可以使用systemctl对一些服务进行操作啦（但还是得自己添加Unit资源文件到<code>/etc/systemd/system</code>中）</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl list-units</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="网络配置">
+          <a href="#网络配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#网络配置">#</a>网络配置</h3>
+      
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[network]</span><br><span class="line">generateHosts=true  # 自动生成`/etc/hosts`文件，对应主机名对应的IP地址静态映射</span><br><span class="line">generateResolvConf=true # 自动生成`/etc/resolv.conf`文件，DNS列表</span><br><span class="line">hostname=WindowsName # 用于WSL的主机名</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="用户设置">
+          <a href="#用户设置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#用户设置">#</a>用户设置</h3>
+      
+<p>见WSL迁移</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">dafault=USer</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="Q-A">
+          <a href="#Q-A" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Q-A">#</a>Q&amp;A</h2>
+      
+
+        <h3 id="apt-apt-get无法更新到最新库">
+          <a href="#apt-apt-get无法更新到最新库" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#apt-apt-get无法更新到最新库">#</a>apt/apt-get无法更新到最新库</h3>
+      
+<p>原因：DNS没有配置，不能解析</p>
+<p>解决（参考【2】）</p>
+<p>测试一下网络<code>ping www.baidu.com</code>，若返回<code>Temporary failure in name resolution</code>就是网络问题（大概率是出在DNS）</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">rm</span> /etc/resolv.conf</span><br><span class="line"><span class="built_in">sudo</span> bash -c <span class="string">'echo "nameserver 8.8.8.8" &gt; /etc/resolv.conf'</span></span><br><span class="line"><span class="built_in">sudo</span> bash -c <span class="string">'echo "[network]" &gt; /etc/wsl.conf'</span></span><br><span class="line"><span class="built_in">sudo</span> bash -c <span class="string">'echo "generateResolvConf = false" &gt;&gt; /etc/wsl.conf'</span></span><br><span class="line"><span class="built_in">sudo</span> chattr +i /etc/resolv.conf  <span class="comment"># 可写可不写，可能会报错</span></span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>在WSL默认的resolv.conf中，是由wsl自动生成的</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">This file was automatically generated by WSL. To stop automatic generation of this file, add the following entry to /etc/wsl.conf:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">[network]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">generateResolvConf = <span class="literal">false</span></span></span><br></pre></td></tr></tbody></table></div></figure>
+<p>上面的解决方案实际上就是配置wsl不再自动生成resolv.conf，并在resolv.conf中手动添加DNS。</p>
+</blockquote>
+<p>-------------------2022/10/23更新</p>
+<p>在我迁移完好久一段时间后，再次进行操作，发现apt还是无法进行update的。</p>
+<p>按前面的修改<code>wsl.conf</code>以及<code>resolv.conf</code>都不再生效。同时也发现，如果<code>ping</code>IP地址，能够ping通；但是<code>ping</code>域名，就会失败。如下图所示</p>
+<p><img src="https://img.zang.gold/images/202210231443642-wsl.png" alt="image-20221023144337533"></p>
+<p>个人认为是域名解析中出问题，导致apt在读取源时无法访问到。</p>
+<p>索性直接自己配置域名解析，在<code>host</code>中将需要的IP以及域名添加上去，重新<code>apt update</code>，顺利解决。（比如说阿里源、清华源、redis、postgresql等源都得自己加了。。。）</p>
+<p>如图，添加了阿里源的host以及没有添加redis、postgresql等源的情况。至于怎么看域名对应的IP，那就是我一个个在宿主机上去<code>ping</code>出来了QAQ</p>
+<p><img src="https://img.zang.gold/images/202210231455920-wsl.png" alt="image-20221023145535846"></p>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/install">安装 WSL | Microsoft Learn</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45951701/article/details/118278728">WSL问题: Temporary failure resolving ‘archive.ubuntu.com‘_Lucas-hao的博客-CSDN博客</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="http://www.xfy-learning.com/2020/05/30/WSL%E5%A4%87%E4%BB%BD%E4%B8%8E%E8%BF%98%E5%8E%9F/">WSL备份与还原 | 小肥羊吃草不吃肉 (xfy-learning.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/wsl/">http://zang.gold/posts/wsl/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Linux/">Linux</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Windows/">Windows</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/redis-start/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">初探Redis</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/BFG/"><span class="paginator-prev__text">BFG - 移除Git Repository 中的敏感信息</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">
+          安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">
+          使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WSL%E8%BF%81%E7%A7%BB"><span class="toc-number">3.</span> <span class="toc-text">
+          WSL迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">
+          配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#systemd%E6%94%AF%E6%8C%81"><span class="toc-number">4.1.</span> <span class="toc-text">
+          systemd支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.</span> <span class="toc-text">
+          网络配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE"><span class="toc-number">4.3.</span> <span class="toc-text">
+          用户设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-A"><span class="toc-number">5.</span> <span class="toc-text">
+          Q&amp;A</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#apt-apt-get%E6%97%A0%E6%B3%95%E6%9B%B4%E6%96%B0%E5%88%B0%E6%9C%80%E6%96%B0%E5%BA%93"><span class="toc-number">5.1.</span> <span class="toc-text">
+          apt&#x2F;apt-get无法更新到最新库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">
+          参考</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

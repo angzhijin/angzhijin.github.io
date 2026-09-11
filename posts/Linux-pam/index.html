@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="关于Linux中的可插拔式安全模块PAM的介绍与使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux PAM模块">
+<meta property="og:url" content="http://zang.gold/posts/Linux-pam/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="关于Linux中的可插拔式安全模块PAM的介绍与使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-18T22:21:41.000Z">
+<meta property="article:modified_time" content="2026-07-18T23:42:05.050Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary"><title>Linux PAM模块 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/Linux-pam/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Linux PAM模块</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2026-07-19</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-19</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>PAM（Pluggabled Authentication Modules）可插拔式安全模块，目前Linux涉及到安全貌似都跑不开PAM配置。它是一个库系统，用于处理系统上应用程序或服务的身份验证任务。即对于应用程序或服务接收的请求，都会在PAM过一遍。</p>
+<p>这个模块通过调用统一的接口，进而调用指定的一系列控制模块，对特定的服务（如login、su等）提供一套标准的身份认证方式。</p>
+<p>对于一个服务，可通过以下命令判断是否支持PAM（以sshd为例）</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldd `which sshd` | grep libpam</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="PAM配置">
+          <a href="#PAM配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#PAM配置">#</a>PAM配置</h2>
+      
+<p>不同服务的PAM配置均位于<code>/etc/pam.d/</code>下，每个支持的应用程序或服务均有一个独立的配置文件。如login的配置文件为<code>/etc/pam.d/login</code>，su服务的配置文件为<code>/etc/pam.d/su</code>。</p>
+<p>在<code>/usr/share/doc/pam/README.d/</code>下包含了所有控制模块的README文件。</p>
+<p>PAM的配置文件格式如下：</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">%PAM-1.0</span></span><br><span class="line">type     control  module-path  module-arguments</span><br><span class="line">认证类型  控制标记  控制模块       模块参数</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="认证类型">
+          <a href="#认证类型" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#认证类型">#</a>认证类型</h3>
+      
+<p>PAM提供4种认证类型</p>
+<ul>
+<li>account：账号管理，涉及账号的期限、禁用等</li>
+<li>auth：认证管理，用于验证合法性及用户凭证（如密码、认证卡等）</li>
+<li>password：密码管理，涉及密码的强度、配置要求、过期时间等</li>
+<li>session：会话管理，配置会话建立前后的一些操作，如审计跟踪、目录挂载等</li>
+</ul>
+
+        <h3 id="控制标记">
+          <a href="#控制标记" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#控制标记">#</a>控制标记</h3>
+      
+<blockquote>
+<p>这一部分不太好理解。。。</p>
+</blockquote>
+<p>PAM提供5种控制标记</p>
+<ul>
+<li>required：必需，必要条件，结果必须全部成功才可以继续</li>
+<li>requisite：必需，结果失败后立刻结束</li>
+<li>sufficient：充分条件，结果成功后直接通过，后续不在认证；结果失败后视为optional</li>
+<li>optional：可选，失败也可以通过</li>
+<li>include：调用另一个配置</li>
+</ul>
+
+        <h3 id="控制模块及参数">
+          <a href="#控制模块及参数" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#控制模块及参数">#</a>控制模块及参数</h3>
+      
+<p>控制模块的本体一般位于<code>/usr/lib64/</code>下（<code>/lib64/</code>为其软链接）</p>
+
+        <h4 id="pam-access-so">
+          <a href="#pam-access-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-access-so">#</a>pam_access.so</h4>
+      
+<p>配置用户的访问</p>
+<p>access的配置位于<code>/etc/security/access.conf</code></p>
+
+        <h4 id="pam-limit-so">
+          <a href="#pam-limit-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-limit-so">#</a>pam_limit.so</h4>
+      
+<p>用于控制用户可使用的系统资源情况。该模块的配置使用<code>ulimit</code>命令控制。</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看当前用户的<span class="built_in">limit</span>配置</span></span><br><span class="line">ulimit -n</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看或修改当前用户可打开的最大文件数</span></span><br><span class="line">ulimit -a</span><br><span class="line">ulimit -a &lt;num&gt;</span><br></pre></td></tr></tbody></table></div></figure>
+<p>pam_limit.so的配置文件位于<code>/etc/security/limits.conf</code>，<code>soft</code>指定了警告值，而<code>hard</code>指定了阈值。</p>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># core文件大小（KB）</span></span><br><span class="line">* soft core 102400</span><br><span class="line">* hard core 102400</span><br><span class="line"><span class="comment"># 用户最大文件数</span></span><br><span class="line">* soft nofile 65535</span><br><span class="line">* hard nofile 65535</span><br><span class="line"><span class="comment"># 用户最大进程数</span></span><br><span class="line">* soft <span class="built_in">nproc</span> 65535</span><br><span class="line">* hard <span class="built_in">nproc</span> 65535</span><br></pre></td></tr></tbody></table></div></figure>
+<p>除了上述的项目，还有：</p>
+<ul>
+<li>data：最大数据大小（KB）</li>
+<li>fsize：最大文件大小（KB）</li>
+<li>memlock：最大可用内存空间（KB）</li>
+<li>rss：最大可驻留空间（KB）</li>
+<li>stack：最大堆栈空间（KB）</li>
+<li>cpu：最大CPU使用时间（MIN）</li>
+<li>as：地址空间限制</li>
+<li>maxlogins：用户可以登录到系统的会话数上限</li>
+<li>locks：最大锁定文件数目</li>
+</ul>
+
+        <h4 id="pam-tally2-so">
+          <a href="#pam-tally2-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-tally2-so">#</a>pam_tally2.so</h4>
+      
+<p>用于统计登录次数，并进行相应处理，常用配置到login、sshd等服务中，一般用于防御口令爆破攻击。</p>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="http://xn--CentOS8faillock-p53xb7fn78a4r8e.so">CentOS8以后改为faillock.so</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入次数超过100次，锁定60秒，包括root用户</span></span><br><span class="line">auth required pam_tally2.so deny=100 even_deny_root root_unlock_time=600 unlock_time</span><br></pre></td></tr></tbody></table></div></figure>
+<p>pam_tally2.so的配置文件位于<code>/etc/security/faillock.conf</code></p>
+<p>可使用<code>pam_tty2</code>查看用户登录失败情况</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看用户登录失败情况</span></span><br><span class="line">pam_tally2 -u usr1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解锁</span></span><br><span class="line">pam_tally2 -r -u usr1</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="pam-faillock-so">
+          <a href="#pam-faillock-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-faillock-so">#</a>pam_faillock.so</h4>
+      
+<p>CentOS8以后引入，用于替换pam_tally2.so</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看用户登录认证情况</span></span><br><span class="line">faillock --user username</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重置登录统计次数</span></span><br><span class="line">faillock --user username --reset</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="pam-pwquality-so">
+          <a href="#pam-pwquality-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-pwquality-so">#</a>pam_pwquality.so</h4>
+      
+<p>用于设定配置密码的要求</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">password requisite pam_pwquality.so try_first_pass local_users_only</span><br><span class="line">Options:</span><br><span class="line"> difok=N	# 新密码要求与旧密码不同的最低位数，默认1</span><br><span class="line"> retry=N	# 重试次数，默认1</span><br><span class="line"> minlen=N	# 密码的最小长度</span><br><span class="line"> dcredit=N	# 包含数字，默认1，N&lt;0表示必须满足的最小位数，N&gt;0表示该类型等同于多少minlen所需的长度</span><br><span class="line"> ucredit=N	# 包含大写字母，默认1，N&lt;0表示必须满足的最小位数，N&gt;0表示该类型等同于多少minlen所需的长度</span><br><span class="line"> lcredit=N 	# 包含小写字母，默认1，N&lt;0表示必须满足的最小位数，N&gt;0表示该类型等同于多少minlen所需的长度</span><br><span class="line"> ocredit=N	# 包含其他特殊字符，默认1，N&lt;0表示必须满足的最小位数，N&gt;0表示该类型等同于多少minlen所需的长度</span><br><span class="line"> minclass=N	# 密码的最小字符类型数，默认0</span><br><span class="line"> difok=N    # 与旧密码不同的字符数</span><br><span class="line"> usercheck=1  # 检查包含用户名，默认1</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+<p>pam_pwquality.so的配置位于<code>/etc/security/pwquality.conf</code></p>
+<p>每个<code>*credit</code>中N大于0时，如dcredt=2，表示每个数字的长度视为2。</p>
+<p>密码的最终长度要求为：输入的密码长度（每个输入值都算数）＋*credit（加分）&gt;=minle</p>
+
+        <h4 id="pam-pwhistory-so">
+          <a href="#pam-pwhistory-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-pwhistory-so">#</a>pam_pwhistory.so</h4>
+      
+<p>控制修改密码时不能与历史密码重复</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">记住10次历史密码</span></span><br><span class="line">password required pam_pwhistory.so enforce_for_root remember=10</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">也可使用pam_unix.so</span></span><br><span class="line">password required pam_unix.so md5 remember=10 use=authtok</span><br></pre></td></tr></tbody></table></div></figure>
+<p>历史密码会保存在<code>/etc/security/opasswd</code>中。</p>
+<p>若要求时间限制（如30天内不能重复），只能手动删除该文件进行配置。</p>
+
+        <h4 id="pam-shells-so">
+          <a href="#pam-shells-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-shells-so">#</a>pam_shells.so</h4>
+      
+<p>用户若登录，其shell必须为<code>/etc/shells</code>中的shell</p>
+
+        <h4 id="pam-securetty-so">
+          <a href="#pam-securetty-so" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pam-securetty-so">#</a>pam_securetty.so</h4>
+      
+<p>用户登录使用的tty必须位于<code>/etc/securetty</code>中</p>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li>
+<p>GitHub：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/linux-pam/linux-pam">linux-pam/linux-pam: Linux PAM (Pluggable Authentication Modules for Linux) project</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.die.net/search/?q=PAM&amp;sa=Search&amp;ie=ISO-8859-1&amp;cx=partner-pub-5823754184406795%3A54htp1rtx5u&amp;cof=FORID%3A9&amp;siteurl=linux.die.net%2F&amp;ref=www.die.net%2F&amp;ss=766j149682j10#gsc.tab=0&amp;gsc.q=PAM&amp;gsc.page=1">die.net</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>上的检索结果</p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.cnblogs.com/kevingrace/p/8671964.html">Linux下PAM模块学习总结 - 散尽浮华 - 博客园</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.cnblogs.com/z-books/p/4329676.html">Linux-PAM认证模块 - mofy - 博客园</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/Linux-pam/">http://zang.gold/posts/Linux-pam/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Linux/">Linux</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Linux-ssh/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Linux的ssh服务</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Typora-activition/"><span class="paginator-prev__text">Typora激活</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PAM%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">
+          PAM配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">
+          认证类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E6%A0%87%E8%AE%B0"><span class="toc-number">1.2.</span> <span class="toc-text">
+          控制标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E6%A8%A1%E5%9D%97%E5%8F%8A%E5%8F%82%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">
+          控制模块及参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-access-so"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          pam_access.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-limit-so"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          pam_limit.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-tally2-so"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          pam_tally2.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-faillock-so"><span class="toc-number">1.3.4.</span> <span class="toc-text">
+          pam_faillock.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-pwquality-so"><span class="toc-number">1.3.5.</span> <span class="toc-text">
+          pam_pwquality.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-pwhistory-so"><span class="toc-number">1.3.6.</span> <span class="toc-text">
+          pam_pwhistory.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-shells-so"><span class="toc-number">1.3.7.</span> <span class="toc-text">
+          pam_shells.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pam-securetty-so"><span class="toc-number">1.3.8.</span> <span class="toc-text">
+          pam_securetty.so</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">2.</span> <span class="toc-text">
+          参考</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

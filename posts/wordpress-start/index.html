@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="WordPress的搭建与配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPress配置">
+<meta property="og:url" content="http://zang.gold/posts/wordpress-start/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="WordPress的搭建与配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.zang.gold/images/202305181543071-wordpress.md.png">
+<meta property="article:published_time" content="2023-05-29T14:45:28.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:33:14.801Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="WordPress">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.zang.gold/images/202305181543071-wordpress.md.png"><title>WordPress配置 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/wordpress-start/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">WordPress配置</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><blockquote>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://developer.wordpress.org/advanced-administration/before-install/">Before You Install | WordPress Developer Resources</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h2 id="安装">
+          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安装">#</a>安装</h2>
+      
+
+        <h3 id="系统需求">
+          <a href="#系统需求" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#系统需求">#</a>系统需求</h3>
+      
+<ul>
+<li>PHP7.4+</li>
+<li>MySQL5.7+ 或 MariaDB10.3+</li>
+<li>HTTPS支持</li>
+</ul>
+
+        <h3 id="数据库配置">
+          <a href="#数据库配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据库配置">#</a>数据库配置</h3>
+      
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">CREATE</span> DATABASE <span class="operator">&lt;</span>databasename<span class="operator">&gt;</span>;  </span><br><span class="line">Query OK, <span class="number">1</span> <span class="type">row</span> affected (<span class="number">0.00</span> sec)  </span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">USER</span> <span class="string">'wordpressusername'</span>@<span class="string">'%'</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">'password'</span>;</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> databasename.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">'wordpressusername'</span>@<span class="string">'&lt;hostname&gt;'</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">'&lt;password&gt;'</span>;  </span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> FLUSH PRIVILEGES;</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+<p>然后本地或远程测试胰腺癌是否能够正常登陆。</p>
+
+        <h3 id="下载解压预配置">
+          <a href="#下载解压预配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#下载解压预配置">#</a>下载解压预配置</h3>
+      
+<ol>
+<li>
+<p>下载Wordpress包<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://wordpress.org/download/">Download – WordPress.org</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>或<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://cn.wordpress.org/download/releases/">版本发布 | WordPress.org China 简体中文</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p>解压</p>
+</li>
+<li>
+<p>将<code>wp-config-sample.php</code>重命名为<code>wp-config.php</code>（个人建议复制一份修改，谨慎点）</p>
+</li>
+<li>
+<p>配置<code>wp-config.php</code>中的数据库部分</p>
+<figure class="highlight php"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ** Database settings - You can get this info from your web host ** //</span></span><br><span class="line"><span class="comment">/** The name of the database for WordPress */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'DB_NAME'</span>, <span class="string">'database_name_here'</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database username */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'DB_USER'</span>, <span class="string">'username_here'</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database password */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'DB_PASSWORD'</span>, <span class="string">'password_here'</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database hostname */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'DB_HOST'</span>, <span class="string">'localhost'</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database charset to use in creating database tables. */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'DB_CHARSET'</span>, <span class="string">'utf8'</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/** The database collate type. Don't change this if in doubt. */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'DB_COLLATE'</span>, <span class="string">''</span> );</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>移动文件夹到目标路径</p>
+</li>
+</ol>
+
+        <h3 id="Nginx配置">
+          <a href="#Nginx配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Nginx配置">#</a>Nginx配置</h3>
+      
+<p>与常见的php配置一样</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">upstream php{</span><br><span class="line">   server unix:/var/run/php/php7.4-fpm.sock;</span><br><span class="line">   server 127.0.0.1:9000;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">server{</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name example.com # 域名</span><br><span class="line">	root 上面的wordpress文件夹目录</span><br><span class="line"></span><br><span class="line">	location / {</span><br><span class="line">	    try_files $uri $uri/ /index.php?$args;</span><br><span class="line">        #index index.php indx.html index.htm; # 添加php进行支持</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	location ~* \.php$ {</span><br><span class="line">    	fastcgi_index   index.php;</span><br><span class="line">    	fastcgi_pass    php;</span><br><span class="line">    	include         fastcgi_params;</span><br><span class="line">    	fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;</span><br><span class="line">    	fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;</span><br><span class="line">	}</span><br><span class="line">	...</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+<p>重启Nginx</p>
+<p>访问如果出现<code>No input file specified.</code>，可能原因是根路径出错。</p>
+
+        <h3 id="网页配置">
+          <a href="#网页配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#网页配置">#</a>网页配置</h3>
+      
+<p>访问对应ip/域名下的<code>/wp-admin/install.php</code>初次进入也会直接跳转。</p>
+<p>首先会检查是否已经有<code>wp-config.php</code>，没有会显示配置页面，填写完成会自动生成<code>wp-config.php</code>。然后会检查配置的数据库是否能够连接，顺利的话就会进入“著名的五分钟安装页面”。</p>
+<p><img src="https://img.zang.gold/images/202305181543071-wordpress.md.png" alt="image-20230518154302878"></p>
+
+        <h2 id="网站配置">
+          <a href="#网站配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#网站配置">#</a>网站配置</h2>
+      
+
+        <h3 id="语言">
+          <a href="#语言" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#语言">#</a>语言</h3>
+      
+<p>从<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://wordpress.org/download/">Download – WordPress.org</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>下载的包中默认只有英语，简体中文需要在<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://cn.wordpress.org/download/releases/">WordPress.org China 简体中文</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>中下载。如果已经安装了英文版的，也可以从中文版中复制<code>wp-content/languages</code>中的内容到对应位置。</p>
+
+        <h3 id="日志">
+          <a href="#日志" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#日志">#</a>日志</h3>
+      
+<p>在<code>wp-config.php</code>中添加：</p>
+<figure class="highlight php"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'WP_DEBUG'</span>, <span class="literal">true</span> );</span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'WP_DEBUG_LOG'</span>, <span class="literal">true</span> );</span><br><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'WP_DEBUG_DISPLAY'</span>, <span class="literal">true</span> );</span><br><span class="line">@<span class="title function_ invoke__">ini_set</span>( <span class="string">'display_errors'</span>, <span class="number">0</span> );</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="主题">
+          <a href="#主题" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#主题">#</a>主题</h3>
+      
+<p>主题可以在“外观-主题”中搜索查找热门的主题进行下载</p>
+<p>也可以在GitHub/Gitee上找大佬们开源的主题项目下载，一般是打包为<code>.zip</code>上传到wordpress中。</p>
+<p>目前看到几个比较好的：</p>
+<ul>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/mashirozx/Sakura">Sakura</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://gitee.com/mirai-mamori/Sakurairo">Sakurairo（基于Sakura主题）</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>好看！这两个二次元要素拉满。</p>
+<p>装好之后文章页显示不出，因为刚上手也就没去排查。换成其他主题就没这个问题了。</p>
+</blockquote>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/solstice23/argon-theme">Argon </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>简洁里算得上好的了，好几个朋友都在用！</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>主题上传有几个坑，具体写在下面<code>后台配置&gt;文件上传里了</code>自动更新</p>
+</blockquote>
+<p>需要在<code>wp-config.php</code>中添加属性：</p>
+<figure class="highlight php"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">define</span>( <span class="string">'WP_AUTO_UPDATE_CORE'</span>, <span class="literal">false</span> ); <span class="comment"># 关闭自动更新</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="伪静态">
+          <a href="#伪静态" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#伪静态">#</a>伪静态</h3>
+      
+<p>第二天启动控制台后弹了个<code>为了更好的使用体验，请不要将固定链接设置为朴素。为此，您可能需要配置伪静态</code>。</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.wpdaxue.com/wordpress-rewriterule.html">WordPress 伪静态规则（IIS/Apache/Nginx） – WordPress大学</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>Nginx伪静态规则：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#nginx.conf</span><br><span class="line"></span><br><span class="line">server{</span><br><span class="line">	...</span><br><span class="line">	# Add trailing slash to */wp-admin requests.</span><br><span class="line">	rewrite /wp-admin$ $scheme://$host$uri/ permanent;</span><br><span class="line">	...</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="后台配置">
+          <a href="#后台配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#后台配置">#</a>后台配置</h3>
+      
+
+        <h4 id="文件上传">
+          <a href="#文件上传" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#文件上传">#</a>文件上传</h4>
+      
+<p>自定义主题上传时候，然后发现了第一个坑，nginx默认的上传文件大小为1MB，而Sakurario大小有4M+，会报<code>413 Request Entity Too Large</code>错误。需要在<code>nginx.conf</code>中添加配置并重启。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client_max_body_size 20M;</span><br></pre></td></tr></tbody></table></div></figure>
+<p>很快啊，第二个坑，php也有默认的文件大小上限，提示<code>上传的文件大小超过php.ini文件中定义的upload_max_filesize值</code>，这个就很明确了，再去改一改然后重启就好了。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">upload_max_filesize = 20M</span><br><span class="line">post_max_size = 25M  </span><br><span class="line">;post_max_size一般大于等于upload_max_filesize，在wordpress的安全检查中会检查</span><br></pre></td></tr></tbody></table></div></figure>
+<p>得，第三个，报了<code>无法创建目录 wp-content/uploads/2023/05。它的父目录是否可以被服务器写入？</code>，文件权限问题了。</p>
+<p>做了几个修改，但实际是哪几个生效也不得而知：</p>
+<ol>
+<li>手动在<code>wp-content</code>目录下添加<code>uploads</code>文件夹，并修改读写权限<code>chmod 777 uploads</code>；</li>
+<li>在wordpress的数据库中，表<code>wp_options</code>中的<code>upload_path</code>修改为<code>wp-content/uploads</code>（原来为空）；</li>
+<li>修改<code>nginx.conf</code>和<code>php.ini</code>中的<code>user</code>和<code>group</code>改为相同的，我是设为了我的<code>ubuntu</code>用户。</li>
+</ol>
+
+        <h4 id="php核心进程数">
+          <a href="#php核心进程数" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#php核心进程数">#</a>php核心进程数</h4>
+      
+<p>在<code>php/7.4/fpm/pool.d/www.conf</code>中修改：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm.max_children = 50</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="fastcgi缓冲">
+          <a href="#fastcgi缓冲" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#fastcgi缓冲">#</a>fastcgi缓冲</h4>
+      
+<p>刚开始时加载很慢，css都出不来，在<code>nginx.conf</code>中添加：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastcgi_buffers 256 4k;</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="基本功能">
+          <a href="#基本功能" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#基本功能">#</a>基本功能</h2>
+      
+
+        <h3 id="文章">
+          <a href="#文章" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#文章">#</a>文章</h3>
+      
+<p>Wordpress的文章编辑，真心用不习惯，有些添加了markdown编辑的插件用来支持markdown写法。</p>
+<p>也有通过api上传的方式导入md文件。==此处推广一下<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://gitee.com/xaotuman/push-markdown">push-markdown</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，将本地markdown推送到wordpress==</p>
+
+        <h2 id="插件使用">
+          <a href="#插件使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#插件使用">#</a>插件使用</h2>
+      
+
+        <h3 id="一键优化">
+          <a href="#一键优化" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#一键优化">#</a>一键优化</h3>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.wpjam.com/project/wpjam-basic/">WPJAM BASIC</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>一键搞定 WordPress 功能屏蔽和增强优化（<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/zkA0Nx4u81PCZWByQq3iiA">详细介绍</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>）</li>
+</ul>
+
+        <h3 id="安全">
+          <a href="#安全" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安全">#</a>安全</h3>
+      
+<ul>
+<li>限制登录Limit Login Attempts Reloads</li>
+</ul>
+<p><code>Limit Login Attempts Reloads</code>是其中一款，免费版本提供了登录次数限制以及失败锁定两个功能，像我这种小网站简单用用就行了。</p>
+<blockquote>
+<p>真的服了，装了以后么发现基本每天都有上百次的失败登录，怎么有这么多人这么闲的啊（和苍蝇一样）。试的用户名还是我的二级域名，嘿嘿，太天真了。不过以防万一又把密码设复杂点了。</p>
+<p>想起了之前建的青龙面板，也隔三差五有人试着登录然后失败，更何况我这个作为域名主站的平台。。。u1s1，有后台的这点就很恶心，静态网站就没这个烦恼了，但弄不好也有可能被注入。</p>
+</blockquote>
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://cn.wordpress.org/plugins/all-in-one-wp-security-and-firewall/">All-In-One Security (AIOS) – Security and Firewall</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>后面感觉功能有点单一，而且有时候也不会通知，所以又看了看其他的，发现一个<code>All-In-One Security (AIOS)</code>，功能就多了很多，除了登陆限制外，还会对账户、文件等各方面进行检测与修改意见。</p>
+<ol>
+<li>
+<p>登陆限制：<code>User Login -&gt; Login lockout</code></p>
+<p>可以配置最大登陆尝试次数、重试时间、最小锁定时间与最大锁定时间。相比<code>Limit Login Attempts Reloads</code>，缺少了登陆失败的线型统计图。</p>
+</li>
+<li>
+<p>用户注册</p>
+</li>
+<li>
+<p>数据库安全</p>
+</li>
+<li>
+<p>文件系统安全</p>
+</li>
+<li>
+<p>黑名单管理器</p>
+</li>
+<li>
+<p>防火墙</p>
+</li>
+<li>
+<p>暴力破解（防苍蝇必备！可以修改登录主页的slug、添加登陆验证码等等。）</p>
+</li>
+</ol>
+
+        <h3 id="邮件通知">
+          <a href="#邮件通知" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#邮件通知">#</a>邮件通知</h3>
+      
+<p>当初和好兄弟一起入坑博客的时候就注意到了，他的wordepress一收到评论马上就有邮件通知，而我的hexo还得依赖第三方网站来实现，比如github的gitalk，valine等等。gitalk能够通过邮件通知，但本身必须登录github账号才可以评论，而在国内登录github对大中来说速度可想而知；valine和waline速度是快了，但没有邮件通知；其他的比如畅言云评给我的广告风有难以接受。这些个评论都各有优缺吧，没一个能够达到wordpres是的效果。</p>
+<p>现在自己建了wordpress，那就必须得试试了。</p>
+<p>在控制台的“设置 - 讨论”中就有“发邮件通知我”一项，但开启了并没有效果。</p>
+<p>搜了搜，貌似是要加插件：<code>WP Mail SMTP</code>，个人使用可以自己决定花（捐赠）多少钱，穷学生只能0元了。</p>
+<p>安装好，按照流程配置了SMTP邮箱服务器、账户、SMTP密码等等（刚开始用的163邮箱）。试了一手，结果评论还是不给发邮件，但是修改邮箱地址的通知又能够正常发送，？？？，迷茫</p>
+<p>因为涉及邮箱，又在自己的多个邮箱（163，qq）里清了一波垃圾邮件，想了想163还是拿来做办公啊之类的，个人的还是用qq好了。所以就把插件里的发送方邮箱配成了qq邮箱，结果，评论之后就有邮件通知了？？！！163是什么垃圾！</p>
+
+        <h3 id="统计">
+          <a href="#统计" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#统计">#</a>统计</h3>
+      
+<p>统计功能，网站必备啊！网站数据流量指标啊！</p>
+<p>有些主题会有自带的，比如说Sakurario，同时它也支持<code>WP Statistics</code>。</p>
+<p>想了想，主题（如衣服，）早晚会换的，但是插件是一直在的，所以就改成了<code>WP Statistics</code>来统计。</p>
+
+        <h3 id="导出文章配置">
+          <a href="#导出文章配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#导出文章配置">#</a>导出文章配置</h3>
+      
+<p><span class="exturl"><a class="exturl__link" href="https://gitee.com/link?target=https%3A%2F%2Fcn.wordpress.org%2Fplugins%2Fwp-import-export-lite%2F">WP Import Export Lite</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>用来搭配push-markdown的。</p>
+<blockquote>
+<p>另外还装了一些杂七杂八的，但是还没摸透，就先不写了。</p>
+</blockquote>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/wordpress-start/">http://zang.gold/posts/wordpress-start/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/WordPress/">WordPress</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/wordpress-theme-sakurario/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">WordPress|Sakurario主题</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/hello-wordpress-bye-hexo/"><span class="paginator-prev__text">Hello! WordPress! Bye! Hexo!</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">
+          安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%9C%80%E6%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text">
+          系统需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">
+          数据库配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E8%A7%A3%E5%8E%8B%E9%A2%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">
+          下载解压预配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">
+          Nginx配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.</span> <span class="toc-text">
+          网页配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">
+          网站配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80"><span class="toc-number">2.1.</span> <span class="toc-text">
+          语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97"><span class="toc-number">2.2.</span> <span class="toc-text">
+          日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98"><span class="toc-number">2.3.</span> <span class="toc-text">
+          主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E9%9D%99%E6%80%81"><span class="toc-number">2.4.</span> <span class="toc-text">
+          伪静态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E9%85%8D%E7%BD%AE"><span class="toc-number">2.5.</span> <span class="toc-text">
+          后台配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">2.5.1.</span> <span class="toc-text">
+          文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#php%E6%A0%B8%E5%BF%83%E8%BF%9B%E7%A8%8B%E6%95%B0"><span class="toc-number">2.5.2.</span> <span class="toc-text">
+          php核心进程数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fastcgi%E7%BC%93%E5%86%B2"><span class="toc-number">2.5.3.</span> <span class="toc-text">
+          fastcgi缓冲</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="toc-number">3.</span> <span class="toc-text">
+          基本功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0"><span class="toc-number">3.1.</span> <span class="toc-text">
+          文章</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">
+          插件使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%94%AE%E4%BC%98%E5%8C%96"><span class="toc-number">4.1.</span> <span class="toc-text">
+          一键优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-number">4.2.</span> <span class="toc-text">
+          安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5"><span class="toc-number">4.3.</span> <span class="toc-text">
+          邮件通知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1"><span class="toc-number">4.4.</span> <span class="toc-text">
+          统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E6%96%87%E7%AB%A0%E9%85%8D%E7%BD%AE"><span class="toc-number">4.5.</span> <span class="toc-text">
+          导出文章配置</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

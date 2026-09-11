@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="Java中Json工具类的实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java之JSON工具类">
+<meta property="og:url" content="http://zang.gold/posts/java-json/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="Java中Json工具类的实现">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-22T09:44:04.000Z">
+<meta property="article:modified_time" content="2026-07-18T14:08:24.913Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary"><title>Java之JSON工具类 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/java-json/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Java之JSON工具类</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-12-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.json.org/json-en.html">JSON</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>(JavaScript Object Notation) 是一种轻量级的基于文本的数据交换格式，是很理想的数据交换语言。但在Java中没有内置 JSON 的解析，所以需要调用第三方库</p>
+<p>目前比较常用的 JSON 库有：</p>
+<ul>
+<li>Gson：谷歌开发的 JSON 库</li>
+<li>FastJson：阿里巴巴开发的JSON库</li>
+<li>jackson：社区相对活跃，更新较快</li>
+</ul>
+
+        <h2 id="Gson">
+          <a href="#Gson" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Gson">#</a>Gson</h2>
+      
+<ul>
+<li>
+<p>Gson GitHub主页：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/google/gson">google/gson: A Java serialization/deserialization library to convert Java Objects into JSON and back</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p>User Guide：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/google/gson/blob/master/UserGuide.md">gson/UserGuide.md at master · google/gson</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+</ul>
+
+        <h3 id="maven依赖">
+          <a href="#maven依赖" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#maven依赖">#</a>maven依赖</h3>
+      
+<figure class="highlight xml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.code.gson<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>gson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="工具类实现">
+          <a href="#工具类实现" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#工具类实现">#</a>工具类实现</h3>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GsonUtil</span> {</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Gson</span> <span class="variable">gson</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GsonBuilder</span>().create();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">bean2Json</span><span class="params">(Object obj)</span> {</span><br><span class="line">        <span class="keyword">return</span> gson.toJson(obj);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">json2Bean</span><span class="params">(String jsonStr, Class&lt;T&gt; objClass)</span> {</span><br><span class="line">        <span class="keyword">return</span> gson.fromJson(jsonStr, objClass);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">jsonFormatter</span><span class="params">(String uglyJsonStr)</span> {</span><br><span class="line">        <span class="type">Gson</span> <span class="variable">gson</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GsonBuilder</span>().setPrettyPrinting().create();</span><br><span class="line">        <span class="type">JsonParser</span> <span class="variable">jp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JsonParser</span>();</span><br><span class="line">        <span class="type">JsonElement</span> <span class="variable">je</span> <span class="operator">=</span> jp.parse(uglyJsonStr);</span><br><span class="line">        <span class="keyword">return</span> gson.toJson(je);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="type">String</span> <span class="variable">json</span> <span class="operator">=</span> GsonUtil.bean2Json(obj);</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="Gson与注解更配哦">
+          <a href="#Gson与注解更配哦" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Gson与注解更配哦">#</a>Gson与注解更配哦</h3>
+      
+
+        <h4 id="Expose">
+          <a href="#Expose" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Expose">#</a><code>@Expose</code></h4>
+      
+<p>采用<code>@Expose</code>对对象属性添加注解，同时<code>Gson</code>对象配置为<code>private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();</code>，可以排除不想转换进json的属性。</p>
+
+        <h4 id="SerializedName-value">
+          <a href="#SerializedName-value" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#SerializedName-value">#</a><code>@SerializedName("value")</code></h4>
+      
+<p>修改属性序列化后的名字为value</p>
+
+        <h4 id="Since-1-0">
+          <a href="#Since-1-0" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Since-1-0">#</a><code>@Since(1.0)</code></h4>
+      
+<p>配合<code>Gson</code>的<code>setVersion()</code>配置，允许某一版本之后的gson对象生成相应字段</p>
+
+        <h4 id="Until-2-0">
+          <a href="#Until-2-0" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Until-2-0">#</a><code>@Until(2.0)</code></h4>
+      
+<p>配合<code>Gson</code>的<code>setVersion()</code>配置，允许某一版本之前的gson对象生成相应字段</p>
+
+        <h3 id="Gson配置">
+          <a href="#Gson配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Gson配置">#</a>Gson配置</h3>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Gson</span> <span class="variable">gson</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GsonBuilder</span>()</span><br><span class="line">    .excludeFieldsWithoutExposeAnnotation() <span class="comment">//不导出实体中没有用@Expose注解的属性  </span></span><br><span class="line">    .enableComplexMapKeySerialization() <span class="comment">//支持Map的key为复杂对象的形式  </span></span><br><span class="line">    .setDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss:SSS"</span>)<span class="comment">//时间转化为特定格式    </span></span><br><span class="line">    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)<span class="comment">//会把字段首字母大写,注:对于实体上使用了@SerializedName注解的不会生效.  </span></span><br><span class="line">    .setPrettyPrinting() <span class="comment">//对json结果格式化.  </span></span><br><span class="line">    .setVersion(<span class="number">1.0</span>)</span><br><span class="line">    .disableHtmlEscaping()<span class="comment">//默认是GSON把HTML 转义的，但也可以设置不转义</span></span><br><span class="line">    .serializeNulls()<span class="comment">//把null值也转换，默认是不转换null值的，可以选择也转换,为空时输出为{a:null}，而不是{}</span></span><br><span class="line">    .create();</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="FastJSON">
+          <a href="#FastJSON" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#FastJSON">#</a>FastJSON</h2>
+      
+
+        <h3 id="Maven依赖">
+          <a href="#Maven依赖" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Maven依赖">#</a>Maven依赖</h3>
+      
+<figure class="highlight xml"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.alibaba/fastjson --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.78<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="使用">
+          <a href="#使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#使用">#</a>使用</h3>
+      
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FastJsonUtil</span> {</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> 	* 实体类转为JSON</span></span><br><span class="line"><span class="comment"> 	*/</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">bean2Json</span><span class="params">(Object obj)</span> {</span><br><span class="line">        <span class="keyword">return</span> JSON.toJSONString(obj);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> 	* JSON转为实体类</span></span><br><span class="line"><span class="comment"> 	*/</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">json2Bean</span><span class="params">(String jsonStr, Class&lt;T&gt; objClass)</span> {</span><br><span class="line">        <span class="keyword">return</span> JSON.parseObject(jsonStr, objClass);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="注解">
+          <a href="#注解" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#注解">#</a>注解</h3>
+      
+
+        <h4 id="JSONField">
+          <a href="#JSONField" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#JSONField">#</a>@JSONField</h4>
+      
+<blockquote>
+<p>作用于Javebean的field和getter/setter</p>
+<p>但仅依赖于getter/setter进行</p>
+</blockquote>
+<ul>
+<li>
+<p>name：JSON中的名字</p>
+</li>
+<li>
+<p>serialize/deserialize：是否序列化/反序列化</p>
+</li>
+<li>
+<p>format：用于Date的格式化</p>
+<p>eg. <code>@JSONField(name="update_time", formate="yyyy-MM-dd HH:mm:ss")</code></p>
+</li>
+<li>
+<p>ordinal - 字段顺序</p>
+</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/java-json/">http://zang.gold/posts/java-json/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Java/">Java</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/%E5%8A%A8%E6%80%81%E6%97%B6%E9%97%B4%E8%A7%84%E6%95%B4DTW/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">动态时间规整DTW</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Vue%E5%AD%A6%E4%B9%A06-%E8%B7%AF%E7%94%B1/"><span class="paginator-prev__text">Vue学习VI｜路由</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gson"><span class="toc-number">1.</span> <span class="toc-text">
+          Gson</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#maven%E4%BE%9D%E8%B5%96"><span class="toc-number">1.1.</span> <span class="toc-text">
+          maven依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E7%B1%BB%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">
+          工具类实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gson%E4%B8%8E%E6%B3%A8%E8%A7%A3%E6%9B%B4%E9%85%8D%E5%93%A6"><span class="toc-number">1.3.</span> <span class="toc-text">
+          Gson与注解更配哦</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Expose"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          @Expose</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SerializedName-value"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          @SerializedName(&quot;value&quot;)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Since-1-0"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          @Since(1.0)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Until-2-0"><span class="toc-number">1.3.4.</span> <span class="toc-text">
+          @Until(2.0)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gson%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">
+          Gson配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FastJSON"><span class="toc-number">2.</span> <span class="toc-text">
+          FastJSON</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven%E4%BE%9D%E8%B5%96"><span class="toc-number">2.1.</span> <span class="toc-text">
+          Maven依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">
+          使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3"><span class="toc-number">2.3.</span> <span class="toc-text">
+          注解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#JSONField"><span class="toc-number">2.3.1.</span> <span class="toc-text">
+          @JSONField</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

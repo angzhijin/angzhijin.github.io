@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="阿里云训练营《PolarDB for PostgreSQL》第五课（数据可备份与恢复）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库备份与恢复">
+<meta property="og:url" content="http://zang.gold/posts/PolarDB4PG-5/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="阿里云训练营《PolarDB for PostgreSQL》第五课（数据可备份与恢复）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-23T07:51:47.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:37:28.599Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="DB">
+<meta property="article:tag" content="PolarDB">
+<meta property="article:tag" content="Postgresql">
+<meta name="twitter:card" content="summary"><title>数据库备份与恢复 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/PolarDB4PG-5/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">数据库备份与恢复</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-23</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><h2 id="basebackup">
+          <a href="#basebackup" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#basebackup">#</a>basebackup</h2>
+      
+<p>基本备份过程</p>
+<ol>
+<li>Issue the  <code>pg_start_backup</code> command</li>
+<li>take a snapshot of database cluster with the archiving command you want to use</li>
+<li>Issue the <code>pg_stop_backup</code> command</li>
+</ol>
+
+        <h3 id="pg-start-backup">
+          <a href="#pg-start-backup" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pg-start-backup">#</a>pg_start_backup</h3>
+      
+<p>四个操作</p>
+<ol>
+<li>Force into the full-page write mode</li>
+<li>Switch to the current WAL segment file (version 8.4 or later)</li>
+<li>Do checkpoint（记录当前的位置，恢复时从此处开始）</li>
+<li>Create a backup_label file ——此文件创建于base目录的同一层，包含有关基本备份奔丧的基本信息，例如此检查点的位置</li>
+</ol>
+
+        <h3 id="pg-stop-backup">
+          <a href="#pg-stop-backup" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pg-stop-backup">#</a>pg_stop_backup</h3>
+      
+<blockquote>
+<p>数据库在一致性状态下才能打开</p>
+</blockquote>
+<p>五个操作</p>
+<ol>
+<li>如果pg_start_backup强制更改了非整页写入模式，则将其重置为非整页写入模式</li>
+<li>写一个备份结束的XLOG记录</li>
+<li>切换WAL日志</li>
+<li>创建备份历史文件 ——此文件包含备份标签文件的内容和执行pg_stop_backup的时间戳</li>
+<li>删除备份标签文件——备份标签文件是从基本备份恢复所必需的，一旦复制，就不必在元素数据库集群中</li>
+</ol>
+<blockquote>
+<p>备份时候很简单，恢复时候是很深</p>
+</blockquote>
+
+        <h3 id="baseback备份">
+          <a href="#baseback备份" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#baseback备份">#</a>baseback备份</h3>
+      
+<p>两种方式</p>
+<ol>
+<li>
+<p>产生压缩的tar包，<code>-Ft</code>指定</p>
+<blockquote>
+<p>花费时间较长，但是节省空间。支持表空间文件存放在其他目录下</p>
+</blockquote>
+</li>
+<li>
+<p>产生跟源文件一样的格式，及原样格式，<code>-Fp指定 </code></p>
+<blockquote>
+<p>备份快，但不节省空间。如果有表空间路径放在其他目录下，则备份失败</p>
+</blockquote>
+</li>
+</ol>
+
+        <h2 id="Point-in-time-Recovery">
+          <a href="#Point-in-time-Recovery" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Point-in-time-Recovery">#</a>Point-in-time Recovery</h2>
+      
+<p>PITR过程几乎与正常恢复（实例恢复）过程相同</p>
+<p>区别</p>
+<ol>
+<li>从哪里读取WAL段/归档日志
+<ul>
+<li>正常恢复模式——从<code>$PGDATA$</code>目录下的pg_wal子目录恢复</li>
+<li>PITR mode —— 来自配置参数<code>archive_command</code>中设置的存档目录</li>
+</ul>
+</li>
+<li>从哪里读取检查点位置
+<ul>
+<li>正常恢复模式——从<code>pg_control</code>文件</li>
+<li>PITR模式——来自备份标签文件</li>
+</ul>
+</li>
+</ol>
+<p>恢复流程</p>
+<ol>
+<li>为了找到重做点，PolarDB使用内部函数read-backup-label从备份标签文件中读取“检查点位置”的值</li>
+<li>PolarDB从recovery.conf中读取一些参数值</li>
+<li>PolarDB开始从重做点重放WAL数据，可以很容易从“检查点位置”的值中获取</li>
+<li>恢复过程完成后，将在pg_xlog子目录中（版本10及以上为pg_wal）创建时间线历史文件</li>
+</ol>
+
+        <h2 id="数据库恢复">
+          <a href="#数据库恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据库恢复">#</a>数据库恢复</h2>
+      
+
+        <h3 id="执行完全恢复">
+          <a href="#执行完全恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#执行完全恢复">#</a>执行完全恢复</h3>
+      
+<p>恢复前备份pg_wal目录下所有文件</p>
+<p>转储数据库文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxv -f /home/postgres/bk1/base.tar.gz -C <span class="variable">$PGDATA</span></span><br></pre></td></tr></tbody></table></div></figure>
+<p>创建并修改文件<code>recovery.conf</code></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch $PGDATA/recovery.conf</span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">restore_command = 'cp /home/postgres/arch/%f %p'</span><br><span class="line">recovery_target_timeline='latest'</span><br></pre></td></tr></tbody></table></div></figure>
+<p>启动数据库，自动恢复，验证数据完整性</p>
+<blockquote>
+<p><code>$PGDATA/pg_wal</code>目录不能完全删除，否则会导致当前使用的wal日志文件丢失，无法完全恢复。</p>
+</blockquote>
+
+        <h3 id="执行隐式不完全恢复">
+          <a href="#执行隐式不完全恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#执行隐式不完全恢复">#</a>执行隐式不完全恢复</h3>
+      
+<p>恢复前没有备份pg_wal目录下所有文件</p>
+<p>创建并修改文件<code>recovery.conf</code></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch $PGDATA/recovery.conf</span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">restore_command = 'cp /home/postgres/arch/%f %p'</span><br><span class="line">recovery_target_timeline='latest'</span><br></pre></td></tr></tbody></table></div></figure>
+<p>最后一个事务日志的数据丢失</p>
+<blockquote>
+<p><code>$PGDATA/pg_wal</code>目录如果完全删除，会导致当前使用的wal日志丢失，那么pg会隐式的做不完全恢复</p>
+</blockquote>
+
+        <h3 id="执行时间点不完全恢复">
+          <a href="#执行时间点不完全恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#执行时间点不完全恢复">#</a>执行时间点不完全恢复</h3>
+      
+<p>查看备份的时间点</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> now();</span><br></pre></td></tr></tbody></table></div></figure>
+<p>创建并修改文件<code>recovery.conf</code></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch $PGDATA/recovery.conf</span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">restore_command = 'cp /home/poatgres/arch/%f %p'</span><br><span class="line">recovery_target_time = '2022-2-22 22:22:22' </span><br></pre></td></tr></tbody></table></div></figure>
+<p>执行pg_wal_replay_resume()函数使数据库进入读写状态</p>
+
+        <h2 id="PG-RMAN">
+          <a href="#PG-RMAN" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#PG-RMAN">#</a>PG_RMAN</h2>
+      
+<ul>
+<li>GitHub：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://github.com/ossc-db/pg_rman">ossc-db/pg_rman: Backup and restore management tool for PostgreSQL</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<ol>
+<li>
+<p>下载时注意对应的PG版本</p>
+</li>
+<li>
+<p>安装</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar vxf ...</span><br><span class="line">cd pg_rman_..</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></tbody></table></div></figure>
+<ol start="3">
+<li>
+<p>初始化环境</p>
+<ol>
+<li>
+<p>设置备份路径</p>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> BACKUP_PATH=/home/postgres/pg_rman_bk1</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>让环境设置生效</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>初始化备份目录，验证归档路径，日志目录，同时在备份路径下产生跟目标数据库相关的文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman init</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>查看备份目录下的内容</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> pg_rman_bk1</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+</li>
+</ol>
+
+        <h3 id="pg-rman备份">
+          <a href="#pg-rman备份" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pg-rman备份">#</a>pg_rman备份</h3>
+      
+<ul>
+<li>
+<p>对数据库做全备</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman backup --backup-mode=full -B /home/postgres/pg_rman_bk1/ -C P</span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p><code>-B</code>参数可以省略</p>
+</blockquote>
+</li>
+<li>
+<p>验证数据库备份</p>
+<blockquote>
+<p>备份完后最好都验证下</p>
+</blockquote>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman validata</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>查看备份信息</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman show</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>对数据库做增量备份</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman baskup --backup-mod=incremental</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ul>
+
+        <h3 id="pg-rman恢复">
+          <a href="#pg-rman恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pg-rman恢复">#</a>pg_rman恢复</h3>
+      
+
+        <h4 id="完全恢复-隐式不完全恢复">
+          <a href="#完全恢复-隐式不完全恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#完全恢复-隐式不完全恢复">#</a>完全恢复/隐式不完全恢复</h4>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman restore</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="时间点不完全恢复">
+          <a href="#时间点不完全恢复" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#时间点不完全恢复">#</a>时间点不完全恢复</h4>
+      
+<p>查看回复的时间点并记录</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> now();</span><br></pre></td></tr></tbody></table></div></figure>
+<p>切换日志</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> pg_switch_wal();</span><br></pre></td></tr></tbody></table></div></figure>
+<p>关闭数据库</p>
+<p>用pg_rman恢复</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman restore --recovery-target-time=<span class="string">"2022-2-22 22:22:22"</span></span><br></pre></td></tr></tbody></table></div></figure>
+<p>启动数据库，执行函数把只读模式改为读写模式</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> pg_wal_replay_resume();</span><br></pre></td></tr></tbody></table></div></figure>
+<p>验证数据完整性</p>
+
+        <h3 id="pg-rman维护">
+          <a href="#pg-rman维护" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#pg-rman维护">#</a>pg_rman维护</h3>
+      
+<blockquote>
+<p>失败的备份需要进行删除，以免影响到之后新的备份</p>
+</blockquote>
+<ul>
+<li>
+<p>删除备份</p>
+<p>删除这个时间点相关联的增量备份，除了第一次增量备份和full备份</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman delete <span class="string">"2022-2-22 22:22:22"</span></span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>强制删除指定时间点之前的所有备份</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_rman delete <span class="string">"2022-2-22 22:22:22"</span> -f</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>清除归档</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_archivecleanup /home/postgres/arch_1 0000000100000000000017</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/PolarDB4PG-5/">http://zang.gold/posts/PolarDB4PG-5/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/DB/">DB</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PolarDB/">PolarDB</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Postgresql/">Postgresql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/PolarDB4PG-6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">PG开发工具</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/PolarDB4PG-4/"><span class="paginator-prev__text">PostgreSQL进阶</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#basebackup"><span class="toc-number">1.</span> <span class="toc-text">
+          basebackup</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pg-start-backup"><span class="toc-number">1.1.</span> <span class="toc-text">
+          pg_start_backup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pg-stop-backup"><span class="toc-number">1.2.</span> <span class="toc-text">
+          pg_stop_backup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#baseback%E5%A4%87%E4%BB%BD"><span class="toc-number">1.3.</span> <span class="toc-text">
+          baseback备份</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Point-in-time-Recovery"><span class="toc-number">2.</span> <span class="toc-text">
+          Point-in-time Recovery</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%81%A2%E5%A4%8D"><span class="toc-number">3.</span> <span class="toc-text">
+          数据库恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%85%A8%E6%81%A2%E5%A4%8D"><span class="toc-number">3.1.</span> <span class="toc-text">
+          执行完全恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E9%9A%90%E5%BC%8F%E4%B8%8D%E5%AE%8C%E5%85%A8%E6%81%A2%E5%A4%8D"><span class="toc-number">3.2.</span> <span class="toc-text">
+          执行隐式不完全恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4%E7%82%B9%E4%B8%8D%E5%AE%8C%E5%85%A8%E6%81%A2%E5%A4%8D"><span class="toc-number">3.3.</span> <span class="toc-text">
+          执行时间点不完全恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PG-RMAN"><span class="toc-number">4.</span> <span class="toc-text">
+          PG_RMAN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pg-rman%E5%A4%87%E4%BB%BD"><span class="toc-number">4.1.</span> <span class="toc-text">
+          pg_rman备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pg-rman%E6%81%A2%E5%A4%8D"><span class="toc-number">4.2.</span> <span class="toc-text">
+          pg_rman恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%8C%E5%85%A8%E6%81%A2%E5%A4%8D-%E9%9A%90%E5%BC%8F%E4%B8%8D%E5%AE%8C%E5%85%A8%E6%81%A2%E5%A4%8D"><span class="toc-number">4.2.1.</span> <span class="toc-text">
+          完全恢复&#x2F;隐式不完全恢复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%82%B9%E4%B8%8D%E5%AE%8C%E5%85%A8%E6%81%A2%E5%A4%8D"><span class="toc-number">4.2.2.</span> <span class="toc-text">
+          时间点不完全恢复</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pg-rman%E7%BB%B4%E6%8A%A4"><span class="toc-number">4.3.</span> <span class="toc-text">
+          pg_rman维护</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

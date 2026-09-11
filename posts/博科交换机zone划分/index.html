@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="博科交换机的常用命令汇总">
+<meta property="og:type" content="article">
+<meta property="og:title" content="博科SAN交换机">
+<meta property="og:url" content="http://zang.gold/posts/%E5%8D%9A%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BAzone%E5%88%92%E5%88%86/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="博科交换机的常用命令汇总">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:21:04.857Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="switch">
+<meta name="twitter:card" content="summary"><title>博科SAN交换机 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/%E5%8D%9A%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BAzone%E5%88%92%E5%88%86/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">博科SAN交换机</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-07-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><h1>博科SAN交换机</h1>
+
+        <h2 id="基本信息">
+          <a href="#基本信息" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#基本信息">#</a>基本信息</h2>
+      
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设备信息</span></span><br><span class="line">version         # 查看交换机固件版本</span><br><span class="line">switchshow      # 显示交换机信息</span><br><span class="line">licenseshow     # 显示license授权</span><br><span class="line">licenseidshow   # 显示licenseID（同WWN）</span><br><span class="line">chassisshow     # 原厂序列号</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行状态</span></span><br><span class="line">uptime          # 显示运行时间</span><br><span class="line">fanshow         # 风扇状态</span><br><span class="line">tempshow        # 交换机温度</span><br><span class="line">psshow          # 电源状态</span><br><span class="line">slotshow        # 板卡插槽状态（bordecade300不支持）</span><br><span class="line">hashow          # CP板卡HA状态（bordecade300不支持）</span><br><span class="line">errshow         # 错误信息</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="系统管理">
+          <a href="#系统管理" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#系统管理">#</a>系统管理</h2>
+      
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">switchdisable     # 停止交换价</span><br><span class="line">switchenable      # 启用交换机</span><br><span class="line">reboot            # 重启交换机</span><br><span class="line">sysshutdown       # 关闭交换机/关机</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="网络管理">
+          <a href="#网络管理" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#网络管理">#</a>网络管理</h2>
+      
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ipaddrshow        # 显示IP</span><br><span class="line">ipaddrset         # 修改IP</span><br><span class="line">fcping wwn1 wwn2  # 通信测试</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="端口管理">
+          <a href="#端口管理" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#端口管理">#</a>端口管理</h2>
+      
+<p>port = <code>domain,index</code>  （盒式）   <code>slot/index</code>（架框式）</p>
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">portshow &lt;port&gt;       # 显示端口信息</span><br><span class="line">portperfshow          # 显示端口速率</span><br><span class="line">porterrshow &lt;port&gt;    # 显示端口下报错数量</span><br><span class="line">portstatusclear       # 清空统计信息</span><br><span class="line"></span><br><span class="line">portname &lt;port&gt; -n xxx    # 重命名端口</span><br><span class="line">portenable &lt;port&gt;         # 启用端口</span><br><span class="line">portdisable &lt;port&gt;        # 停用端口</span><br><span class="line">portcfgspeed &lt;port&gt;       # 配置端口速率</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="zone">
+          <a href="#zone" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#zone">#</a>zone</h2>
+      
+
+        <h3 id="划分（图形化方式）">
+          <a href="#划分（图形化方式）" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#划分（图形化方式）">#</a>划分（图形化方式）</h3>
+      
+<ol>
+<li>进入<code>Zone Admin</code></li>
+<li>进入<code>Alias</code>配置别名，并添加(端口)成员</li>
+<li>进入<code>Zone</code>新建zone，添加端口</li>
+<li>进入<code>Zone Config</code>，添加zone到配置中</li>
+<li>点击<code>Enable Config</code>激活配置</li>
+<li>点击<code>Save Config</code>保存配置信息</li>
+</ol>
+
+        <h3 id="划分（命令行方式）">
+          <a href="#划分（命令行方式）" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#划分（命令行方式）">#</a>划分（命令行方式）</h3>
+      
+<figure class="highlight shell"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. 创建Alias</span></span><br><span class="line">alicreate "alias_name1" "port1;port2;..."</span><br><span class="line">alishow</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. 新建Zone</span></span><br><span class="line">zonecreate "zone_name" "member1;member2;..."</span><br><span class="line">zoneadd "zone_name" "member1;member2;..."     # 添加成员</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># member可以是别名、端口号、wwn号</span></span></span><br><span class="line">zoneshow</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3. 新建config</span></span><br><span class="line">cfgcreate "cfg_name1","zone_name1;zone_name2;..."</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">4. 添加zone到已有config</span></span><br><span class="line">cfgadd "cfg_name1","zone_name1;zone_name2;..."</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">5. 启用配置</span></span><br><span class="line">cfgenable "cfg_name1"</span><br><span class="line">cfgsave</span><br><span class="line">cfgshow</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">6. 删除cfg</span></span><br><span class="line">cfgremove "cfg_name1","zone_name1;zone_name2;..."</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">7. 删除zone</span></span><br><span class="line">zoneremove "member1;member2;..." # 移除zone中的成员</span><br><span class="line">zonedelete</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">8. 删除<span class="built_in">alias</span></span></span><br><span class="line">aliremove "alias_name1" "port1;port2;..." # 删除ali中的成员</span><br><span class="line">alidelete</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="例子">
+          <a href="#例子" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#例子">#</a>例子</h3>
+      
+<figure class="highlight plaintext"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 场景举例</span><br><span class="line">---</span><br><span class="line">graph TD</span><br><span class="line">server1[服务器A]</span><br><span class="line">server2[服务器B]</span><br><span class="line">switch1[交换机A]</span><br><span class="line">switch2[交换机B]</span><br><span class="line">storage[存储]</span><br><span class="line"></span><br><span class="line">server1 &amp; server2 ---&gt; switch1 &amp; switch2 --A控--&gt; storage;</span><br><span class="line">switch1 &amp; switch2 --B控--&gt; storage;</span><br></pre></td></tr></tbody></table></div></figure>
+<p>以交换机A为例</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>别名</th>
+<th>对应端口</th>
+<th>设备</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>serverA_hba01</td>
+<td>0,1</td>
+<td>服务器A</td>
+</tr>
+<tr>
+<td>serverB_hba01</td>
+<td>0,2</td>
+<td>服务器B</td>
+</tr>
+<tr>
+<td>storage_spa01</td>
+<td>0,3</td>
+<td>存储控制器A</td>
+</tr>
+<tr>
+<td>storage_spb01</td>
+<td>0,4</td>
+<td>存储控制器B</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>Zone</th>
+<th>组成员</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>serverA_storagespa</td>
+<td>0,1; 0,3</td>
+</tr>
+<tr>
+<td>serverB_storagespa</td>
+<td>0,2; 0,3</td>
+</tr>
+<tr>
+<td>serverA_storagespb</td>
+<td>0,1; 0,4</td>
+</tr>
+<tr>
+<td>serverB_storagespb</td>
+<td>0,2; 0,4</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>Config</th>
+<th>组成员</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>config1</td>
+<td>serverA_storagespa<br>serverB_storagespa<br> serverA_storagespb<br>serverB_storagespb</td>
+</tr>
+</tbody>
+</table></div>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.cnblogs.com/chenfuhai/p/13890295.html">博科光纤交换机划 zone操作 - 3哥哥 - 博客园</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.cnblogs.com/pipci/p/12672691.html">博科SAN交换机基本配置（华为SNS系列交换机为例OEM博科） - pipci - 博客园</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.cnblogs.com/raykuan/p/7056749.html">【转载】博科交换机常用命令 - raykuan - 博客园</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/%E5%8D%9A%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BAzone%E5%88%92%E5%88%86/">http://zang.gold/posts/%E5%8D%9A%E7%A7%91%E4%BA%A4%E6%8D%A2%E6%9C%BAzone%E5%88%92%E5%88%86/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/switch/">switch</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Oracle-backup/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Oracle逻辑备份</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/AIX-hardware-lighting/"><span class="paginator-prev__text">AIX下点亮硬件指示灯</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">博科SAN交换机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.</span> <span class="toc-text">
+          基本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">
+          系统管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">
+          网络管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">
+          端口管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zone"><span class="toc-number">1.5.</span> <span class="toc-text">
+          zone</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%92%E5%88%86%EF%BC%88%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          划分（图形化方式）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%92%E5%88%86%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-number">1.5.2.</span> <span class="toc-text">
+          划分（命令行方式）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.5.3.</span> <span class="toc-text">
+          例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.6.</span> <span class="toc-text">
+          参考</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

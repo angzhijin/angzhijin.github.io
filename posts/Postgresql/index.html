@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="PostgreSQL的安装与配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PostgreSQL">
+<meta property="og:url" content="http://zang.gold/posts/Postgresql/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="PostgreSQL的安装与配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-23T13:56:32.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:37:18.187Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="PostGIS">
+<meta property="article:tag" content="DB">
+<meta property="article:tag" content="Timescale">
+<meta name="twitter:card" content="summary"><title>PostgreSQL | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/Postgresql/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">PostgreSQL</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-10-23</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>同MySQL一样，postgreSQL也越整越多，再来水一篇，QWQ</p>
+
+        <h2 id="常用命令">
+          <a href="#常用命令" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#常用命令">#</a>常用命令</h2>
+      
+<p>先放上常用命令</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl stop postgresql.service</span><br><span class="line"><span class="built_in">sudo</span> systemctl start postgresql.service</span><br><span class="line"><span class="comment"># 相同效果1</span></span><br><span class="line"><span class="built_in">sudo</span> /etc/init.d/postgresql &lt;cmd&gt;   <span class="comment"># 开启-start，关闭-stop，重启-restart，状态-status</span></span><br><span class="line"><span class="comment"># 相同效果2</span></span><br><span class="line"><span class="built_in">sudo</span> service postgresql &lt;cmd&gt;  <span class="comment"># 开启-start，关闭-stop，重启-restart，状态-status</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> systemctl is-active postgresql  <span class="comment"># 是否处于活动状态</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl is-enabled postgresql <span class="comment"># 是否在systemd下已启用</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl status postgresql <span class="comment"># 是否正在运行</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Mac-Homebrew 下</span></span><br><span class="line">brew services restart postgresql@14</span><br></pre></td></tr></tbody></table></div></figure>
+<ul>
+<li>官方下载教程：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.postgresql.org/download/linux/ubuntu/">PostgreSQL: Linux downloads (Ubuntu)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="安装">
+          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#安装">#</a>安装</h2>
+      
+
+        <h3 id="Linux-apt">
+          <a href="#Linux-apt" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Linux-apt">#</a>Linux + apt</h3>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加仓库配置</span></span><br><span class="line"><span class="built_in">sudo</span> sh -c <span class="string">'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" &gt; /etc/apt/sources.list.d/pgdg.list'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入仓库签名密钥</span></span><br><span class="line">wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | <span class="built_in">sudo</span> apt-key add -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新包列表su</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不带版本号默认安装最新</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install postgresql postgresql-client</span><br><span class="line"><span class="built_in">sudo</span> apt-get install postgresql-12</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装完毕后，系统会创建一个数据库超级用户 postgres，密码为空。</span></span><br><span class="line"><span class="built_in">sudo</span> -i -u postgres</span><br></pre></td></tr></tbody></table></div></figure>
+<p>验证</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 切换至postgres账户</span></span><br><span class="line">su postgres</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 登录数据库</span></span><br><span class="line">psql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 显示已有数据库</span></span><br><span class="line">\l </span><br><span class="line"><span class="comment">## 默认有三个数据库 postgres,template0,template1</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+<p>卸载</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dpkg -l | grep postgres</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> apt-get --purge remove [package-to-be-removed]</span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="Mac-Homebrew">
+          <a href="#Mac-Homebrew" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Mac-Homebrew">#</a>Mac+Homebrew</h3>
+      
+<blockquote>
+<p>也可下载一键式启动App: <span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://postgresapp.com/documentation/install.html">Postgres.app</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，自带PostGIS插件。</p>
+</blockquote>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">brew install postgresql</span><br><span class="line"><span class="comment"># 安装指定版本</span></span><br><span class="line">brew install postgresql@14</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">brew services run postgresql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 登录</span></span><br><span class="line">psql postgres <span class="comment"># 此时是以系统用户身份进行登录postgres数据库</span></span><br><span class="line">psql  <span class="comment"># 报错</span></span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>直接执行<code>psql</code>会报<code>error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  database "系统用户" does not exist</code></p>
+<p><code>psql postgres</code>进入数据库我们会发现，执行<code>\du</code>发现用户只有一个系统用户（密码也是系统密码），执行<code>\l</code>指令后发现当前数据库的所有者都是系统用户，即不存在postgres用户，但存在默认的postgres数据库，且属于系统用户。</p>
+<p>为了修改PG的用户为常用的postgres用户管理，需要进行以下操作</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建当前用户的专属数据库</span></span><br><span class="line">createdb</span><br><span class="line">psql  <span class="comment"># 此时可以直接登录，便于下一步修改</span></span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 以下操作为修改为常用的postgres用户进行登录和管理</span><br><span class="line"># <span class="number">1.</span> 创建postgres用户</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> postgres <span class="keyword">WITH</span> PASSWORD <span class="string">'postgres'</span>;</span><br><span class="line"></span><br><span class="line"># <span class="number">2.</span> 删除默认的postgresql数据库 (此时不能连接postgres数据库)</span><br><span class="line"><span class="keyword">DROP</span> DATABASE postgres; </span><br><span class="line"></span><br><span class="line"># <span class="number">3.</span> 创建属于postgres用户的postgres数据库</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE postgres OWNER postgres;</span><br><span class="line"></span><br><span class="line"># <span class="number">4.</span> 将数据库所有权限赋予postgres用户</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> DATABASE postgres <span class="keyword">to</span> postgres;</span><br><span class="line"></span><br><span class="line"># <span class="number">5.</span> 给postgres用户添加创建数据库的属性</span><br><span class="line"><span class="keyword">ALTER</span> ROLE postgres CREATEDB;</span><br></pre></td></tr></tbody></table></div></figure>
+<p>至此，我们Mac上的PG就有两个管理员，一个系统用户（超级用户），一个postgres。</p>
+</blockquote>
+<p>卸载：</p>
+<p><code>brew uninstall postgresql</code></p>
+<p>或安装 brew 的rmtree 将相关的依赖一起删除</p>
+
+        <h2 id="配置">
+          <a href="#配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#配置">#</a>配置</h2>
+      
+
+        <h3 id="修改密码">
+          <a href="#修改密码" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#修改密码">#</a>修改密码</h3>
+      
+<ol>
+<li>
+<p>修改PostgreSQL数据库默认用户postgres的密码</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 登录Postgres</span></span><br><span class="line"><span class="built_in">sudo</span> -u postgres psql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 修改登录Postgres的密码</span></span><br><span class="line">ALTER　USER　postgres WITH PASSWORD ‘{password}’; </span><br><span class="line"><span class="comment">## 注意结尾的 ';'</span></span><br><span class="line"><span class="comment">## 修改成功会显示 ALTER ROLE</span></span><br><span class="line"><span class="comment">## 或使用psql内置命令 /password</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 退出Postgres客户端</span></span><br><span class="line">\q</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>修改linux系统<code>postgres</code>用户的密码</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 删除用户postgres的密码</span></span><br><span class="line"><span class="built_in">sudo</span> passwd -d postgres</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 设置用户postgres的密码</span></span><br><span class="line"><span class="built_in">sudo</span> -u postgres passwd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 提示输入新密码</span></span><br><span class="line">Enter new UNIX password:</span><br><span class="line">Retype new UNIX password:</span><br><span class="line">passwd: password updated successfully</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+
+        <h3 id="服务配置">
+          <a href="#服务配置" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#服务配置">#</a>服务配置</h3>
+      
+<ul>
+<li>端口，位于<code>/etc/postgresql/12/main/postgresql.conf</code>中的<code>port</code>项</li>
+</ul>
+
+        <h3 id="远程登录">
+          <a href="#远程登录" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#远程登录">#</a>远程登录</h3>
+      
+<blockquote>
+<p>windows下路径不同，但文件名还是一样的</p>
+</blockquote>
+<ol>
+<li>修改 <code>/etc/postgresql/10/main/pg_hba.conf</code> （需要sudo）</li>
+</ol>
+<blockquote>
+<p><code>md5</code>指需要密码，设为<code>trust</code>说明信任这个地址，无需密码</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IPv4 local connections:</span></span><br><span class="line">host    all             all             127.0.0.1/32            md5</span><br><span class="line">host    all             all             0.0.0.0/0               md5  <span class="comment"># 添加该行</span></span><br><span class="line"><span class="comment"># IPv6 local connections:</span></span><br><span class="line">host    all             all             ::1/128                 md5</span><br></pre></td></tr></tbody></table></div></figure>
+<ol start="2">
+<li>修改<code>postgresql.config</code> （需要sudo）</li>
+</ol>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到并取消注释，改为 ‘*’</span></span><br><span class="line">listen_addresses = <span class="string">'*'</span></span><br></pre></td></tr></tbody></table></div></figure>
+<ol start="3">
+<li>重启（可以使用常用命令进行重启）</li>
+</ol>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart postgresql</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">su - postgres</span><br><span class="line">pg_ctl restsrt  <span class="comment"># ??? ubuntu下没找到pg_ctl，windows在安装路径/bin 目录下</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="使用">
+          <a href="#使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#使用">#</a>使用</h2>
+      
+
+        <h3 id="系统命令">
+          <a href="#系统命令" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#系统命令">#</a>系统命令</h3>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pg_config --version  <span class="comment"># 版本</span></span><br><span class="line">pg_config --bindir   <span class="comment"># bin路径</span></span><br><span class="line">psql -h [IP] -p [post] -U [database] <span class="comment"># 连接</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h3 id="数据库命令">
+          <a href="#数据库命令" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#数据库命令">#</a>数据库命令</h3>
+      
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">\conninfo   <span class="comment"># 连接情况</span></span><br><span class="line">\l          <span class="comment"># 列举数据库</span></span><br><span class="line">\c [数据库]  <span class="comment"># 选择、切换数据库</span></span><br><span class="line">\<span class="built_in">du</span>         <span class="comment"># 查看用户</span></span><br><span class="line">\dt  		<span class="comment"># 查看当前库中所有表</span></span><br><span class="line">\d [表名]	   <span class="comment"># 查看当前库中表记录</span></span><br><span class="line">\encoding   <span class="comment"># 显示字符集</span></span><br><span class="line">\q 			<span class="comment"># 退出</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sql命令需要 ; 或 \g 结尾</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="客户端">
+          <a href="#客户端" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#客户端">#</a>客户端</h2>
+      
+<p>大部分客户端都支持PG。</p>
+<p>官方的客户端为pAdmin，需要在 ”文件 - 配置 “中配置数据库操作程序的路径</p>
+
+        <h2 id="插件">
+          <a href="#插件" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#插件">#</a>插件</h2>
+      
+<p>PG的插件安装流程基本差不多：配置apt源 -&gt; 更新源 -&gt; 查找并下载对应版本的包</p>
+
+        <h3 id="PostGIS">
+          <a href="#PostGIS" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#PostGIS">#</a>PostGIS</h3>
+      
+<p><code>PostGIS</code> 的使用可以参考（<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35732147/article/details/85256640?spm=1001.2014.3001.5502"> PostGIS官方教程汇总目录</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>）</p>
+<ul>
+<li>官方下载页：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://postgis.net/install/">PostGIS — Installation</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<blockquote>
+<p>Mac系统可直接安装<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://postgresapp.com/">Postgres.app</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ol>
+<li>
+<p>下载PostGIS</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建议先查找一波可用的安装包，postgis针对不同的PostgreSQL版本有不同的包</span></span><br><span class="line"><span class="built_in">sudo</span> apt-cache search postgis</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认的postgis kennel会安转上其他版本的</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install postgis</span><br><span class="line"><span class="comment">## 或</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install postgresql-12-postgi-3 <span class="comment">## 视查询到的包名而定</span></span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>数据库加载</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EXTENSION postgis;       <span class="comment">-- 加载postgis空间扩展</span></span><br><span class="line"><span class="keyword">SELECT</span> postgis_full_version();  <span class="comment">-- 确认安装</span></span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+<blockquote>
+<p>pgAdmin</p>
+<ol>
+<li>pgAdmin是专为PostgreSQL设计的数据库管理软件（使用navicat等其他管理软件也可以，但效果不是很好）</li>
+<li>导出功能实现：需要在 ”文件 - 配置 - “中对调用软件的路径进行配置</li>
+</ol>
+</blockquote>
+
+        <h3 id="TimeScale">
+          <a href="#TimeScale" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#TimeScale">#</a>TimeScale</h3>
+      
+<blockquote>
+<p>官方说了，建议使用和postgreSQL相同的安装方式安装。即Linux下用apt安装了PG，则timescale也使用apt安装；macOS下用homebrew安装了PG，则ts也需要用homebrew安装；否则建议卸载后重装。如果要保留原有的PG，那么就使用源码安装</p>
+</blockquote>
+
+        <h4 id="APT">
+          <a href="#APT" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#APT">#</a>APT</h4>
+      
+<ul>
+<li>安装<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://docs.timescale.com/install/latest/self-hosted/installation-debian/">Debian/Ubuntu | Timescale Docs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. add the PostgreSQL third party repository to get the latest PostgreSQL packages</span></span><br><span class="line">apt install gnupg postgresql-common apt-transport-https lsb-release wget</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Run the PostgreSQL repository setup script:</span></span><br><span class="line">/usr/share/postgresql-common/pgdg/apt.postgresql.org.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. Add the TimescaleDB third party repository:</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb https://packagecloud.io/timescale/timescaledb/ubuntu/ <span class="subst">$(lsb_release -c -s)</span> main"</span> &gt; /etc/apt/sources.list.d/timescaledb.list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. Install Timescale GPG key</span></span><br><span class="line">wget --quiet -O - https://packagecloud.io/timescale/timescaledb/gpgkey | apt-key add -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. Update your local repository list:</span></span><br><span class="line">apt update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. Install TimescaleDB:</span></span><br><span class="line">apt search timescaledb</span><br><span class="line">apt install timescaledb-2-postgresql-12</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. Run 'timescaledb-tune' (installed as part of the timescaledb-tools package, a recommended dependency) to update your config settings for TimescaleDB:</span></span><br><span class="line">timescaledb-tune --quiet --<span class="built_in">yes</span></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h4 id="添加扩展">
+          <a href="#添加扩展" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#添加扩展">#</a>添加扩展</h4>
+      
+<ol>
+<li>
+<p>配置预加载（如果没有运行上面第7步）</p>
+<figure class="highlight sh"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Modify postgresql.conf:</span></span><br><span class="line">shared_preload_libraries = <span class="string">'timescaledb'</span></span><br></pre></td></tr></tbody></table></div></figure>
+<blockquote>
+<p>我是sb，一直填的“timescale”，导致postgresql死活启动不了</p>
+</blockquote>
+</li>
+<li>
+<p>数据库扩展添加</p>
+<figure class="highlight sql"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EXTENSION IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> timescaledb;</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+
+        <h4 id="面向Postgres-app安装">
+          <a href="#面向Postgres-app安装" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#面向Postgres-app安装">#</a>面向Postgres.app安装</h4>
+      
+<blockquote>
+<p>源码安装未成功，由于Postgres.app 未提供<code>pg_config</code>命令导致失败</p>
+</blockquote>
+<p>安装好后，按homebrew方式进行安装</p>
+<p>安装完成后，按以下进行配置修改</p>
+<figure class="highlight bash"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">timescaledb-tune --<span class="built_in">yes</span> --conf-path=/Users/YOURNAME/Library/Application\ Support/Postgres/var-&lt;PGVERSION&gt;/postgresql.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># find the version of Timescale</span></span><br><span class="line"><span class="built_in">cd</span> /opt/homebrew/Cellar/timescaledb/</span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行以下命令，注意homebrew的Cellar目录可能不一样</span></span><br><span class="line">/usr/bin/install -c -m 755 $(find /opt/homebrew/Cellar/timescaledb/&lt;TSVERSION&gt;/lib/timescaledb/postgresql/ -name <span class="string">"timescaledb*.so"</span>)  /Applications/Postgres.app/Contents/Versions/&lt;PGVERSION&gt;/lib/postgresql</span><br><span class="line"></span><br><span class="line">/usr/bin/install -c -m 644 /opt/homebrew/Cellar/timescaledb/2.7.2/share/timescaledb/* /Applications/Postgres.app/Contents/Versions/14/share/</span><br><span class="line"></span><br><span class="line">/usr/bin/install -c -m 755 $(find /usr/local/Cellar/timescaledb/2.8.1/lib/timescaledb/postgresql@14/ -name <span class="string">"timescaledb*.so"</span>)  /Applications/Postgres.app/Contents/Versions/12/bin/postgres</span><br><span class="line"></span><br><span class="line">/usr/bin/install -c -m 644 /usr/local/Cellar/timescaledb/2.8.1/share/timescaledb/* /Applications/Postgres.app/Contents/Versions/12/share/</span><br><span class="line"></span><br></pre></td></tr></tbody></table></div></figure>
+
+        <h2 id="参考">
+          <a href="#参考" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#参考">#</a>参考</h2>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.postgresql.org/">PostgreSQL: The world’s most advanced open source database</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://postgis.net/">PostGIS</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://postgresapp.com/">Postgres.app – the easiest way to get started with PostgreSQL on the Mac</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://docs.timescale.com/">Timescale Docs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://abulasar.com/installing-timescaledb-on-postgres-appmacos">Installing Timescaledb on Postgres App(macOS)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/Postgresql/">http://zang.gold/posts/Postgresql/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostgreSQL/">PostgreSQL</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/PostGIS/">PostGIS</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/DB/">DB</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Timescale/">Timescale</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Web-ApiWebTemplate/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Awesome Api !!</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Android-Logcat/"><span class="paginator-prev__text">Android应用日志导出与远程日志</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">
+          常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">
+          安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-apt"><span class="toc-number">2.1.</span> <span class="toc-text">
+          Linux + apt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac-Homebrew"><span class="toc-number">2.2.</span> <span class="toc-text">
+          Mac+Homebrew</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">
+          配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81"><span class="toc-number">3.1.</span> <span class="toc-text">
+          修改密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">
+          服务配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="toc-number">3.3.</span> <span class="toc-text">
+          远程登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">
+          使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="toc-number">4.1.</span> <span class="toc-text">
+          系统命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%91%BD%E4%BB%A4"><span class="toc-number">4.2.</span> <span class="toc-text">
+          数据库命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">5.</span> <span class="toc-text">
+          客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-number">6.</span> <span class="toc-text">
+          插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PostGIS"><span class="toc-number">6.1.</span> <span class="toc-text">
+          PostGIS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TimeScale"><span class="toc-number">6.2.</span> <span class="toc-text">
+          TimeScale</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#APT"><span class="toc-number">6.2.1.</span> <span class="toc-text">
+          APT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%89%A9%E5%B1%95"><span class="toc-number">6.2.2.</span> <span class="toc-text">
+          添加扩展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%A2%E5%90%91Postgres-app%E5%AE%89%E8%A3%85"><span class="toc-number">6.2.3.</span> <span class="toc-text">
+          面向Postgres.app安装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">7.</span> <span class="toc-text">
+          参考</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

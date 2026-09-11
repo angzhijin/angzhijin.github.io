@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="认证授权基础 | JavaGuide                      #认证和授权         认证（Authentication）：验证身份 授权（Authorization）：授予权限，发生在认证之后                      #Cookie                            #介绍        Cookie是用于跟踪浏览器用户身份的会话方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web开发中认证与授权技术">
+<meta property="og:url" content="http://zang.gold/posts/%E8%AE%A4%E8%AF%81%E5%92%8C%E6%8E%88%E6%9D%83/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="认证授权基础 | JavaGuide                      #认证和授权         认证（Authentication）：验证身份 授权（Authorization）：授予权限，发生在认证之后                      #Cookie                            #介绍        Cookie是用于跟踪浏览器用户身份的会话方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-01T12:45:23.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:31:22.767Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary"><title>Web开发中认证与授权技术 | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/%E8%AE%A4%E8%AF%81%E5%92%8C%E6%8E%88%E6%9D%83/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Web开发中认证与授权技术</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-05-01</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://javaguide.cn/system-design/security/basis-of-authority-certification.html#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80">认证授权基础 | JavaGuide</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="认证和授权">
+          <a href="#认证和授权" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#认证和授权">#</a>认证和授权</h2>
+      
+<ul>
+<li>认证（Authentication）：验证身份</li>
+<li>授权（Authorization）：授予权限，发生在认证之后</li>
+</ul>
+
+        <h2 id="Cookie">
+          <a href="#Cookie" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Cookie">#</a>Cookie</h2>
+      
+
+        <h3 id="介绍">
+          <a href="#介绍" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#介绍">#</a>介绍</h3>
+      
+<p><code>Cookie</code>是用于跟踪浏览器用户身份的会话方式，与Session类似，但两者的应用场景不太一样。</p>
+<blockquote>
+<p><code>Cookie</code>是某些完整为了辨别用户身份二存储在用户本地终端上的数据（通常经过加密）。——维基百科</p>
+</blockquote>
+<p>即：<code>Cookie</code>存放在客户端，一般涌来保存用户信息。</p>
+<p>应用案例：</p>
+<ol>
+<li>保存已经登录过的用户信息，还有用户首选项、主题和其他设置信息等</li>
+<li>保存<code>Session</code>和<code>Token</code>，向后端请求时带上<code>Cookie</code></li>
+<li>记录分析用户行为</li>
+</ol>
+
+        <h3 id="使用">
+          <a href="#使用" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#使用">#</a>使用</h3>
+      
+<blockquote>
+<p>以Spring Boot 为例</p>
+</blockquote>
+<ol>
+<li>
+<p>设置Cookie返回给客户端</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping("/change-username")</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">setCookie</span><span class="params">(HttpServletResponse response)</span> {</span><br><span class="line">    <span class="comment">// 创建一个 cookie</span></span><br><span class="line">    <span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">"username"</span>, <span class="string">"Jovan"</span>);</span><br><span class="line">    <span class="comment">//设置 cookie过期时间</span></span><br><span class="line">    cookie.setMaxAge(<span class="number">7</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span>); <span class="comment">// expires in 7 days</span></span><br><span class="line">    <span class="comment">//添加到 response 中</span></span><br><span class="line">    response.addCookie(cookie);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Username is changed!"</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>使用@CookieValue获取特定的Cookie值</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping("/")</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">readCookie</span><span class="params">(<span class="meta">@CookieValue(value = "username", defaultValue = "Atta")</span> String username)</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hey! My username is "</span> + username;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+<li>
+<p>读取所有Cookie值</p>
+<figure class="highlight java"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping("/all-cookies")</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">readAllCookies</span><span class="params">(HttpServletRequest request)</span> {</span><br><span class="line"></span><br><span class="line">    Cookie[] cookies = request.getCookies();</span><br><span class="line">    <span class="keyword">if</span> (cookies != <span class="literal">null</span>) {</span><br><span class="line">        <span class="keyword">return</span> Arrays.stream(cookies)</span><br><span class="line">            .map(c -&gt; c.getName() + <span class="string">"="</span> + c.getValue())</span><br><span class="line">            .collect(Collectors.joining(<span class="string">", "</span>));</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"No cookies"</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+</li>
+</ol>
+
+        <h2 id="Cookie和Session">
+          <a href="#Cookie和Session" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Cookie和Session">#</a>Cookie和Session</h2>
+      
+<p>Session的主要作用是通过服务端记录用户的状态</p>
+<ol>
+<li>Cookie数据保存在客户端（浏览器），Session数据保存在服务器端。</li>
+<li>相对来说Session安全性更高</li>
+<li>最好将Cookie信息加密后使用时再去服务端解密</li>
+</ol>
+
+        <h3 id="使用Session-Cookie方案进行身份验证">
+          <a href="#使用Session-Cookie方案进行身份验证" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#使用Session-Cookie方案进行身份验证">#</a>使用Session-Cookie方案进行身份验证</h3>
+      
+<p><code>SeesionID</code>一般存放在Redis中</p>
+<ol>
+<li>用户向服务器发送用户名、密码、验证码用于登录系统</li>
+<li>服务器验证通过后，服务器为用户创建一个<code>Session</code>，并将<code>Session</code>保存起来</li>
+<li>服务器向用户返回一个<code>SessionID</code>，写入用户的<code>Cookie</code></li>
+<li>但用户保持登陆状态时，<code>Cookie</code>将与后面每个请求一起被发送出去</li>
+<li>服务器可以将存储在<code>Cookie</code>上的<code>SessionID</code>与存储在内存中或者数据库中的<code>Seesion</code>信息进行比较，以验证用户的身份，返回给用户客户端响应信息的时候会恢复带用户当前的状态。</li>
+</ol>
+<p>使用<code>Session</code>时需要注意：</p>
+<ol>
+<li>依赖<code>Session</code>的关键业务一定要确保客户端开启了<code>Cookie</code></li>
+<li>注意<code>Session</code>的过期时间</li>
+</ol>
+
+        <h3 id="多服务器节点下Session-Cookie方案">
+          <a href="#多服务器节点下Session-Cookie方案" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#多服务器节点下Session-Cookie方案">#</a>多服务器节点下Session-Cookie方案</h3>
+      
+<p>多服务器下，同一用户的不同会话可能分配给不同的服务器，此时不是每台服务器都有保存过对应的SessionID导致需要再次登录。</p>
+<p>方案：</p>
+<ol>
+<li>通过hash策略将同一用户的请求都分配给同一服务器。</li>
+<li>每台服务器的Session信息互相同步（成本高）。</li>
+<li>单独使用一个所有服务器都能访问的数据节点来保存Session信息。</li>
+</ol>
+
+        <h3 id="没有Cookie的话Session还能用吗">
+          <a href="#没有Cookie的话Session还能用吗" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#没有Cookie的话Session还能用吗">#</a>没有Cookie的话Session还能用吗</h3>
+      
+<p>如果是使用<code>Cookie</code>保存<code>SessionID</code>的方案，客户端禁用<code>Cookie</code>后<code>Session</code>无法正常工作</p>
+<p>但可以使用其他方式使用<code>Session</code>，比如说放在请求的url中，但安全性和用户体验性较差</p>
+
+        <h2 id="Token-JWT">
+          <a href="#Token-JWT" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Token-JWT">#</a>Token / JWT</h2>
+      
+<p>JWT（JSON Web Token）是Token的实现。</p>
+<p>本质上是一段签名的JSON格式的数据。由于其带有签名，因此接收者可以验证它的真实性。</p>
+<p>JWT由三部分组成：</p>
+<ol>
+<li><code>Header</code>：描述JWT的元数据，定义了生成签名的算法以及Token的类型</li>
+<li><code>Patload</code>：用来存放实际需要传递的数据</li>
+<li><code>Signature</code>签名：服务器通过<code>Payload</code>、<code>Header</code>和一个密钥使用<code>Header</code>里面指定的签名算法（默认是<code>HMAC SHA256</code>）生成</li>
+</ol>
+<h3 id=""><a class="header-anchor" href="#">#</a></h3>
+
+        <h3 id="基于Token进行身份验证">
+          <a href="#基于Token进行身份验证" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#基于Token进行身份验证">#</a>基于Token进行身份验证</h3>
+      
+<p>服务器通过<code>Payload</code>、<code>Heder</code>和一个密钥（<code>secret</code>）创建令牌（<code>Token</code>）并将Token发送给客户端，客户端将Token保存在Cookie或者LocalStorage里,以后客户端发出的所有请求都会携带这个令牌。</p>
+<ul>
+<li>可以放在Cookie中自动发送，但不能跨域</li>
+<li>更好的是放在<code>HTTP Header</code> 的<code>Authorization</code>字段中：<code>Authorization: Bearer Token</code></li>
+</ul>
+<ol>
+<li>用户向服务器发送用户名和密码用于登录系统</li>
+<li>身份验证服务响应并返回了签名的JWT，散漫包含了用户是谁的内容</li>
+<li>用户以后每次向后端发请求都在<code>Header</code>中带上了JWT</li>
+<li>服务端检查JWT并从中获取用户相关信息</li>
+</ol>
+
+        <h3 id="Token认证的优势">
+          <a href="#Token认证的优势" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Token认证的优势">#</a>Token认证的优势</h3>
+      
+<ol>
+<li>
+<p>无状态</p>
+<p>Token自身包含了身份验证所需要的所有信息，增加了系统的可用性和伸缩性，大大减轻了服务端的压力。</p>
+<p>但问题1也是由其造成的。</p>
+</li>
+<li>
+<p>有效避免CSRF攻击</p>
+<blockquote>
+<ol>
+<li>
+<p>CSRF（Cross Site Request Forgery），跨站请求伪造</p>
+<p>Hacker通过<code>Cookie</code>拿到其中的<code>SessionId</code>（如误点攻击链接）后代替用户访问系统。</p>
+<p><code>Token</code>在成功登录获取之后，一般存放在LocalStorage中，通过某些方式给每个发送给后端的请求加上这个Token，这样就不会出现CSRF漏洞。</p>
+</li>
+<li>
+<p>XSS（Cross Site Scripting）跨站脚本攻击</p>
+<p>使用各种方式将恶意代码注入到其他用户的页面中。如通过脚本盗用<code>Cookie</code>等信息。</p>
+<p>无论是<code>Cookie</code>和<code>Token</code>都不发避免。</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>适合移动端使用</p>
+<p>Token可以被客户端存储就能使用，而且Token可以跨语言使用</p>
+</li>
+<li>
+<p>单点登录友好</p>
+<p>Token被保存在客户端</p>
+</li>
+</ol>
+
+        <h3 id="Token认证常见问题及解决方案">
+          <a href="#Token认证常见问题及解决方案" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Token认证常见问题及解决方案">#</a>Token认证常见问题及解决方案</h3>
+      
+<ol>
+<li>
+<p>注销登录等场景下Token还有效</p>
+<p>Token派发出去如果后端不增加其他逻辑的话，它在是小钱都是有效的。</p>
+<p>解决方案</p>
+<ul>
+<li>将Token存入内存数据库（如Redis）。会导致每次请求都需要从DB中查询的步骤，且违背了JWT的无状态原则</li>
+<li>黑名单机制。使用内存数据库如Redis维护一个黑名单</li>
+<li>修改密钥</li>
+<li>保持令牌的有效期短并经常轮换。会导致用户的登录转台不会被持久记录，需要经常登录</li>
+</ul>
+<p>修改密码后解决token有效问题</p>
+<ul>
+<li>使用用户的米啊吗的哈希值对token进行签名</li>
+</ul>
+</li>
+<li>
+<p>Token续签问题</p>
+<ul>
+<li>类似于<code>Session</code>认证中的做法</li>
+<li>每次请求都返回新Token</li>
+<li>Token有效期设置到半夜</li>
+<li>用户登录返回两个<code>Token</code>：<code>accessToken</code>和<code>refreshToken</code></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>JWT 最适合的场景是不需要服务端潮纯用户状态的场景。</p>
+</blockquote>
+
+        <h2 id="SSO">
+          <a href="#SSO" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#SSO">#</a>SSO</h2>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://ken.io/note/sso-design-implement">单点登录（SSO）的设计与实现 - Ken的杂谈</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>SSO（Single Sign On）即单点登录。</p>
+<p>用户登录其中的一个就可以访问预期相关的其他系统。如京东下的各个APP</p>
+
+        <h3 id="好处">
+          <a href="#好处" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#好处">#</a>好处</h3>
+      
+<ul>
+<li>用户角度：一次登录多次使用，无需记录多套用户名和密码，省心</li>
+<li>系统管理员角度：只需要维护一个统一的账号中心，方便</li>
+<li>新系统开发角度：新系统只需直接对接统一的账号中心，简化开发流程，省时</li>
+</ul>
+
+        <h3 id="设计目标">
+          <a href="#设计目标" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#设计目标">#</a>设计目标</h3>
+      
+<ul>
+<li>单点登录</li>
+<li>单点登出</li>
+<li>支持跨域单点登录</li>
+<li>支持跨域单点登出</li>
+</ul>
+
+        <h3 id="设计与实现">
+          <a href="#设计与实现" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#设计与实现">#</a>设计与实现</h3>
+      
+<ol>
+<li>
+<p>核心应用与依赖</p>
+<p>前台站点、SSO站点、SSO服务、数据库、缓存</p>
+</li>
+<li>
+<p>用户登录状态的存储和校验</p>
+<p>常见的Web框架对于Session的实现都是生成一个SessionId存储在浏览器Cookie中，然后将Session内容存储在服务端内存中。</p>
+<p>对于登录信息的存储，建议采用Redis，既保证高可用，又可以线性扩充，同时可以满足SSO负载均衡/可伸缩的需求。</p>
+</li>
+<li>
+<p>用户登录/登录校验</p>
+</li>
+<li>
+<p>用户登出</p>
+<ul>
+<li>服务端清除缓存中的登录状态</li>
+<li>客户端清除存储的AuthToken</li>
+</ul>
+</li>
+<li>
+<p>跨域登录、登出</p>
+<p>跨域要解决的就是解决Cookie的跨域读写问题</p>
+<p>核心思路：</p>
+<ol>
+<li>登录完成之后通过回调的方式，将AuthToken传递给主域名之外的站点，该站点自行将AuthToken保存在当前域下的Cookie中</li>
+<li>登出完成之后通过毁掉的方式，通过非主域名站点的登出页面，完成设置Cookie中的AuthToken过期的操作</li>
+<li>跨域登录（主域名已登录）</li>
+</ol>
+</li>
+</ol>
+
+        <h2 id="OAuth-2-0">
+          <a href="#OAuth-2-0" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#OAuth-2-0">#</a>OAuth 2.0</h2>
+      
+<p>OAuth是一个行业的标准授权协议，主要用来授权第三方应用获取有限的权限。</p>
+<p>OAuth2.0 是对OAuth1.0的完全重新设计，更快更易实现。</p>
+<p>实际上是一种授权机制， 它的最终目的是为了第三方应用办法的一个有时效性的令牌Token，是的第三方应用能够通过该令牌获取相关的资源。</p>
+<p>比较常用的场景就是第三方登录，但网站接入了第三方登录时一般就是使用OAuth 2.0 协议</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/%E8%AE%A4%E8%AF%81%E5%92%8C%E6%8E%88%E6%9D%83/">http://zang.gold/posts/%E8%AE%A4%E8%AF%81%E5%92%8C%E6%8E%88%E6%9D%83/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/Web/">Web</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/Java-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Java中定时任务技术</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/SQL-time/"><span class="paginator-prev__text">数据库时间存储</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E5%92%8C%E6%8E%88%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">
+          认证和授权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie"><span class="toc-number">2.</span> <span class="toc-text">
+          Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">
+          介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">
+          使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie%E5%92%8CSession"><span class="toc-number">3.</span> <span class="toc-text">
+          Cookie和Session</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Session-Cookie%E6%96%B9%E6%A1%88%E8%BF%9B%E8%A1%8C%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-number">3.1.</span> <span class="toc-text">
+          使用Session-Cookie方案进行身份验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%8A%82%E7%82%B9%E4%B8%8BSession-Cookie%E6%96%B9%E6%A1%88"><span class="toc-number">3.2.</span> <span class="toc-text">
+          多服务器节点下Session-Cookie方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89Cookie%E7%9A%84%E8%AF%9DSession%E8%BF%98%E8%83%BD%E7%94%A8%E5%90%97"><span class="toc-number">3.3.</span> <span class="toc-text">
+          没有Cookie的话Session还能用吗</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Token-JWT"><span class="toc-number">4.</span> <span class="toc-text">
+          Token &#x2F; JWT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EToken%E8%BF%9B%E8%A1%8C%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-number">4.2.</span> <span class="toc-text">
+          基于Token进行身份验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Token%E8%AE%A4%E8%AF%81%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-number">4.3.</span> <span class="toc-text">
+          Token认证的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Token%E8%AE%A4%E8%AF%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">4.4.</span> <span class="toc-text">
+          Token认证常见问题及解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSO"><span class="toc-number">5.</span> <span class="toc-text">
+          SSO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%BD%E5%A4%84"><span class="toc-number">5.1.</span> <span class="toc-text">
+          好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="toc-number">5.2.</span> <span class="toc-text">
+          设计目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.3.</span> <span class="toc-text">
+          设计与实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OAuth-2-0"><span class="toc-number">6.</span> <span class="toc-text">
+          OAuth 2.0</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>

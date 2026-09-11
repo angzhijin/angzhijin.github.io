@@ -1,0 +1,576 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="ButterFly主题下调用随即图片API作为默认随机封面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随机图片API">
+<meta property="og:url" content="http://zang.gold/posts/RandomPicture/index.html">
+<meta property="og:site_name" content="谁掉的金砸">
+<meta property="og:description" content="ButterFly主题下调用随即图片API作为默认随机封面">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-06T10:40:33.000Z">
+<meta property="article:modified_time" content="2026-07-18T13:37:02.360Z">
+<meta property="article:author" content="Zang">
+<meta property="article:tag" content="ImageBed">
+<meta name="twitter:card" content="summary"><title>随机图片API | 谁掉的金砸</title><link ref="canonical" href="http://zang.gold/posts/RandomPicture/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: undefined,
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">随机图片API</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2026-07-18</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>Hexo作为静态博客，在配置文章封面一般都是在<code>Font-matter</code>中指定<code>cover</code>，但为了指定封面每写一篇都要去配置，而自己去配置又想找个内容相关的，而且还想上传到自己图床中（个人强迫症），太难受了。</p>
+<p>而在ButterFly主题中，提供了默认封面的配置，可以在其中配置一堆图片URL。在博客生成时，会给对于未提供<code>cover</code>的文章从一堆URL中随机一个作为文章的封面。</p>
+<p>刚开始还是老老实实的配置了几张图片进去，后来忽然意识到，如果这些URL返回的是随机图片，那是不是就相当省力了？</p>
+<p>初次尝试发现，配置了之后就是相当于html里把图片url修改为随机图片API。这就导致如果文章随机到的URL相同，那么它们的封面也就是相同的；而且每次刷新，都会发起新的请求，图片被更新，即每篇文章的封面都不会固定了。唯一的缺点是永远不知道会随机出什么奇奇怪怪的图片。</p>
+<p>既然是随机配置，那么我就多配置一些，我设定的主页一页也就显示10篇文章，除去一些自己配置的封面，那么我只要配置10+个的URL不就不容易重复了？</p>
+<p>所以我捣鼓了半天，根据<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://quest.myxxts.club/">沐云湘夕</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>大大整理的<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://quest.myxxts.club/archives/54/">随机壁纸API</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，简单搭了个<code>Hexo-ButterFly</code><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://gitee.com/angzhijin/local-blog">本地博客</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>用于测试各个随机API在应用到封面上的效果（已排除部分国外源以及需要申请Token的网站）</p>
+
+        <h2 id="Bing壁纸">
+          <a href="#Bing壁纸" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Bing壁纸">#</a>Bing壁纸</h2>
+      
+<blockquote>
+<p>必应的每日壁纸一向可以的，而且也有很多API页提供了必应的壁纸</p>
+<p>可以用来当博客的主页背景~</p>
+</blockquote>
+<p>由<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.dujin.org/">缙哥哥</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>博客提供</p>
+<ul>
+<li>1366*768 分辨率图片地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.dujin.org/bing/1366.php">https://api.dujin.org/bing/1366.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>1920*1080 分辨率图片地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.dujin.org/bing/1920.php">https://api.dujin.org/bing/1920.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>手机标准分辨率 1080*1920 图片地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.dujin.org/bing/m.php">https://api.dujin.org/bing/m.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="动漫壁纸">
+          <a href="#动漫壁纸" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#动漫壁纸">#</a>动漫壁纸</h2>
+      
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://tuapi.eees.cc/acgPicPPTShow/">https://tuapi.eees.cc/acgPicPPTShow/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> （幻灯片式自动更换，这个不适用）</li>
+</ul>
+
+        <h2 id="博天API">
+          <a href="#博天API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#博天API">#</a>博天API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.btstu.cn/doc/sjbz.php">随机壁纸-搏天api (btstu.cn)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>除了随机图片，博天还有提供其他的API</p>
+</blockquote>
+<ul>
+<li>
+<p>请求方式：GET</p>
+</li>
+<li>
+<p>请求地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.btstu.cn/sjbz/api.php">https://api.btstu.cn/sjbz/api.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p>请求参数</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>必填</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>method</td>
+<td>否</td>
+<td>string</td>
+<td>图片平台类型【<code>moblie</code> / <code>pc</code> / <code>zsy</code>】默认pc</td>
+</tr>
+<tr>
+<td>lx</td>
+<td>否</td>
+<td>string</td>
+<td>图片分类【<code>meizi</code> / <code>dongman</code> /<code> fengjing</code> / <code>suiji</code>】默认随机</td>
+</tr>
+<tr>
+<td>format</td>
+<td>否</td>
+<td>string</td>
+<td>输出格式【<code>json</code> /<code> images</code>】默认images</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<p>返回参数(json)</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>返回的状态码</td>
+</tr>
+<tr>
+<td>imgurl</td>
+<td>string</td>
+<td>图片地址</td>
+</tr>
+<tr>
+<td>width</td>
+<td>string</td>
+<td>图片宽度</td>
+</tr>
+<tr>
+<td>height</td>
+<td>string</td>
+<td>图片高度</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ul>
+
+        <h2 id="苏晓晴的随机二次元API">
+          <a href="#苏晓晴的随机二次元API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#苏晓晴的随机二次元API">#</a>苏晓晴的随机二次元API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.toubiec.cn/">随机二次元接口 (toubiec.cn)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>源码分享：[<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.toubiec.cn/99.html">源码分享]随机二次元接口源码-双版本 - 苏晓晴-温馨的技术博客 (toubiec.cn)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>请求地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.toubiec.cn/random.php">https://acg.toubiec.cn/random.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>json格式请求地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.toubiec.cn/random.php?ret=json">https://acg.toubiec.cn/random.php?ret=json</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="樱花API">
+          <a href="#樱花API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#樱花API">#</a>樱花API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.dmoe.cc/">樱花随机二次元图片API-樱花 (dmoe.cc)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.dmoe.cc/random.php">https://www.dmoe.cc/random.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>参数： <code>type=json</code>，可选，默认返回图片</li>
+</ul>
+
+        <h2 id="保罗API">
+          <a href="#保罗API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#保罗API">#</a>保罗API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.paugram.com/help/wallpaper/">随机动漫壁纸 - 保罗｜API (paugram.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>随机频率较低，且图片均为人物，且左半边空白</p>
+</blockquote>
+<ol>
+<li>
+<p>动漫壁纸</p>
+<ul>
+<li>
+<p>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.paugram.com/wallpaper/">https://api.paugram.com/wallpaper/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p>参数</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>可选值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>【<code>sm</code> / <code>cp</code> / <code>sina</code> / <code>paul</code>】</td>
+<td>图片源</td>
+</tr>
+<tr>
+<td>category</td>
+<td>【<code>cn</code> / <code>us</code> / <code>jp</code>】</td>
+<td>图片分类，可按国家和类别选择（开发中）</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<p>图片源</p>
+<ul>
+<li><code>sm</code>：SM.M S图床</li>
+<li><code>gt</code>：GiteePage 托管</li>
+<li><code>sina</code>：新浪图床</li>
+<li><code>github</code>：GitHub图床，基于 JSDelivr cdn</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Bing每日壁纸</p>
+<ul>
+<li>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.paugram.com/bing/">https://api.paugram.com/bing/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>参数：<code>info</code>，添加后返回json格式</li>
+</ul>
+</li>
+</ol>
+<p>另外还有Gravatar头像解析、随机动漫音乐API，网易云解析</p>
+
+        <h2 id="樱道随机图片">
+          <a href="#樱道随机图片" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#樱道随机图片">#</a>樱道随机图片</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://img.r10086.com/">樱道随机图片API接口 - 全网图片最多类型最全的随机图片API网站</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>（进去后有奇奇怪怪的弹窗？）</p>
+</blockquote>
+<ul>
+<li>
+<p>调用地址</p>
+<ul>
+<li>
+<p>动漫综合的调用地址：<code>https://api.r10086.com/动漫综合1.php</code>  （没错，就是带中文的URL，其中数字可以换成1-18）</p>
+</li>
+<li>
+<p>风景系列：<code>https://api.r10086.com/风景系列1.php</code></p>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p>还有大量API对各个系列都有分类，如海贼、火影、妖尾、鬼灭、等等</p>
+
+        <h2 id="墨天逸">
+          <a href="#墨天逸" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#墨天逸">#</a>墨天逸</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.mtyqx.cn/">墨天逸 — 随机图片API (mtyqx.cn)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>调用地址
+<ul>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.mtyqx.cn/api/random.php">https://api.mtyqx.cn/api/random.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.mtyqx.cn/tapi/random.php">https://api.mtyqx.cn/tapi/random.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+<li>参数：<code>type=json</code>，可不填</li>
+</ul>
+
+        <h2 id="东方-Project">
+          <a href="#东方-Project" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#东方-Project">#</a>东方 Project</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://img.paulzzh.com/">Paulzzh – 东方Project随机图片API</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>收录45000+张东方高质量壁纸图片，牛皮</p>
+</blockquote>
+<ul>
+<li>
+<p>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://img.paulzzh.com/touhou/random">https://img.paulzzh.com/touhou/random</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p>参数（均为可选）</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>302 (默认)<br>json 支持跨域</td>
+</tr>
+<tr>
+<td>site</td>
+<td>konachan 仅使用konachan(此方酱)(默认)<br>yandere <span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="http://xn--yande-6e2hm7bx55p.re">仅使用yande.re</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>(病娇酱)——（已不支持）<br>all 全部使用</td>
+</tr>
+<tr>
+<td>size</td>
+<td>pc 横屏壁纸(默认)<br>wap 竖屏壁纸<br>all 全部</td>
+</tr>
+<tr>
+<td>proxy</td>
+<td>1 使用反向代理 (默认)<br>0 302返回源站链接</td>
+</tr>
+<tr>
+<td>tag</td>
+<td>无默认值<br>筛选指定标签的图片，可能较慢(beta)<br>例如：博丽灵梦(reimu) 蓬莱山辉夜(kaguya)<br>琪露诺(cirno) 短发(short_hair)<br>红眼(red_eyes) 夜晚(night)<br>更多标签详见https://img.paulzzh.com/touhou/random_tags（该链接已失效）</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ul>
+
+        <h2 id="汐岑ACG">
+          <a href="#汐岑ACG" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#汐岑ACG">#</a>汐岑ACG</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.yanwz.cn/">汐岑ACG |- 随机二次元图片API (yanwz.cn)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>ssl证书过期导致显示不安全</p>
+</blockquote>
+<ul>
+<li>调用地址
+<ul>
+<li>二次元动漫图片：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.yanwz.cn/api.php">https://acg.yanwz.cn/api.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>menhera酱表情包：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.yanwz.cn/menhera/api.php">https://acg.yanwz.cn/menhera/api.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>风景图片：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.yanwz.cn/scenery/api.php">https://acg.yanwz.cn/scenery/api.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>二次元电脑壁纸：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://acg.yanwz.cn/wallpaper/api.php">https://acg.yanwz.cn/wallpaper/api.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="凌一API">
+          <a href="#凌一API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#凌一API">#</a>凌一API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.lyiqk.cn/">凌一API-随机图片API 随心所动 不再单调 (lyiqk.cn)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>调用的是github图床，加载较慢，不稳定（虽然已经走jsDelivr cdn加速了。。。）</p>
+</blockquote>
+<ul>
+<li>调用地址
+<ul>
+<li>综合随机：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.lyiqk.cn/api">https://api.lyiqk.cn/api</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>二次元动漫：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.lyiqk.cn/acg">https://api.lyiqk.cn/acg</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>风景：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.lyiqk.cn/scenery">https://api.lyiqk.cn/scenery</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Bing每日一图：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.lyiqk.cn/bing">https://api.lyiqk.cn/bing</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>   （这个不在Github所以较快）</li>
+<li>还有更多分类，如王者、LOL等</li>
+</ul>
+</li>
+<li>参数：<code>type=json</code>，可不填</li>
+</ul>
+
+        <h2 id="API接口文档-夏沫博客">
+          <a href="#API接口文档-夏沫博客" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#API接口文档-夏沫博客">#</a>API接口文档-夏沫博客</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.seovx.com/73.html">在线古风美图二次元API接口文档 - 夏沫博客 (seovx.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>调用地址
+<ul>
+<li>美图：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://cdn.seovx.com/?mom=302">https://cdn.seovx.com/?mom=302</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>二次元：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://cdn.seovx.com/d/?mom=302">https://cdn.seovx.com/d/?mom=302</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>古风：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://cdn.seovx.com/ha/?mom=302">https://cdn.seovx.com/ha/?mom=302</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="点滴API">
+          <a href="#点滴API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#点滴API">#</a>点滴API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ddkjt.com/">点滴API - 免费调用 (ddkjt.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>调用地址
+<ul>
+<li>随机风景图：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ddkjt.com/api/img_1.php">https://api.ddkjt.com/api/img_1.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>随机科技图：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ddkjt.com/api/img_2.php">https://api.ddkjt.com/api/img_2.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>随机古诗词：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ddkjt.com/api/yl_1.php">https://api.ddkjt.com/api/yl_1.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>随机名言：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ddkjt.com/api/yl_3.php">https://api.ddkjt.com/api/yl_3.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="Langford’s-API">
+          <a href="#Langford’s-API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Langford’s-API">#</a>Langford’s API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ucany.net/">Langford’s API (ucany.net)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>调用地址
+<ul>
+<li>随机高清二次元图：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ucany.net/acg-pc.php">https://api.ucany.net/acg-pc.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>每日4K壁纸：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.ucany.net/wallpaper-pc.php">https://api.ucany.net/wallpaper-pc.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="R0A1NG’s-API">
+          <a href="#R0A1NG’s-API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#R0A1NG’s-API">#</a>R0A1NG’s API</h2>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.roaing.com/#/doc/dongmanimg">随机动漫壁纸 (roaing.com)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<ul>
+<li>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.roaing.com/dongmanimg/">https://api.roaing.com/dongmanimg/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>另外还有其他的如一言、QQ头像昵称查询、IP信息查询等接口</p>
+
+        <h2 id="列举部分失败或不试的">
+          <a href="#列举部分失败或不试的" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#列举部分失败或不试的">#</a>列举部分失败或不试的</h2>
+      
+
+        <h3 id="Lorem-Picsum">
+          <a href="#Lorem-Picsum" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#Lorem-Picsum">#</a>Lorem Picsum</h3>
+      
+<ul>
+<li>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://picsum.photos/">https://picsum.photos/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> （返回的不为图片）</li>
+</ul>
+
+        <h3 id="岁月小筑">
+          <a href="#岁月小筑" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#岁月小筑">#</a>岁月小筑</h3>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://img.xjh.me/">https://img.xjh.me</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>时好时不好</p>
+</blockquote>
+<ul>
+<li>
+<p>调用地址</p>
+<ul>
+<li>https调用：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://img.xjh.me/random_img.php">https://img.xjh.me/random_img.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+<li>
+<p>http调用：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="http://img.xjh.me/random_img.php">http://img.xjh.me/random_img.php</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+</ul>
+
+        <h3 id="EEE-DOG">
+          <a href="#EEE-DOG" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#EEE-DOG">#</a>EEE.DOG</h3>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://www.eee.dog/tech/rand-pic-api.html">随机图片API - EEE.DOG</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>先看了文档整理了，整完结果发现这个失败了</p>
+</blockquote>
+<ul>
+<li>
+<p>调用地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.yimian.xyz/img">https://api.yimian.xyz/img</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li>
+<p>参数</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>图片种类</td>
+<td>【<code>moe</code> / <code>wallpaper</code> / <code>head</code>/ <code>imgbed</code>】</td>
+</tr>
+<tr>
+<td>size</td>
+<td>图片大小<br>（<code>*</code>表示随机，<code>??</code>表示输入数字）</td>
+<td><code>??x??</code><br> <code>*x??</code><br> <code>*x*</code><br> <code>??-??x??</code> <br> <code>??-??x??-??</code> <br> <code>??-??x*</code><br></td>
+</tr>
+<tr>
+<td>range</td>
+<td>尺寸误差范围</td>
+<td>number</td>
+</tr>
+<tr>
+<td>id</td>
+<td>根据图片id筛选</td>
+<td>number</td>
+</tr>
+<tr>
+<td>path</td>
+<td>根据路径提取图片</td>
+<td>abs path 绝对路径</td>
+</tr>
+<tr>
+<td>display</td>
+<td>是否以网页格式展示</td>
+<td>【<code>true</code>/<code>false</code>】默认false</td>
+</tr>
+<tr>
+<td>R18</td>
+<td>是否显示R18图片（哇测）</td>
+<td>【<code>true</code>/<code>false</code>】默认false（那必须）</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ul>
+
+        <h3 id="JacksonXEのAPI">
+          <a href="#JacksonXEのAPI" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#JacksonXEのAPI">#</a>JacksonXEのAPI</h3>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://blog.jacksonxe.cn/#/article/17">JacksonXEのAPI - ZIMOのBlog</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>2022年3月12日：因博客迁移，图床功能不再提供</p>
+</blockquote>
+<ul>
+<li>请求地址：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.jacksonxe.cn/api/file/random?sole=">https://api.jacksonxe.cn/api/file/random?sole=</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>（如需一次多用调用，可以在=后添加任意数字）</p>
+<p>也就是说只要放一堆改URL+不同数字就可以出不同图片了！这个相当适合我的需求</p>
+<p>另外还提供一言API：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.jacksonxe.cn/api/file/words?file=hitokoto">https://api.jacksonxe.cn/api/file/words?file=hitokoto</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="一铭-API">
+          <a href="#一铭-API" class="heading-link"><i class="fas fa-link"></i></a><a class="header-anchor" href="#一铭-API">#</a>一铭 API</h3>
+      
+<blockquote>
+<p>说明文档：<span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="https://api.wer.plus/product/doc?id=2">https://api.wer.plus/product/doc?id=2</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>还有很多其他接口，但需要申请Token</p>
+</blockquote>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://zang.gold">Zang</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://zang.gold/posts/RandomPicture/">http://zang.gold/posts/RandomPicture/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://zang.gold/tags/ImageBed/">ImageBed</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/posts/algorithm-sort/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">排序算法</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/posts/Homebrew/"><span class="paginator-prev__text">homebrew安装</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bing%E5%A3%81%E7%BA%B8"><span class="toc-number">1.</span> <span class="toc-text">
+          Bing壁纸</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%BC%AB%E5%A3%81%E7%BA%B8"><span class="toc-number">2.</span> <span class="toc-text">
+          动漫壁纸</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%A4%A9API"><span class="toc-number">3.</span> <span class="toc-text">
+          博天API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8B%8F%E6%99%93%E6%99%B4%E7%9A%84%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83API"><span class="toc-number">4.</span> <span class="toc-text">
+          苏晓晴的随机二次元API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%B1%E8%8A%B1API"><span class="toc-number">5.</span> <span class="toc-text">
+          樱花API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E7%BD%97API"><span class="toc-number">6.</span> <span class="toc-text">
+          保罗API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%B1%E9%81%93%E9%9A%8F%E6%9C%BA%E5%9B%BE%E7%89%87"><span class="toc-number">7.</span> <span class="toc-text">
+          樱道随机图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%A8%E5%A4%A9%E9%80%B8"><span class="toc-number">8.</span> <span class="toc-text">
+          墨天逸</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%9C%E6%96%B9-Project"><span class="toc-number">9.</span> <span class="toc-text">
+          东方 Project</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%90%E5%B2%91ACG"><span class="toc-number">10.</span> <span class="toc-text">
+          汐岑ACG</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%8C%E4%B8%80API"><span class="toc-number">11.</span> <span class="toc-text">
+          凌一API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#API%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3-%E5%A4%8F%E6%B2%AB%E5%8D%9A%E5%AE%A2"><span class="toc-number">12.</span> <span class="toc-text">
+          API接口文档-夏沫博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E6%BB%B4API"><span class="toc-number">13.</span> <span class="toc-text">
+          点滴API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Langford%E2%80%99s-API"><span class="toc-number">14.</span> <span class="toc-text">
+          Langford’s API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#R0A1NG%E2%80%99s-API"><span class="toc-number">15.</span> <span class="toc-text">
+          R0A1NG’s API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E4%B8%BE%E9%83%A8%E5%88%86%E5%A4%B1%E8%B4%A5%E6%88%96%E4%B8%8D%E8%AF%95%E7%9A%84"><span class="toc-number">16.</span> <span class="toc-text">
+          列举部分失败或不试的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Lorem-Picsum"><span class="toc-number">16.1.</span> <span class="toc-text">
+          Lorem Picsum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B2%81%E6%9C%88%E5%B0%8F%E7%AD%91"><span class="toc-number">16.2.</span> <span class="toc-text">
+          岁月小筑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EEE-DOG"><span class="toc-number">16.3.</span> <span class="toc-text">
+          EEE.DOG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JacksonXE%E3%81%AEAPI"><span class="toc-number">16.4.</span> <span class="toc-text">
+          JacksonXEのAPI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%93%AD-API"><span class="toc-number">16.5.</span> <span class="toc-text">
+          一铭 API</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/stun-logo.svg" alt="avatar"></div><p class="sidebar-ov-author__text">Zang</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/angzhijin" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://www.weibo.com/6217773471" target="_blank" rel="noopener" data-popover="微博" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weibo"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">131</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">95</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2026</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Zang</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.2</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://hexo-gitee-calendar-api.vercel.app/api?angzhijin";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="angzhijin";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script data-pjax>function electric_clock_injector_config(){
+                var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+                var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-clock/clock/images/weather/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading" class="entered loading"></div></div></div></div></div>';
+                console.log('已挂载electric_clock')
+                // parent_div_git.innerHTML=item_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",item_html) // 有报错，但不影响使用(支持pjax跳转)
+            }if( document.getElementsByClassName('sticky_layout')[0] && (location.pathname ==='all'|| 'all' ==='all')){
+
+            electric_clock_injector_config()
+        } </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax  src="https://cdn.jsdelivr.net/gh/Zfour/hexo-electric-clock@1.0.6/clock.js"></script><!-- hexo injector body_end end --></body></html>
